@@ -2,7 +2,7 @@ stages:
     - build
     - test
 
-Buildingding:
+build:
     stage: build
     script:
         - echo "Building"
@@ -12,7 +12,7 @@ Buildingding:
         paths:
             - build/
 
-tester:
+test:
     stage: test
     script: 
         - echo "Testing"
