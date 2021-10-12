@@ -17,7 +17,7 @@ def connect_to_backend():
 
 
 def receive_and_send(conn, addr):
-    valid = True
+    valid = False
 
     print("Connection from ", addr)
     while True:
@@ -29,17 +29,17 @@ def receive_and_send(conn, addr):
 
         if msg_received[0:2] == "GO":
             if msg_received[2].isdigit():
-                flag = int(msg_received[2])# 1 if this is a challenge, 0 otherwise
+                flag = int(msg_received[2]) # 1 if this is a challenge, 0 otherwise
                 new_race = Race(flag)
                 response = new_race.start()
 
-                if "DONE" in response:  # check if the race was done
+                if "DONE" in response: # check if the race was done
                     valid = True
 
         if not valid:
-            response = "Message is invalid!"
+            response = "Invalid message or race!"
 
-        conn.sendall(bytes("Echo: ", "utf-8") + response)
+        conn.sendall(response.encode("utf-8"))
 
 
 def main():
