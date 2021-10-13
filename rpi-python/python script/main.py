@@ -1,14 +1,18 @@
 import socket
 from RPi import GPIO as GPIO
 import time
+from multiprocessing import Event
+import multiprocessing
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(23, GPIO.IN)
 GPIO.setup(24, GPIO.IN)
 GPIO.setup(25, GPIO.IN)
 
-HOST = "169.254.146.37"
-PORT = 8889
+HOST = "192.168.137.139"
+PORT = 8890
+
+bridge = Event()
 
 def connect_to_backend():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -52,24 +56,43 @@ def receive_and_send(conn, addr):
 # TODO: Add invalid race logic (timeouts etc.)
 def race():
     time1 = read_sensor(23) # 23
+    if time1 == -1: return { "status": False } # add || timeX < 5(or another value) to the if statement for the real racing scenerios
     time2 = read_sensor(23) # 24
+    if time2 == -1: return { "status": False }
     time3 = read_sensor(23) # 25
+    if time3 == -1: return { "status": False }
     time4 = read_sensor(23) # 23
+    if time4 == -1: return { "status": False }
     
     sector1 = time2 - time1
     sector2 = time3 - time2
     sector3 = time4 - time3
     overall = time4 - time1
 
-    return { "status": True, "sector1": sector1, "sector2": sector2, "sector3": sector3, "overall": overall}
+    return { "status": True, "sector1": sector1, "sector2": sector2, "sector3": sector3, "overall": overall }
+
+def timeout_sensor():
+    time.sleep(20) # 20 seconds timeout
+    bridge.set()
 
 def read_sensor(pin): # the value of pin shall be either 23, 24, or 25 as they are the ones which were configured
+    timeout_thread = multiprocessing.Process(target=timeout_sensor, args=())
+    timeout_thread.start()
+
     while True:
-        signal = GPIO.input(pin)
+        signal = GPIO.input(pin) # read pin
         if signal == 0:
+            timeout_thread.terminate()
+
             ftime = time.time()
-            time.sleep(0.7)
+            time.sleep(0.7) # -- for testing purposes -- delete after connecting 3 IR sensors
             return ftime
+        elif bridge.is_set(): # check the timeout event
+            print("Timeout")
+            bridge.clear()
+            break
+    
+    return -1
 
 def main():
     conn, addr = connect_to_backend()
