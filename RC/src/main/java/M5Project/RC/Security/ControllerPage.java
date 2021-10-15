@@ -1,8 +1,7 @@
-package M5Project.RC;
+package M5Project.RC.Security;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ControllerPage {
@@ -17,5 +16,4 @@ public class ControllerPage {
         System.out.println("Logged");
         return "logged.html";
     }
-
 }
