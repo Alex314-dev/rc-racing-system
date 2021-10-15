@@ -1,4 +1,4 @@
-package M5Project.RC;
+package M5Project.RC.Security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,7 +11,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
-                .antMatcher("/**").authorizeRequests()              //endpoints that require login
+                .antMatcher("/**").authorizeRequests()             //endpoints that require login
                 .antMatchers("/").permitAll()           //endpoints that don't need login
                 .anyRequest().authenticated()
                 .and()

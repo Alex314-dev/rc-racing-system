@@ -1,4 +1,4 @@
-package M5Project.RC;
+package M5Project.RC.Init;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,3 +10,4 @@ public class RcApplication {
 		SpringApplication.run(RcApplication.class, args);
 	}
 }
+
