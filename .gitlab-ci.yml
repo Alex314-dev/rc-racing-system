@@ -7,7 +7,7 @@ build:
     script:
         - echo "Building"
         - mkdir build
-        - touch build/infor.txt
+        - touch build/info.txt
     artifacts:
         paths:
             - build/
