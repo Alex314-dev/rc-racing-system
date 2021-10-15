@@ -1,19 +1,21 @@
+variables:
+  example: this is an example variable
+
 stages:
-    - build
-    - test
+  - stage1
+  - stage2
 
 build:
-    stage: build
-    script:
-        - echo "Building"
-        - mkdir build
-        - touch build/infor.txt
-    artifacts:
-        paths:
-            - build/
+  stage: stage1
+  script:
+    - echo "We are currently in stage 1"
+    - echo "These are the contents of test.py"
+    - cat test.py
+    - echo $example
 
 test:
-    stage: test
-    script: 
-        - echo "Testing"
-        - test -f "build/info.txt"
+  stage: stage2
+  script:
+    - echo "We are currently in stage 2"
+    - echo "running python script"
+    - python3 test.py
