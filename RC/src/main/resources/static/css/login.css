@@ -10,13 +10,10 @@
 	--red : #EA4335;
 	--yellow : #FBBC05;
 	--green : #34A853;
-	--oktablue: #009CDD;
+	--fbblue: #4267B2;
 }
 
 html {
-}
-
-body {
 	height: 100vh;
 	width: 100vw;
 	background: linear-gradient(180deg, #FFFFFF 0%, #FF3600 100%);
@@ -64,7 +61,7 @@ body {
 
 .right {
 	width: 50%;
-	background-image: url("track.jpg");
+	background-image: url("../images/track.jpg");
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -117,19 +114,17 @@ body {
 	color: var(--red);
 }
 
-#okta {
-	font-family: 'Okta Neue', sans-serif;
-	padding-top: 0px;
-	padding-bottom: 0px;
+#facebook {
+	font-family: font-family: 'Klavika Medium', sans-serif;
 	background-color: #EFEFF0;
 }
 
-#okta:hover {
+#facebook:hover {
 	outline-style: solid;
 	outline-color: lightgrey;
 	outline-width: 2px;
 	cursor: pointer;
-	color: var(--oktablue);
+	color: var(--fbblue);
 }
 
 

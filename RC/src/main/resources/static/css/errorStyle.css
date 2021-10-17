@@ -10,7 +10,7 @@
 	--red : #EA4335;
 	--yellow : #FBBC05;
 	--green : #34A853;
-	--oktablue: #009CDD;
+	--fbblue: #4267B2;
 }
 
 html {
@@ -54,6 +54,14 @@ body {
 	text-align: center;
 }
 
+.left h2 {
+	margin-top: 5vh;
+	font-size: calc(18pt + 1vw);
+	font-family: 'Droid Sans';
+	font-weight: 400;
+	text-align: center;
+}
+
 .left .logo {
 	display: block;
 	padding-top: 15px;
@@ -64,72 +72,38 @@ body {
 
 .right {
 	width: 50%;
-	background-image: url("track.jpg");
+	background-image: url("../images/track.jpg");
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center center;
 }
 
-.login-container {
+.left-container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-.login-container .button {
+.left-container .button {
 	text-align: center;
 	font-family: 'Droid Sans';
 	font-size: calc(16pt + 0.5vw);
 	width: 65%;
 	min-width: 250px;
-	padding: 5px;
-	margin: 1.5vh;
+	padding: 15px;
+	margin: 2vh;
 	box-shadow: 0px 4px 20px rgb(0 0 0 / 0.25);
 }
 
-#google {
+#home {
 	font-family: Product Sans;
 }
 
-#google:hover {
+#home:hover {
 	outline-style: solid;
 	outline-color: lightgrey;
 	outline-width: 2px;
 	cursor: pointer;
-}
-
-#google:hover span:nth-child(1) { 
-	color: var(--blue);
-}
-#google:hover span:nth-child(2) { 
-	color: var(--red);
-}
-#google:hover span:nth-child(3) { 
-	color: var(--yellow);
-}
-#google:hover span:nth-child(4) { 
-	color: var(--blue);
-}
-#google:hover span:nth-child(5) { 
-	color: var(--green);
-}
-#google:hover span:nth-child(6) { 
-	color: var(--red);
-}
-
-#okta {
-	font-family: 'Okta Neue', sans-serif;
-	padding-top: 0px;
-	padding-bottom: 0px;
-	background-color: #EFEFF0;
-}
-
-#okta:hover {
-	outline-style: solid;
-	outline-color: lightgrey;
-	outline-width: 2px;
-	cursor: pointer;
-	color: var(--oktablue);
 }
 
 

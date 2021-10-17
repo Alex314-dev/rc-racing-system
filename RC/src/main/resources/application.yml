@@ -1,0 +1,29 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 807750301626-cgfl6q55cbptcjo3tgsu1pmu2m2lilr8.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+          facebook:
+            client-id: 262722329186073
+            client-secret: f8654619d27ce2aa8ba42910528877ad
+            scope:
+              - email
+              - public_profile
+server:
+  port: 443
+  ssl:
+    enabled: true
+    key-store: classpath:rcracingcertificate.p12
+    key-store-password: certificatepass1234
+    key-store-type: pkcs12
+    key-alias: rcracingcertificate
+    key-password: certificatepass1234
+  error:
+    whitelabel:
+      enabled: false
