@@ -24,6 +24,9 @@ server:
     key-store-type: pkcs12
     key-alias: rcracingcertificate
     key-password: certificatepass1234
+  servlet:
+    session:
+      timeout: 1800s
   error:
     whitelabel:
       enabled: false

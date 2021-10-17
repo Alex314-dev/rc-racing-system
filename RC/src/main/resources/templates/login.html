@@ -9,8 +9,11 @@
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Droid+Sans">
 	<!-- facebook-->
 	<link href="https://fonts.cdnfonts.com/css/klavika-medium" rel="stylesheet">
+	<!--SweetAlerts-->
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<!--Jquery-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body>
 	<div class="center">
@@ -31,18 +34,32 @@
 	</div>
 
 </body>
-
 <script>
+
 	$(window).on('load', function() {
 
-		$('#google').click(function() {
-			window.location.href='/oauth2/authorization/google';
-		})
+    const params = new URLSearchParams(document.location.search);
+    const error = params.get("expired");
 
-		$('#facebook').click(function() {
-			window.location.href='/oauth2/authorization/facebook';
-		})
-	});
+    if (error == "true") {
+        Swal.fire({
+          icon: 'error',
+          title: 'Session Expired',
+          text: 'Only one session could be active per person',
+        });
+    }
+
+    $('#google').click(function() {
+        window.location.href='/oauth2/authorization/google';
+    })
+
+    $('#facebook').click(function() {
+        window.location.href='/oauth2/authorization/facebook';
+    })
+
+
+});
+
 </script>
 
 </html>
