@@ -27,15 +27,10 @@ public class Database {
 
 
     public void testUsernameTable() {
+        loadDriver();
 
         try {
-            Class.forName(JDBC_DRIVER);
-        } catch (ClassNotFoundException cnfe) {
-            System.err.println("Error loading driver: " + cnfe);
-        }
-        try {
-            Connection connection =
-                    DriverManager.getConnection(DB_URL, USER, PASS);
+            Connection connection = getConnection();
 
             String queryEmailsUser = " SELECT p.username, p.email"
                     + " FROM player p";
@@ -66,14 +61,10 @@ public class Database {
      * @return
      */
     public boolean isPlayerRegistered(String email) {
+        loadDriver();
+
         try {
-            Class.forName(JDBC_DRIVER);
-        } catch (ClassNotFoundException cnfe) {
-            System.err.println("Error loading driver: " + cnfe);
-        }
-        try {
-            Connection connection =
-                    DriverManager.getConnection(DB_URL, USER, PASS);
+            Connection connection = getConnection();
 
             String queryPlayer =  " SELECT COUNT(*)"
                                 + " FROM player p"
@@ -105,14 +96,10 @@ public class Database {
     }
 
     public String getPlayerUsername(String email) {
+        loadDriver();
+
         try {
-            Class.forName(JDBC_DRIVER);
-        } catch (ClassNotFoundException cnfe) {
-            System.err.println("Error loading driver: " + cnfe);
-        }
-        try {
-            Connection connection =
-                    DriverManager.getConnection(DB_URL, USER, PASS);
+            Connection connection = getConnection();
 
             String queryPlayer =  " SELECT p.username"
                     + " FROM player p"
@@ -139,10 +126,9 @@ public class Database {
         }
     }
 
-    public void insertNewPlayer(Player player) throws ClassNotFoundException, SQLException {
-
-            Class.forName(JDBC_DRIVER);
-
+    public void insertNewPlayer(Player player) {
+        loadDriver();
+        try {
             Connection connection =
                     DriverManager.getConnection(DB_URL, USER, PASS);
 
@@ -156,18 +142,17 @@ public class Database {
 
             preparedStatement.close();
             connection.close();
+        } catch (SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+        }
 
     }
 
     public static List<Race> getRacesByUser(String username) {
+        loadDriver();
+
         try {
-            Class.forName(JDBC_DRIVER);
-        } catch (ClassNotFoundException cnfe) {
-            System.err.println("Error loading driver: " + cnfe);
-        }
-        try {
-            Connection connection =
-                    DriverManager.getConnection(DB_URL, USER, PASS);
+            Connection connection = getConnection();
 
             String queryPlayer =  "SELECT r.raceid, r.datetime, r.overallTime, s1.time, s2.time,\n" +
                     "s3.time\n" +
@@ -190,10 +175,8 @@ public class Database {
 
             List<Race> races = new ArrayList<>();
 
-
             while(resultSet.next()) {
-                Race race = new Race(
-                        resultSet.getInt("raceid"),
+                Race race = new Race(resultSet.getInt("raceid"),
                         username,
                         resultSet.getTimestamp("datetime"),
                         resultSet.getTime("overallTime"),
@@ -211,6 +194,19 @@ public class Database {
             return null;
         }
 
+    }
+
+    private static void loadDriver(){
+        try {
+            Class.forName(JDBC_DRIVER);
+        } catch (ClassNotFoundException cnfe) {
+            System.err.println("Error loading driver: " + cnfe);
+        }
+    }
+
+    private static Connection getConnection() throws SQLException{
+        Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
+        return connection;
     }
 
     public static void main(String args[]) {
