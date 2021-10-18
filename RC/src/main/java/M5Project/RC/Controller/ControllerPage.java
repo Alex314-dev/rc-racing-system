@@ -49,8 +49,8 @@ public class ControllerPage {
         if (!PlayerDao.instance.getPlayer(principal.getName()).getUsername().equals("")) {
             response.sendRedirect("/race");
         }
-
         return "newuser.html";
     }
 
 }
+

@@ -15,7 +15,7 @@ public enum PlayerDao {
         String email = player.getEmail();
         players.put(sub, player);
     }
-
+    
     public Player getPlayer(String sub) {
         return players.get(sub);
     }
