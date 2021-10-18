@@ -139,9 +139,8 @@ public class Database {
         }
     }
 
-    public void insertNewPlayer(Player player) throws ClassNotFoundException, SQLException {
-
-            Class.forName(JDBC_DRIVER);
+    public void insertNewPlayer(Player player) throws ClassNotFoundException, SQLException{
+        loadDriver();
 
             Connection connection =
                     DriverManager.getConnection(DB_URL, USER, PASS);
@@ -169,21 +168,19 @@ public class Database {
             Connection connection =
                     DriverManager.getConnection(DB_URL, USER, PASS);
 
-            String queryPlayer =  "SELECT r.raceid, r.datetime, r.overallTime, s1.time, s2.time,\n" +
-                    "s3.time\n" +
-                    "FROM race r, sector s1, sector s2, sector s3, sector s4, player p\n" +
+            String queryRace =  "SELECT r.raceid, r.datetime, r.overallTime, s1.time as s1, s2.time as s2,\n" +
+                    "s3.time as s3\n" +
+                    "FROM race r, sector s1, sector s2, sector s3, player p\n" +
                     "WHERE p.username = ?" +
                     "AND p.username = r.player\n" +
                     "AND s1.raceid = r.raceid\n" +
                     "AND s2.raceid = r.raceid\n" +
                     "AND s3.raceid = r.raceid\n" +
-                    "AND s4.raceid = r.raceid\n" +
                     "AND s1.secnum = 1\n" +
                     "AND s2.secnum = 2\n" +
-                    "AND s3.secnum = 3\n" +
-                    "AND s4.secnum = 4";
+                    "AND s3.secnum = 3\n";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(queryPlayer);
+            PreparedStatement preparedStatement = connection.prepareStatement(queryRace);
             preparedStatement.setString(1, username);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -192,12 +189,15 @@ public class Database {
 
 
             while(resultSet.next()) {
-                Race race = new Race(
-                        resultSet.getInt("raceid"),
+                List<Time> sectorTimes = getSectorTimes( resultSet.getTime("s1"),
+                        resultSet.getTime("s2"),
+                        resultSet.getTime("s3"));
+
+                Race race = new Race(resultSet.getInt("raceid"),
                         username,
                         resultSet.getTimestamp("datetime"),
                         resultSet.getTime("overallTime"),
-                        null);
+                        sectorTimes);
 
                 races.add(race);
             }
@@ -213,13 +213,100 @@ public class Database {
 
     }
 
-    public static void main(String args[]) {
+    /**
+     * Method to insert a new race into the database. After making a new race, we
+     * get the newest race id and add the new sector times for that race.
+     * @param username - the player who is logged in and made a race
+     * @param raceTime - the overall time of the race
+     */
+    public static  void addNewRace(String username, Time raceTime, List<Time> sectorTimes) {
+        loadDriver();
+        int raceId = 0;
 
-        List<Race> races = RaceDao.instance.getRaces("AlexP");
+        try {
+            Connection connection = getConnection();
+
+            String addRaceQuery = "INSERT INTO race (raceid, datetime, player, overalltime)\n" +
+                    "VALUES (nextval('race_raceid_seq'::regclass), LOCALTIMESTAMP, " +
+                    "?, ?)";
+            PreparedStatement prStatement = connection.prepareStatement(addRaceQuery);
+            prStatement.setString(1, username);
+            prStatement.setTime(2, raceTime);
+            prStatement.execute();
+
+            String latestIdQuery = "SELECT r.raceid\n" +
+                    "FROM race r\n" +
+                    "ORDER BY r.raceid DESC\n" +
+                    "LIMIT 1";
+
+            Statement statement  = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(latestIdQuery);
+
+            while(resultSet.next()){
+                raceId = resultSet.getInt("raceid");
+            }
+
+            String newSectorsQuery = "INSERT INTO sector(secnum, raceid, time)\n" +
+                    "VALUES (?, ?, ?)";
+            prStatement = connection.prepareStatement(newSectorsQuery);
+
+            for (int i = 0; i < 3; i++) {
+                prStatement.setInt(1, i+1);
+                prStatement.setInt(2, raceId);
+                prStatement.setTime(3, sectorTimes.get(i));
+                prStatement.execute();
+            }
+
+            statement.close();
+            prStatement.close();
+            connection.close();
+
+        } catch (SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+        }
+    }
+    private static List<Time> getSectorTimes(Time sector1, Time sector2, Time sector3) {
+        List<Time> sectorTime = new ArrayList<>();
+        sectorTime.add(sector1);
+        sectorTime.add(sector2);
+        sectorTime.add(sector3);
+
+        return sectorTime;
+    }
+
+    private static void loadDriver(){
+        try {
+            Class.forName(JDBC_DRIVER);
+        } catch (ClassNotFoundException cnfe) {
+            System.err.println("Error loading driver: " + cnfe);
+        }
+    }
+
+    private static Connection getConnection() throws SQLException{
+        Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
+        return connection;
+    }
+
+    public static void main(String args[]) {
+//        List<Time> sectorTimes = new ArrayList<>();
+//        sectorTimes.add(new Time(6000));
+//        sectorTimes.add(new Time(7000));
+//        sectorTimes.add(new Time(8000));
+//
+//        for (Time time: sectorTimes) {
+//            System.out.println("Time: " + time);
+//        }
+//
+//
+//
+//        Database.addNewRace("AlexP", new Time(21000), sectorTimes);
+
+        List<Race> races = RaceDao.instance.getRaces("Pirzan");
 
         for (Race race: races) {
             System.out.println(race.toString());
         }
+
 
     }
 }
