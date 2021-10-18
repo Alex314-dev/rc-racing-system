@@ -21,7 +21,7 @@ public class Database {
             dbName +"?currentSchema=rc_racing_system_db";
 
     static final String USER = "dab_di20212b_100";
-    static final String PASS = "Txc5x85GyM/DPALd";
+    static final String PASS = System.getenv("RC_DB_PASS");
 
 
     public void testUsernameTable() {
