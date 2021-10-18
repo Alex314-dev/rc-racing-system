@@ -8,16 +8,14 @@ import java.util.Objects;
 public class Player {
     private String username;
     private String email;
-    private String name;
 
     public Player() {
         ;
     }
 
-    public Player(String username, String email, String name) {
+    public Player(String username, String email) {
         this.username = username;
         this.email = email;
-        this.name = name;
     }
 
     public String getUsername() {
@@ -26,14 +24,6 @@ public class Player {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = username;
     }
 
     @Id
