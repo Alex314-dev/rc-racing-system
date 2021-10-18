@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wellcome</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/newuser.css">
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--SweetAlerts-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--Js-->
+    <script src="js/newuser.js"></script>
+</head>
+<body>
+<div class="center">
+
+    <div class="left">
+        <img class="logo" src="images/logo.png">
+        <h1 id="wellcome">Wellcome</h1>
+        <div id = "username-form">
+            <form method = "post" action = "/rest/newplayer">
+                <div class = "inputField">
+                    <div class = "input" id = "subject">
+                        <input name = "username" type = "text" required minlength="3">
+                        <label>Your username</label>
+                        <span></span>
+                    </div>
+                </div>
+                <div class = "button">
+                    <input type = "submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="right"></div>
+</div>
+
+
+</body>
+
+</html>
