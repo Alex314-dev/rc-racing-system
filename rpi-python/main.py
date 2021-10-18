@@ -1,7 +1,6 @@
 import socket
 from RPi import GPIO as GPIO
 import time
-from multiprocessing import Event
 import multiprocessing
 
 GPIO.setmode(GPIO.BCM)
@@ -9,14 +8,11 @@ GPIO.setup(23, GPIO.IN)
 GPIO.setup(24, GPIO.IN)
 GPIO.setup(25, GPIO.IN)
 
-HOST = "192.168.137.139"
-PORT = 8890
+bridge = multiprocessing.Event()
 
-bridge = Event()
-
-def connect_to_backend():
+def connect_to_backend(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind((HOST, PORT))
+        s.bind((host, port))
         print("Socket binded")
         s.listen()
         print("Socket listening")
@@ -53,7 +49,6 @@ def receive_and_send(conn, addr):
         print("[=>] Sending: ", response)
         conn.sendall(response.encode("utf-8"))
 
-# TODO: Add invalid race logic (timeouts etc.)
 def race():
     time1 = read_sensor(23) # 23
     if time1 == -1: return { "status": False } # add || timeX < 5(or another value) to the if statement for the real racing scenerios
@@ -95,7 +90,8 @@ def read_sensor(pin): # the value of pin shall be either 23, 24, or 25 as they a
     return -1
 
 def main():
-    conn, addr = connect_to_backend()
+    host, port = input("Please enter a host, port pair (e.g. input: 130.68.0.3 8890): ").split()
+    conn, addr = connect_to_backend(host, int(port))
 
     with conn:
         receive_and_send(conn, addr)
