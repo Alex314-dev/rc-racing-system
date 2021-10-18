@@ -1,6 +1,8 @@
 variables:
   example: this is an example variable
 
+image: alpine
+
 stages:
   - stage1
   - stage2
