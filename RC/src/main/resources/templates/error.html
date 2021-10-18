@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>404</title>
+	<!-- CSS -->
+	<link rel="stylesheet" href="css/errorStyle.css">
+	<!-- Font-->
+	<!-- google-->
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Droid+Sans">
+	<!-- facebook-->
+	<link href="https://fonts.cdnfonts.com/css/klavika-medium" rel="stylesheet">
+	<!--Jquery-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!--fontawosome-icons-->
+	<script src="https://kit.fontawesome.com/59dce4be9c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="center">
+
+	<div class="left">
+		<img class="logo" src="images/logo.png">
+		<h1>404</h1>
+		<h2>Page not found</h2>
+		<div class="left-container" >
+			<div id="home" class="button">
+				<i class="fas fa-home fa"></i>
+				<span>Main Page</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="right"></div>
+
+</div>
+
+</body>
+
+<script>
+	$(window).on('load', function() {
+
+		$('#home').click(function() {
+			window.location.href='/race';
+		})
+	});
+</script>
+
+</html>
