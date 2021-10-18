@@ -11,7 +11,7 @@ import java.util.Objects;
 @Entity
 public class Race {
     private int raceID;
-    private Player player;
+    private String username;
     private Timestamp date;
     private Time overallTime;
     private List<Time> sectorTime;
@@ -19,9 +19,9 @@ public class Race {
     public Race() {
     }
 
-    public Race(int raceID, Player player, Timestamp date, Time overallTime, List<Time> sectorTime) {
+    public Race(int raceID, String username, Timestamp date, Time overallTime, List<Time> sectorTime) {
         this.raceID = raceID;
-        this.player = player;
+        this.username = username;
         this.date = date;
         this.overallTime = overallTime;
         this.sectorTime = sectorTime;
@@ -36,12 +36,12 @@ public class Race {
         this.raceID = raceID;
     }
 
-    public Player getPlayer() {
-        return player;
+    public String getPlayer() {
+        return username;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setPlayer(String username) {
+        this.username = username;
     }
 
     public Timestamp getDate() {
@@ -70,7 +70,7 @@ public class Race {
 
     @Override
     public String toString() {
-        return "Race{" + "Id=" + this.raceID + ", date='" + this.date + '\'' + '}';
+        return "Race{" + "Id=" + this.raceID + ", date='" + this.date + ", time='" + this.overallTime + '\'' + '}';
     }
 
 }
