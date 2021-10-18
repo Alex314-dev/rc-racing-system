@@ -20,4 +20,4 @@ sonarqube-check:
     - mvn verify sonar:sonar
   allow_failure: true
   only:
-    - master # or the name of your main branch
+    - anotherTest # or the name of your main branch
