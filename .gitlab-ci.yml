@@ -6,6 +6,7 @@ stages:
 
 sonarqube-check:
   stage: sonarqube
+  tags: [local]
   image: 
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
