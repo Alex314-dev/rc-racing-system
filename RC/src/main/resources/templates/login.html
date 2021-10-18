@@ -2,21 +2,30 @@
 <html>
 <head>
 	<title>Login</title>
-	<link rel="stylesheet" href="login.css">
+	<!-- CSS -->
+	<link rel="stylesheet" href="css/login.css">
+	<!-- Font-->
+	<!-- google-->
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Droid+Sans">
-	<link href="http://fonts.cdnfonts.com/css/okta-neue" rel="stylesheet">
+	<!-- facebook-->
+	<link href="https://fonts.cdnfonts.com/css/klavika-medium" rel="stylesheet">
+	<!--SweetAlerts-->
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<!--Jquery-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body>
 	<div class="center">
 
 		<div class="left">
-			<img class="logo" src="logo.png">
+			<img class="logo" src="images/logo.png">
 			<h1>Login</h1>
-			<div class="login-container">
+			<div class="login-container" >
 				<div id="google" class="button">
 					<span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
 				</div>
-				<div id="okta" class="button">Okta</div>
+				<div id="facebook" class="button">Facebook</div>
 			</div>
 		</div>
 
@@ -24,6 +33,33 @@
 
 	</div>
 
-
 </body>
+<script>
+
+	$(window).on('load', function() {
+
+    const params = new URLSearchParams(document.location.search);
+    const error = params.get("expired");
+
+    if (error == "true") {
+        Swal.fire({
+          icon: 'error',
+          title: 'Session Expired',
+          text: 'Only one session could be active per person',
+        });
+    }
+
+    $('#google').click(function() {
+        window.location.href='/oauth2/authorization/google';
+    })
+
+    $('#facebook').click(function() {
+        window.location.href='/oauth2/authorization/facebook';
+    })
+
+
+});
+
+</script>
+
 </html>

@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import M5Project.RC.Dao.RaceDao;
 import M5Project.RC.model.Player;
+import M5Project.RC.model.Race;
 import com.google.gson.Gson;
 
 import javax.xml.crypto.Data;
@@ -21,7 +23,7 @@ public class Database {
             dbName +"?currentSchema=rc_racing_system_db";
 
     static final String USER = "dab_di20212b_100";
-    static final String PASS = "Txc5x85GyM/DPALd";
+    static final String PASS = System.getenv("RC_DB_PASS");
 
 
     public void testUsernameTable() {
@@ -154,6 +156,70 @@ public class Database {
 
             preparedStatement.close();
             connection.close();
+
+    }
+
+    public static List<Race> getRacesByUser(String username) {
+        try {
+            Class.forName(JDBC_DRIVER);
+        } catch (ClassNotFoundException cnfe) {
+            System.err.println("Error loading driver: " + cnfe);
+        }
+        try {
+            Connection connection =
+                    DriverManager.getConnection(DB_URL, USER, PASS);
+
+            String queryPlayer =  "SELECT r.raceid, r.datetime, r.overallTime, s1.time, s2.time,\n" +
+                    "s3.time\n" +
+                    "FROM race r, sector s1, sector s2, sector s3, sector s4, player p\n" +
+                    "WHERE p.username = ?" +
+                    "AND p.username = r.player\n" +
+                    "AND s1.raceid = r.raceid\n" +
+                    "AND s2.raceid = r.raceid\n" +
+                    "AND s3.raceid = r.raceid\n" +
+                    "AND s4.raceid = r.raceid\n" +
+                    "AND s1.secnum = 1\n" +
+                    "AND s2.secnum = 2\n" +
+                    "AND s3.secnum = 3\n" +
+                    "AND s4.secnum = 4";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(queryPlayer);
+            preparedStatement.setString(1, username);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Race> races = new ArrayList<>();
+
+
+            while(resultSet.next()) {
+                Race race = new Race(
+                        resultSet.getInt("raceid"),
+                        username,
+                        resultSet.getTimestamp("datetime"),
+                        resultSet.getTime("overallTime"),
+                        null);
+
+                races.add(race);
+            }
+            preparedStatement.close();
+            connection.close();
+
+            return races;
+
+        } catch (SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+            return null;
+        }
+
+    }
+
+    public static void main(String args[]) {
+
+        List<Race> races = RaceDao.instance.getRaces("AlexP");
+
+        for (Race race: races) {
+            System.out.println(race.toString());
+        }
 
     }
 }
