@@ -8,7 +8,9 @@ stages:
 
 sonarqube-check:
   stage: sonarqube
-  image: maven:3.6.3-jdk-11
+  image: 
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
     GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
@@ -17,7 +19,8 @@ sonarqube-check:
     paths:
       - .sonar/cache
   script: 
-    - mvn verify sonar:sonar
+    - sonar-scanner
   allow_failure: true
   only:
-    - anotherTest # or the name of your main branch
+    - master # or the name of your main branch
+
