@@ -108,6 +108,7 @@ public class RESTAPIController {
         times.remove(times.size() - 1);
 
         Database.addNewRace(username, overallTime, times);
+        ClientSocket.instance.setOngoingGame(false);
         return overallTime;
     }
 }
