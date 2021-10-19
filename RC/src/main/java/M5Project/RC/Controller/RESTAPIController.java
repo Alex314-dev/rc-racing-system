@@ -91,11 +91,13 @@ public class RESTAPIController {
         try {
             result = ClientSocket.instance.startRace();
         } catch (IOException e) {
+            ClientSocket.instance.setOngoingGame(false);
             e.printStackTrace();
             return -1;
         }
 
         if (result.contains("Invalid")) {
+            ClientSocket.instance.setOngoingGame(false);
             return -1;
         }
 
