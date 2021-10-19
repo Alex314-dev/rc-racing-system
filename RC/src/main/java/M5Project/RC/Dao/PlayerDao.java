@@ -24,9 +24,9 @@ public enum PlayerDao {
         return players.get(sub);
     }
 
-    public List<Player> getAllPlayers() {
-        List<Player> players = Database.getAllPlayers();
-        return players;
+    public List<String> getAllPlayers() {
+        List<String> playersUsernames = Database.getAllPlayers();
+        return playersUsernames;
     }
 
     public List<Player> getFriendsOfUser(String sub) {
