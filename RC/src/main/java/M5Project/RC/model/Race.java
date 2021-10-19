@@ -72,7 +72,7 @@ public class Race {
 
     @Override
     public String toString() {
-        String toString = "Race{" + "Id=" + this.raceID + ", date='" + this.date + ", time='" + this.overallTime + '\'' + '}';
+        String toString = "Race{" + "Player: " + this.username + " Id=" + this.raceID + ", date='" + this.date + ", time='" + this.overallTime + '\'' + '}';
         for (int i = 0; i < 3; i++) {
             toString += " Sector: " + (i+1) + ", result: " + getSectorTime().get(i);
         }

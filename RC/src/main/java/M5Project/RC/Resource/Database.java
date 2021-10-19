@@ -145,18 +145,30 @@ public class Database {
 
     }
 
+    /**
+     * Getting all race by a username. If username is null, give all races.
+     * @param username username of player
+     * @return
+     */
     public static List<Race> getRacesByUser(String username) {
         loadDriver();
+        String usernameOption = "";
+        String playerTable = "";
+
+        if (username != null) {
+            usernameOption = " p.username = r.player\n AND p.username = ?\n AND ";
+            playerTable = ", player p\n";
+        }
 
         try {
             Connection connection = getConnection();
 
-            String queryRace =  "SELECT r.raceid, r.datetime, r.overallTime, s1.time as s1, s2.time as s2,\n" +
+            String queryRace =  "SELECT r.player, r.raceid, r.datetime, r.overallTime, s1.time as s1, s2.time as s2,\n" +
                     "s3.time as s3\n" +
-                    "FROM race r, sector s1, sector s2, sector s3, player p\n" +
-                    "WHERE p.username = ?" +
-                    "AND p.username = r.player\n" +
-                    "AND s1.raceid = r.raceid\n" +
+                    "FROM race r, sector s1, sector s2, sector s3" + playerTable +
+                    " WHERE" +
+                    usernameOption +
+                    " s1.raceid = r.raceid\n" +
                     "AND s2.raceid = r.raceid\n" +
                     "AND s3.raceid = r.raceid\n" +
                     "AND s1.secnum = 1\n" +
@@ -164,7 +176,10 @@ public class Database {
                     "AND s3.secnum = 3\n";
 
             PreparedStatement preparedStatement = connection.prepareStatement(queryRace);
-            preparedStatement.setString(1, username);
+
+            if (username != null) {
+                preparedStatement.setString(1, username);
+            }
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -176,7 +191,7 @@ public class Database {
                         resultSet.getFloat("s3"));
 
                 Race race = new Race(resultSet.getInt("raceid"),
-                        username,
+                        resultSet.getString("player"),
                         resultSet.getTimestamp("datetime"),
                         resultSet.getFloat("overallTime"),
                         sectorTimes);
@@ -247,15 +262,147 @@ public class Database {
             System.err.println("Error connecting: " + sqle);
         }
     }
+
+    /**
+     * Send a friend reqeust. AKA create a new row in the friends table with valid false and scores 0.
+     * @param username the current user
+     * @param friend desired friend
+     * @return  the requestSuccessFlag: -1 if SQL error, 0 if successful friend request, 1 if already friends, 2 if already in request
+     */
+    public static int sendFriendRequest(String username, String friend){
+        loadDriver();
+        boolean isFriends = false;
+        boolean isOngoingRequest = false;
+        int requestSuccessFlag = -1;
+
+        try{
+            Connection connection = getConnection();
+
+            String isQuery = "SELECT f.friend1\n" +
+                    "FROM friendship f\n" +
+                    "WHERE (f.friend1 = ?\n" +
+                    "AND f.friend2 = ?" +
+                    "AND f.valid = ?)\n" +
+                    "OR (f.friend2 = ?\n" +
+                    "AND f.friend1 = ?" +
+                    "AND f.valid = ?)";
+
+            PreparedStatement prStatement = connection.prepareStatement(isQuery);
+            prStatement.setString(1, username);
+            prStatement.setString(2, friend);
+            prStatement.setBoolean(3, true);
+            prStatement.setString(4, username);
+            prStatement.setString(5, friend);
+            prStatement.setBoolean(6, true);
+            ResultSet resultSet = prStatement.executeQuery();
+
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("friend1"));
+                isFriends = resultSet.getString("friend1") == null ? false : true;
+            }
+
+
+            prStatement = connection.prepareStatement(isQuery);
+            prStatement.setString(1, username);
+            prStatement.setString(2, friend);
+            prStatement.setBoolean(3, false);
+            prStatement.setString(4, username);
+            prStatement.setString(5, friend);
+            prStatement.setBoolean(6, false);
+            ResultSet resultSet1 = prStatement.executeQuery();
+
+            System.out.println("HERE");
+
+//TODO          while (resultSet1.next()) {
+//                System.out.println("HERE");
+//
+//                isOngoingRequest = resultSet.getString("friend1") == null ? false : true;
+//                // when result should be something, getting error:
+//                // Error connecting: org.postgresql.util.PSQLException: ResultSet not positioned properly, perhaps you need to call next.
+//            }
+
+            if (isFriends == false && isOngoingRequest == false) {
+                String newRequestQuery = "INSERT INTO friendship(friend1, friend2, valid, friend1win, friend2win)\n" +
+                        "VALUES (?, ?, false, 0,  0)";
+
+                prStatement = connection.prepareStatement(newRequestQuery);
+                prStatement.setString(1, username);
+                prStatement.setString(2, friend);
+                prStatement.executeUpdate();
+
+                System.out.println("Request sent");
+
+                requestSuccessFlag =  0;
+            } else if (isFriends == false){
+                System.out.println("Already requested");
+                requestSuccessFlag =  2;
+            } else if (isOngoingRequest == false){
+                System.out.println("Already friends");
+                requestSuccessFlag = 1;
+            }
+
+            prStatement.close();
+            connection.close();
+            return requestSuccessFlag;
+        } catch (SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+            return requestSuccessFlag;
+        }
+    }
+
+    /**
+     * Method to get all existing usernames in a list.
+     * @return
+     */
+    public static List<String> getAllUsernames(){
+        loadDriver();
+        List<String> usernames = new ArrayList<>();
+        try{
+            Connection connection = getConnection();
+
+            String usernameQuery = "SELECT p.username\n" +
+                    "FROM player p";
+
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(usernameQuery);
+
+            while (resultSet.next()) {
+                usernames.add(resultSet.getString("username"));
+            }
+            statement.close();
+            connection.close();
+
+        } catch (SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+            return null;
+        }
+        return usernames;
+    }
+
+    public static List<String> getAllFriendsUsernames(){
+        //TODO
+        List<String> usernames = new ArrayList<>();
+        return usernames;
+    }
+
+    /**
+     * Helper function to add all sector times in a list
+     * @param sector1
+     * @param sector2
+     * @param sector3
+     * @return
+     */
     private static List<Float> getSectorTimes(float sector1, float sector2, float sector3) {
         List<Float> sectorTime = new ArrayList<>();
         sectorTime.add(sector1);
         sectorTime.add(sector2);
         sectorTime.add(sector3);
-
         return sectorTime;
     }
 
+    /**
+     * Helper function to load the driver
+     */
     private static void loadDriver(){
         try {
             Class.forName(JDBC_DRIVER);
@@ -264,7 +411,12 @@ public class Database {
         }
     }
 
-    private static Connection getConnection() throws SQLException{
+    /**
+     * Helper function to establish connection with DB server
+     * @return the Connection object
+     * @throws SQLException
+     */
+    private static Connection getConnection() throws SQLException {
         Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
         return connection;
     }
@@ -301,11 +453,13 @@ public class Database {
 //        Database.addNewRace("RacingRick", 21500f, sectorTimes3);
 //        Database.addNewRace("RacingRick", 21000f, sectorTimes1);
 
-//        List<Race> races = RaceDao.instance.getRaces("Pirzan");
+//        List<Race> races = RaceDao.instance.getRaces("AlexP");
 //
 //        for (Race race: races) {
 //            System.out.println(race.toString());
 //        }
+
+            int test = Database.sendFriendRequest("LoopingLaurens", "KaganTheMan");
 
 
     }
