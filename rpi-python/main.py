@@ -48,6 +48,8 @@ def receive_and_send(conn, addr):
 
         print("[=>] Sending: ", response)
         conn.sendall(response.encode("utf-8"))
+        valid_protocol = False
+        valid_race = False
 
 def race():
     time1 = read_sensor(23) # 23
