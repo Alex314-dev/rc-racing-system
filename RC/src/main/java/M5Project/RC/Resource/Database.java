@@ -189,14 +189,14 @@ public class Database {
 
 
             while(resultSet.next()) {
-                List<Time> sectorTimes = getSectorTimes( resultSet.getTime("s1"),
-                        resultSet.getTime("s2"),
-                        resultSet.getTime("s3"));
+                List<Float> sectorTimes = getSectorTimes( resultSet.getFloat("s1"),
+                        resultSet.getFloat("s2"),
+                        resultSet.getFloat("s3"));
 
                 Race race = new Race(resultSet.getInt("raceid"),
                         username,
                         resultSet.getTimestamp("datetime"),
-                        resultSet.getTime("overallTime"),
+                        resultSet.getFloat("overallTime"),
                         sectorTimes);
 
                 races.add(race);
@@ -219,7 +219,7 @@ public class Database {
      * @param username - the player who is logged in and made a race
      * @param raceTime - the overall time of the race
      */
-    public static  void addNewRace(String username, Time raceTime, List<Time> sectorTimes) {
+    public static  void addNewRace(String username, Float raceTime, List<Float> sectorTimes) {
         loadDriver();
         int raceId = 0;
 
@@ -231,7 +231,7 @@ public class Database {
                     "?, ?)";
             PreparedStatement prStatement = connection.prepareStatement(addRaceQuery);
             prStatement.setString(1, username);
-            prStatement.setTime(2, raceTime);
+            prStatement.setFloat(2, raceTime);
             prStatement.execute();
 
             String latestIdQuery = "SELECT r.raceid\n" +
@@ -253,7 +253,7 @@ public class Database {
             for (int i = 0; i < 3; i++) {
                 prStatement.setInt(1, i+1);
                 prStatement.setInt(2, raceId);
-                prStatement.setTime(3, sectorTimes.get(i));
+                prStatement.setFloat(3, sectorTimes.get(i));
                 prStatement.execute();
             }
 
@@ -265,8 +265,8 @@ public class Database {
             System.err.println("Error connecting: " + sqle);
         }
     }
-    private static List<Time> getSectorTimes(Time sector1, Time sector2, Time sector3) {
-        List<Time> sectorTime = new ArrayList<>();
+    private static List<Float> getSectorTimes(float sector1, float sector2, float sector3) {
+        List<Float> sectorTime = new ArrayList<>();
         sectorTime.add(sector1);
         sectorTime.add(sector2);
         sectorTime.add(sector3);
@@ -288,18 +288,18 @@ public class Database {
     }
 
     public static void main(String args[]) {
-//        List<Time> sectorTimes = new ArrayList<>();
-//        sectorTimes.add(new Time(6000));
-//        sectorTimes.add(new Time(7000));
-//        sectorTimes.add(new Time(8000));
-//
-//        for (Time time: sectorTimes) {
-//            System.out.println("Time: " + time);
-//        }
-//
-//
-//
-//        Database.addNewRace("AlexP", new Time(21000), sectorTimes);
+        List<Time> sectorTimes = new ArrayList<>();
+        sectorTimes.add(new Time(6000));
+        sectorTimes.add(new Time(7000));
+        sectorTimes.add(new Time(8000));
+
+        for (Time time: sectorTimes) {
+            System.out.println("Time: " + time);
+        }
+
+
+
+        //Database.addNewRace("AlexP", new Time(21000), sectorTimes); not with Time anymore
 
         List<Race> races = RaceDao.instance.getRaces("Pirzan");
 

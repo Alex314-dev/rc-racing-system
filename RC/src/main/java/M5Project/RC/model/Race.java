@@ -15,13 +15,13 @@ public class Race {
     private int raceID;
     private String username;
     private Timestamp date;
-    private Time overallTime;
-    private List<Time> sectorTime;
+    private Float overallTime;
+    private List<Float> sectorTime;
 
     public Race() {
     }
 
-    public Race(int raceID, String username, Timestamp date, Time overallTime, List<Time> sectorTime) {
+    public Race(int raceID, String username, Timestamp date, float overallTime, List<Float> sectorTime) {
         this.raceID = raceID;
         this.username = username;
         this.date = date;
@@ -54,19 +54,19 @@ public class Race {
         this.date = date;
     }
 
-    public Time getOverallTime() {
+    public float getOverallTime() {
         return overallTime;
     }
 
-    public void setOverallTime(Time overallTime) {
+    public void setOverallTime(float overallTime) {
         this.overallTime = overallTime;
     }
 
-    public List<Time> getSectorTime() {
+    public List<Float> getSectorTime() {
         return sectorTime;
     }
 
-    public void setSectorTime(List<Time> sectorTime) {
+    public void setSectorTime(List<Float> sectorTime) {
         this.sectorTime = sectorTime;
     }
 
