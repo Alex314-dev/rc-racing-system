@@ -11,9 +11,6 @@ public enum ClientSocket {
     instance;
 
     private boolean ongoingGame = false;
-    private boolean challenge = false;
-    private String racer = "";
-    private String challengee = "";
 
     private Socket client;
     private PrintWriter out;
@@ -55,29 +52,5 @@ public enum ClientSocket {
 
     public void setOngoingGame(boolean ongoingGame) {
         this.ongoingGame = ongoingGame;
-    }
-
-    public boolean isChallenge() {
-        return challenge;
-    }
-
-    public void setChallenge(boolean challenge) {
-        this.challenge = challenge;
-    }
-
-    public String getRacer() {
-        return racer;
-    }
-
-    public void setRacer(String racer) {
-        this.racer = racer;
-    }
-
-    public String getChallengee() {
-        return challengee;
-    }
-
-    public void setChallengee(String challengee) {
-        this.challengee = challengee;
     }
 }

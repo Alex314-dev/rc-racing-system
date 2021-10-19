@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"M5Project.RC.Security","M5Project.RC","M5Project.RC.Resource","M5Project.RC.Controller"})
+@ComponentScan(basePackages = {"M5Project.RC.Security","M5Project.RC","M5Project.RC.Resource","M5Project.RC.Controller","M5Project.RC.JavaClientSocket"})
 public class RcApplication {
 
 	public static void main(String[] args) {
