@@ -1,5 +1,6 @@
 package M5Project.RC.Init;
 
+import M5Project.RC.JavaClientSocket.ClientSocket;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class RcApplication {
 
 	public static void main(String[] args) {
+		ClientSocket.instance.setOngoingGame(false);
 		SpringApplication.run(RcApplication.class, args);
 	}
 
@@ -55,4 +57,3 @@ public class RcApplication {
 	}
 
 }
-
