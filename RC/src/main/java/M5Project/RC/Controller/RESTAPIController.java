@@ -1,9 +1,11 @@
 package M5Project.RC.Controller;
 
 import M5Project.RC.Dao.PlayerDao;
+import M5Project.RC.JavaClientSocket.ClientSocket;
 import M5Project.RC.Resource.Database;
 import M5Project.RC.Security.AfterLogin;
 import M5Project.RC.model.Player;
+import M5Project.RC.model.Race;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -16,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.PatternSyntaxException;
 
@@ -73,4 +78,39 @@ public class RESTAPIController {
 
     }
 
+    @GetMapping("/rest/race")
+    public float normalRace(Principal principal) {
+        if (ClientSocket.instance.isOngoingGame()) {
+            return -1;
+        }
+
+        ClientSocket.instance.setOngoingGame(true);
+        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+
+        String result = "";
+        try {
+            result = ClientSocket.instance.startRace();
+        } catch (IOException e) {
+            ClientSocket.instance.setOngoingGame(false);
+            e.printStackTrace();
+            return -1;
+        }
+
+        if (result.contains("Invalid")) {
+            ClientSocket.instance.setOngoingGame(false);
+            return -1;
+        }
+
+        String[] resultStrArr = result.split("~");
+        List<Float> times = new ArrayList<Float>();
+        for (String r : resultStrArr) {
+            times.add(Float.parseFloat(r));
+        }
+        float overallTime = times.get(times.size() - 1);
+        times.remove(times.size() - 1);
+
+        Database.addNewRace(username, overallTime, times);
+        ClientSocket.instance.setOngoingGame(false);
+        return overallTime;
+    }
 }
