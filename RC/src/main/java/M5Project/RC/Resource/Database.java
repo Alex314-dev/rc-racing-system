@@ -209,7 +209,7 @@ public class Database {
             Connection connection = getConnection();
 
             String addRaceQuery = "INSERT INTO race (raceid, datetime, player, overalltime)\n" +
-                    "VALUES (nextval('race_raceid_seq'::regclass), LOCALTIMESTAMP, " +
+                    "VALUES (nextval('SEQ_ID'), LOCALTIMESTAMP, " +
                     "?, ?)";
             PreparedStatement prStatement = connection.prepareStatement(addRaceQuery);
             prStatement.setString(1, username);
@@ -270,24 +270,42 @@ public class Database {
     }
 
     public static void main(String args[]) {
-        List<Time> sectorTimes = new ArrayList<>();
-        sectorTimes.add(new Time(6000));
-        sectorTimes.add(new Time(7000));
-        sectorTimes.add(new Time(8000));
+//        List<Float> sectorTimes1 = new ArrayList<>();
+//        sectorTimes1.add(6000f);
+//        sectorTimes1.add(7000f);
+//        sectorTimes1.add(8000f);
+//        List<Float> sectorTimes2 = new ArrayList<>();
+//        sectorTimes2.add(3500f);
+//        sectorTimes2.add(4500f);
+//        sectorTimes2.add(5500f);
+//        List<Float> sectorTimes3 = new ArrayList<>();
+//        sectorTimes3.add(2000f);
+//        sectorTimes3.add(10000f);
+//        sectorTimes3.add(9500f);
+//
+//
+//
+//        Database.addNewRace("KaganTheMan", 13500f, sectorTimes2);
+//        Database.addNewRace("KaganTheMan", 21500f, sectorTimes3);
+//        Database.addNewRace("KaganTheMan", 21000f, sectorTimes1);
+//        Database.addNewRace("LiranTheDude", 13500f, sectorTimes2);
+//        Database.addNewRace("LiranTheDude", 21500f, sectorTimes3);
+//        Database.addNewRace("LiranTheDude", 21000f, sectorTimes1);
+//        Database.addNewRace("KrisCross", 13500f, sectorTimes2);
+//        Database.addNewRace("KrisCross", 21500f, sectorTimes3);
+//        Database.addNewRace("KrisCross", 21000f, sectorTimes1);
+//        Database.addNewRace("LoopingLaurens", 13500f, sectorTimes2);
+//        Database.addNewRace("LoopingLaurens", 21500f, sectorTimes3);
+//        Database.addNewRace("LoopingLaurens", 21000f, sectorTimes1);
+//        Database.addNewRace("RacingRick", 13500f, sectorTimes2);
+//        Database.addNewRace("RacingRick", 21500f, sectorTimes3);
+//        Database.addNewRace("RacingRick", 21000f, sectorTimes1);
 
-        for (Time time: sectorTimes) {
-            System.out.println("Time: " + time);
-        }
-
-
-
-        //Database.addNewRace("AlexP", new Time(21000), sectorTimes); not with Time anymore
-
-        List<Race> races = RaceDao.instance.getRaces("Pirzan");
-
-        for (Race race: races) {
-            System.out.println(race.toString());
-        }
+//        List<Race> races = RaceDao.instance.getRaces("Pirzan");
+//
+//        for (Race race: races) {
+//            System.out.println(race.toString());
+//        }
 
 
     }
