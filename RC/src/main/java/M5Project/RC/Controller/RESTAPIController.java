@@ -78,6 +78,16 @@ public class RESTAPIController {
 
     }
 
+    @GetMapping("/rest/allraces")
+    public List<Race> allRaces() {
+        return Database.getRacesByUser(null);
+    }
+
+    @GetMapping("/rest/myraces")
+    public List<Race> myRaces(Principal principal) {
+        return Database.getRacesByUser(PlayerDao.instance.getPlayer(principal.getName()).getUsername());
+    }
+
     @GetMapping("/rest/race")
     public float normalRace(Principal principal) {
         if (ClientSocket.instance.isOngoingGame()) {
