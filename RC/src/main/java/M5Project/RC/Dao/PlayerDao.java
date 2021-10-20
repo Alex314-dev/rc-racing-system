@@ -15,7 +15,6 @@ public enum PlayerDao {
     private Map<String, Player> players = new HashMap<String, Player>();
 
     public void addPlayer(String sub, Player player) {
-        String email = player.getEmail();
         players.put(sub, player);
     }
 
