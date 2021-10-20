@@ -26,7 +26,7 @@ public class Database {
     static final String PASS = System.getenv("RC_DB_PASS");
 
 
-    public void testUsernameTable() {
+    public static void testUsernameTable() {
         loadDriver();
 
         try {
@@ -60,7 +60,7 @@ public class Database {
      * @param email - email address obtained after authorization with oauth (after login)
      * @return
      */
-    public boolean isPlayerRegistered(String email) {
+    public static boolean isPlayerRegistered(String email) {
         loadDriver();
 
         try {
@@ -95,7 +95,7 @@ public class Database {
         }
     }
 
-    public String getPlayerUsername(String email) {
+    public static String getPlayerUsername(String email) {
         loadDriver();
 
         try {
