@@ -1,9 +1,9 @@
 package M5Project.RC.Controller;
 
 import M5Project.RC.Dao.PlayerDao;
-import M5Project.RC.Resource.Database;
 import M5Project.RC.Security.AfterLogin;
 import M5Project.RC.model.Player;
+import M5Project.RC.Resource.Database;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;

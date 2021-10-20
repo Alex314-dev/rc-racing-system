@@ -1,18 +1,13 @@
 package M5Project.RC.Resource;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import M5Project.RC.Dao.RaceDao;
 import M5Project.RC.model.Player;
 import M5Project.RC.model.Race;
-import com.google.gson.Gson;
 
-import javax.xml.crypto.Data;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
     //information for methods to access database
@@ -188,7 +183,7 @@ public class Database {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            List<Race> races = new ArrayList<>();
+            List<Race> races = new ArrayList<Race>();
 
 
             while(resultSet.next()) {

@@ -3,8 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Your in</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/leaderboard.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <!--DataTables BootStrap -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--Js-->
+    <script src="js/leaderboard.js"></script>
+    <!--DataTables Script-->
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+    <!--fontawosome-icons-->
+    <script src="https://kit.fontawesome.com/59dce4be9c.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<p>You are in leaderboard!</p>
+<div class="header">
+    <div class="logo">
+        <img src="images/logo.png">
+        <div class="user-info">
+            <i class="fas fa-user"></i>
+            <span id ="username">Username</span>
+        </div>
+    </div>
+    <div class="nav">
+        <a class="race" href="/race">
+            <img src="images/race.png">
+            <hr>
+        </a>
+        <a class="leaderboard active" href="/leaderboard">
+            <img src="images/leaderboard.png">
+            <hr>
+        </a>
+        <a class="challenge" href="/challenge">
+            <img src="images/challenge.png">
+            <hr>
+        </a>
+        <a class="friends" href="/friends">
+            <img src="images/friends.png">
+            <hr>
+        </a>
+    </div>
+</div>
+
+<h1>Leaderboard</h1>
+
+<div class = "races"></div>
+    <table id = "table_races"></table>
+</div>
+
 </body>
 </html>
