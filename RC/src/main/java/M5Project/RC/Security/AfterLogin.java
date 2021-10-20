@@ -19,8 +19,6 @@ public class AfterLogin {
     @RequestMapping(value = "/logged", method = RequestMethod.GET)
     public ModelAndView afterLogin(Principal principal) {
 
-        Database db = new Database();
-
         //get the user info from the response containing OauthCredentials
         String sub = principal.getName();
         String email = emailFromLoggedUser(principal);
@@ -30,17 +28,13 @@ public class AfterLogin {
         PlayerDao.instance.addPlayer(sub, newLoggedPlayer);
 
         //if the player is not present in the database its info needs to be inserted into the db
-        if (!db.isPlayerRegistered(email)) {
+        if (!PlayerDao.instance.isPlayerRegistered(email)) {
             return new ModelAndView("redirect:" + "/newuser");
         }
 
-        String username = db.getPlayerUsername(email);
+        String username = PlayerDao.instance.getUsernameByEmail(email);
         newLoggedPlayer.setUsername(username);
         PlayerDao.instance.addPlayer(sub, newLoggedPlayer);
-
-        System.out.println(sub);
-        System.out.println(username);
-        System.out.println(email);
 
         return new ModelAndView("redirect:" + "/race");
     }

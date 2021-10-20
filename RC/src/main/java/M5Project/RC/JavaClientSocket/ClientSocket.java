@@ -21,7 +21,7 @@ public enum ClientSocket {
             System.out.print("Input the IP address and the port of the RPI: ");
             String[] rpiIP = input.nextLine().split(" ");
             startConn(rpiIP[0], Integer.parseInt(rpiIP[1]));
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Couldn't connect to the Raspberry Pi.");
             e.printStackTrace();
         }

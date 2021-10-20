@@ -60,7 +60,7 @@ public class Database {
      * @param email - email address obtained after authorization with oauth (after login)
      * @return
      */
-    public boolean isPlayerRegistered(String email) {
+    public static boolean isPlayerRegistered(String email) {
         loadDriver();
 
         try {
@@ -95,7 +95,7 @@ public class Database {
         }
     }
 
-    public String getPlayerUsername(String email) {
+    public static String getPlayerUsername(String email) {
         loadDriver();
 
         try {
@@ -126,7 +126,7 @@ public class Database {
         }
     }
 
-    public void insertNewPlayer(Player player) throws ClassNotFoundException, SQLException{
+    public static void insertNewPlayer(Player player) throws ClassNotFoundException, SQLException{
         loadDriver();
 
             Connection connection =
@@ -379,7 +379,7 @@ public class Database {
         return usernames;
     }
 
-    public static List<String> getAllFriendsUsernames(){
+    public static List<String> getAllFriendsUsernames(String username){
         //TODO
         List<String> usernames = new ArrayList<>();
         return usernames;
