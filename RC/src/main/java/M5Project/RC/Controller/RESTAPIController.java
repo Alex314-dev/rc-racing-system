@@ -91,7 +91,7 @@ public class RESTAPIController {
     @GetMapping("/rest/race")
     public float normalRace(Principal principal) {
         if (ClientSocket.instance.isOngoingGame()) {
-            return -1;
+            return -2;
         }
 
         ClientSocket.instance.setOngoingGame(true);
