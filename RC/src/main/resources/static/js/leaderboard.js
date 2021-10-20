@@ -2,6 +2,7 @@ $(window).on('load', function() {
 
     var userInfo;
     getCredentials ();
+    getMyRaces ();
     let startTime;
     let elapsedTime = 0;
     let timerInterval;
@@ -34,7 +35,7 @@ $(window).on('load', function() {
     			$("#username").text(userInfo.username);
     			}
     		}
-    		xmlhttp.open("GET", "/rest/player", true);
+    		xmlhttp.open("GET", "/rest/allraces", true);
             xmlhttp.send();
     	};
 
