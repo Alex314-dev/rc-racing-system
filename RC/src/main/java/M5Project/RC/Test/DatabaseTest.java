@@ -140,8 +140,6 @@ public class DatabaseTest {
 
         List<String> usernames = Database.getAllUsernames(); //get all players
         assertEquals(NUM_USERS, usernames.size());
-
-        deleteNewPlayer();
     }
 
     private static void deleteNewRace() {

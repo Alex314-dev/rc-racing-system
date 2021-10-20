@@ -120,10 +120,8 @@ public class Database {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next()){
-
                  if (resultSet.getInt(1) == 1){
                      flag = false;
-
                  } else {
                      flag = true;
                  }
