@@ -26,35 +26,6 @@ public class Database {
     static final String PASS = System.getenv("RC_DB_PASS");
 
 
-    public static void testUsernameTable() {
-        loadDriver();
-
-        try {
-            Connection connection = getConnection();
-
-            String queryEmailsUser = " SELECT p.username, p.email"
-                    + " FROM player p";
-
-            Statement statementEmailsUser = connection.createStatement();
-            ResultSet resultSetEmailsUser = statementEmailsUser.executeQuery(queryEmailsUser);
-
-            String username = "";
-            String email = "";
-
-            while (resultSetEmailsUser.next()) {
-                username = resultSetEmailsUser.getString("username");
-                email = resultSetEmailsUser.getString("email");
-                System.out.println(username + " - " + email);
-            }
-            statementEmailsUser.close();
-            connection.close();
-
-        } catch (SQLException sqle) {
-            System.err.println("Error connecting: " + sqle);
-            //return 0;
-        }
-    }
-
     /**
      * Check if the player is present in the database
      * @param email - email address obtained after authorization with oauth (after login)
@@ -126,23 +97,47 @@ public class Database {
         }
     }
 
-    public void insertNewPlayer(Player player) throws ClassNotFoundException, SQLException{
+    public static boolean insertNewPlayer(Player player) throws ClassNotFoundException, SQLException{
         loadDriver();
+
+        String email = player.getEmail();
+        String username = player.getUsername();
+        boolean flag = false;
 
             Connection connection =
                     DriverManager.getConnection(DB_URL, USER, PASS);
 
+            String emailEmailQuery = "SELECT COUNT(p.username) " +
+                                     "FROM player p " +
+                                     "WHERE p.email = ?";
+
+
             String query =    " INSERT INTO player" +
                               " VALUES(?, ?); ";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, player.getUsername());
-            preparedStatement.setString(2, player.getEmail());
-            preparedStatement.executeUpdate();
+            PreparedStatement preparedStatement = connection.prepareStatement(emailEmailQuery);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
+            while(resultSet.next()){
+
+                 if (resultSet.getInt(1) == 1){
+                     flag = false;
+
+                 } else {
+                     flag = true;
+                 }
+            }
+
+            if (flag) {
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, email);
+                preparedStatement.executeUpdate();
+            }
             preparedStatement.close();
             connection.close();
-
+            return flag;
     }
 
     /**
@@ -216,7 +211,7 @@ public class Database {
      * @param username - the player who is logged in and made a race
      * @param raceTime - the overall time of the race
      */
-    public static  void addNewRace(String username, Float raceTime, List<Float> sectorTimes) {
+    public static void addNewRace(String username, Float raceTime, List<Float> sectorTimes) {
         loadDriver();
         int raceId = 0;
 
@@ -421,7 +416,7 @@ public class Database {
         return connection;
     }
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws SQLException, ClassNotFoundException {
 //        List<Float> sectorTimes1 = new ArrayList<>();
 //        sectorTimes1.add(6000f);
 //        sectorTimes1.add(7000f);
@@ -459,7 +454,8 @@ public class Database {
 //            System.out.println(race.toString());
 //        }
 
-            int test = Database.sendFriendRequest("LoopingLaurens", "KaganTheMan");
+        Player newPlayer = new Player("NewPlayer", "new.email@email.com", null);
+        Database.insertNewPlayer(newPlayer);
 
 
     }
