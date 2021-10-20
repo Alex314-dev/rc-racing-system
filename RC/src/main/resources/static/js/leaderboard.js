@@ -2,7 +2,6 @@ $(window).on('load', function() {
 
     var userInfo;
     getCredentials ();
-    getMyRaces ();
     let startTime;
     let elapsedTime = 0;
     let timerInterval;
@@ -10,19 +9,18 @@ $(window).on('load', function() {
     var datatable;
     var dataSet;
 
-    $(document).ready(function() {
-        datatable = $("#table_races").DataTable( {
-            "pageLength": 20,
-            "lengthChange": false,
-            data: dataSet,
-            columns: [
-                { title: "Position" },
-                { title: "Date" },
-                { title: "Player" },
-                { title: "Time" },
-            ]
-        });
-    } );
+    getMyRaces ();
+
+    datatable = $("#table_races").DataTable( {
+        "pageLength": 20,
+        "lengthChange": false,
+        data: dataSet,
+        columns: [
+            { "data" : "date" },
+            { "data" : "player" },
+            { "data" : "overallTime" }
+        ]
+    });
 
     function getCredentials () {
     	var xmlhttp = new XMLHttpRequest();
@@ -49,7 +47,7 @@ $(window).on('load', function() {
                     dataSet = JSON.parse(response);
                     }
                 }
-                xmlhttpraces.open("GET", "/rest/player", true);
+                xmlhttpraces.open("GET", "/rest/allraces", false);
                 xmlhttpraces.send();
             };
 

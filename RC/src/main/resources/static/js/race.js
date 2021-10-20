@@ -1,27 +1,27 @@
 $(window).on('load', function() {
 
+    var dataRaces;
+    var datatable;
     var userInfo;
     getCredentials ();
-    getMyRaces();
     let startTime;
     let elapsedTime = 0;
     let timerInterval;
 
-    var datatable;
-    var dataSet;
+    getMyRaces();
 
-    $(document).ready(function() {
-        datatable = $("#table_races").DataTable( {
-            "pageLength": 20,
-            "searching": false,
-            "lengthChange": false,
-            data: dataSet,
-            columns: [
-                { title: "Date" },
-                { title: "My Time" }
-            ]
-        });
-    } );
+    console.log(dataRaces);
+
+    datatable = $("#table_races").DataTable( {
+        "pageLength": 20,
+        "searching": false,
+        "lengthChange": false,
+        "data" : dataRaces,
+        columns: [
+            { "data" : "date" },
+            { "data" : "overallTime" }
+        ]
+    });
 
 
     $("#start-race").on('click', function() {
@@ -29,6 +29,8 @@ $(window).on('load', function() {
         $('#loading-window').css('display','flex');
         $('#race_text').text('Ongoing');
         delay(1500).then(() => startTimer());
+        startRaceRequest();
+
     });
 
 
@@ -54,10 +56,10 @@ $(window).on('load', function() {
 
                     var response = xmlhttpraces.responseText;
 
-                    dataSet = JSON.parse(response);
+                    dataRaces = JSON.parse(response);
                     }
                 }
-                xmlhttpraces.open("GET", "/rest/myraces", true);
+                xmlhttpraces.open("GET", "/rest/myraces", false);
                 xmlhttpraces.send();
             };
 
@@ -68,10 +70,28 @@ $(window).on('load', function() {
 
                     var response = xmlhttpraces.responseText;
 
-                    dataSet = JSON.parse(response);
-                }
-                if (this.readyState == 4) {
+                    var result = parseInt(response);
 
+                    if (result == -1) {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Invalid Race',
+                          text: '',
+                        });
+                    } if (result == -2) {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'There is an outgoing race',
+                          text: 'Please wait for it to finish!',
+                        });
+                    } else {
+                        Swal.fire(
+                          'Race Finished. Good job!',
+                          'Your time:' + result,
+                          'success'
+                        )
+                    }
+                    endOfRace();
                 }
             }
                 xmlhttpraces.open("GET", "/rest/race", true);
