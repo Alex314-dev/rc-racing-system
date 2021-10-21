@@ -21,10 +21,6 @@ public class ControllerPage {
     @GetMapping("/race")
     public String racePage(Principal principal) {
 
-        System.out.println(PlayerDao.instance.getPlayer(principal.getName()).getEmail());
-        System.out.println(PlayerDao.instance.getPlayer(principal.getName()).getName());
-        System.out.println(PlayerDao.instance.getPlayer(principal.getName()).getUsername());
-
         return "race.html";
     }
 

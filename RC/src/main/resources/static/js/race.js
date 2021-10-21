@@ -16,10 +16,62 @@ $(window).on('load', function() {
         "pageLength": 20,
         "searching": false,
         "lengthChange": false,
+        "responsive": true,
+        "scrollY": "calc(100vh - 475px)",
+        "scrollCollapse": true,
+        "order": [[ 0, "desc" ]],
         "data" : dataRaces,
         columns: [
-            { "data" : "date" },
-            { "data" : "overallTime" }
+            {"data": "null", "render": function ( data, type, row ) {
+                if (row.date == "" || row.date == null) {
+                    return "";
+                }
+                if ( type === 'display' || type === 'filter' ) {
+                    var date = row.date.split("T")[0];
+                    var day = date.split("-")[2];
+                    var month = date.split("-")[1];
+                    var year = date.split("-")[0];
+                    var time = row.date.split("T")[1].substring(0, 5);
+                    return time+" "+day+"/"+month+"/"+year;
+                }
+
+                return row.date;} },
+            {"data": "null", "render": function ( data, type, row ) {
+                if ( type === 'display' || type === 'filter' ) {
+                    var minutes = Math.floor( row.sectorTime[0] / 60);
+                    var seconds = row.sectorTime[0] - minutes * 60;
+
+                    return minutes+"m "+seconds+"s"
+                }
+
+                return row.sectorTime[0]} },
+            {"data": "null", "render": function ( data, type, row ) {
+                if ( type === 'display' || type === 'filter' ) {
+                    var minutes = Math.floor( row.sectorTime[1] / 60);
+                    var seconds = row.sectorTime[1] - minutes * 60;
+
+                    return minutes+"m "+seconds+"s"
+                }
+
+                return row.sectorTime[1]} },
+            {"data": "null", "render": function ( data, type, row ) {
+                if ( type === 'display' || type === 'filter' ) {
+                    var minutes = Math.floor( row.sectorTime[2] / 60);
+                    var seconds = row.sectorTime[2] - minutes * 60;
+
+                    return minutes+"m "+seconds+"s"
+                }
+
+                return row.sectorTime[2]} },
+            {"data": "null", "render": function ( data, type, row ) {
+                if ( type === 'display' || type === 'filter' ) {
+                    var minutes = Math.floor( row.overallTime / 60);
+                    var seconds = row.overallTime - minutes * 60;
+
+                    return minutes+"m "+seconds+"s"
+                }
+
+                return row.overallTime; } }
         ]
     });
 
@@ -65,32 +117,49 @@ $(window).on('load', function() {
 
 
         function startRaceRequest () {
+            var xmlhttpraces = new XMLHttpRequest();
             xmlhttpraces.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
 
                     var response = xmlhttpraces.responseText;
 
-                    var result = parseInt(response);
-
-                    if (result == -1) {
+                    if (response == -1.0) {
                         Swal.fire({
                           icon: 'error',
                           title: 'Invalid Race',
-                          text: '',
+                          text: 'You were too slow or something went wrong!',
                         });
-                    } if (result == -2) {
+                    } else if (response == -2.0) {
                         Swal.fire({
                           icon: 'error',
                           title: 'There is an outgoing race',
                           text: 'Please wait for it to finish!',
                         });
+                    } else if (response > 0.0) {
+                        Swal.fire({
+                              title: "Race Finished. Good job!",
+                              text: "Your time:" + response,
+                              type: "success"
+                              }).then(function() {
+                                    location.reload();
+                                } );
                     } else {
-                        Swal.fire(
-                          'Race Finished. Good job!',
-                          'Your time:' + result,
-                          'success'
-                        )
+                        Swal.fire({
+                              icon: 'error',
+                              title: 'Invalid Race',
+                              text: 'Something went wrong!',
+                              }).then(function() {
+                                    location.reload();
+                                } );
                     }
+                    endOfRace();
+
+                } else if (this.readyState == 4 && this.status != 200) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: 'Cannot establish connection to the server',
+                    });
                     endOfRace();
                 }
             }
@@ -103,6 +172,7 @@ $(window).on('load', function() {
             $('#loading-window').css('display','none');
             $('#race_text').text('Start Race');
             reset();
+            pause();
         }
 
     	// Convert time to a format of hours, minutes, seconds, and milliseconds

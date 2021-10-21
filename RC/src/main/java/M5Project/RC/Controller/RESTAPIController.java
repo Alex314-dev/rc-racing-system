@@ -100,7 +100,7 @@ public class RESTAPIController {
         String result = "";
         try {
             result = ClientSocket.instance.startRace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             ClientSocket.instance.setOngoingGame(false);
             e.printStackTrace();
             return -1;
