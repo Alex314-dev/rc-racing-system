@@ -5,6 +5,9 @@
 # See https://docs.gitlab.com/ee/ci/variables/#priority-of-environment-variables
 variables:
   example: this is an example variable
+
+image: alpine
+
 stages:
 - sonarqube
 - build
