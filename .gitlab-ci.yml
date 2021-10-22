@@ -22,7 +22,13 @@ stages:
 sast:
   stage: test
 include:
-- template: Auto-DevOps.gitlab-ci.yml
+  - template: Auto-DevOps.gitlab-ci.yml
+  - template: DAST.gitlab-ci.yml
+
+variables:
+  DAST_FULL_SCAN_ENABLED: "true"
+  DAST_FULL_SCAN_DOMAIN_VALIDATION_REQUIRED: "false"
+
 
 
 
