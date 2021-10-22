@@ -22,7 +22,6 @@ html {
 	overflow: hidden;
 }
 
-
 body {
 	height: 100vh;
 	width: 100vw;
@@ -73,6 +72,13 @@ body {
 
 .logout a i:hover {
     color: grey;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 22px;
 }
 
 @media (max-width: 575px) {
@@ -127,50 +133,19 @@ body {
     border-color: black;
 }
 
+h1 {
+    text-align: center;
+    margin: 15px;
+}
+
 #table_races_wrapper {
     background: white;
     width: 75%;
     min-width: 500px;
     border-radius: 25px;
-    padding: 25px 10px 0px 25px;
+    padding: 10px 25px 0px 25px;
     filter: drop-shadow(0px 3px 6px rgb(0 0 0 / 0.75));
     margin: auto;
-    animation-duration: 1s;
-}
-
-.start-race {
-    flex-direction: column;
-    align-items: center;
-    display: flex;
-    margin-bottom: 15px;
-}
-
-.start-race div {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: 15px;
-    border: 2px solid;
-    border-radius: 50%;
-    filter: drop-shadow(0px 3px 6px rgb(0 0 0 / 0.20));
-    box-shadow: 1px 1px 1px;
-}
-
-.start-race div:hover {
-    box-shadow: 1px 2px 4px;
-    filter: drop-shadow(0px 3px 6px rgb(0 0 0 / 0.50));
-    cursor: pointer;
-}
-
-.start-race #race_text {
-    font-weight: bold;
-}
-
-.start-race img {
-    max-width: 175px;
-    width: calc(5vh + 4vw);
-    min-width: 75px;
 }
 
 .page-item.active .page-link {
