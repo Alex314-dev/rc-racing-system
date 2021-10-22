@@ -6,8 +6,6 @@
 variables:
   example: this is an example variable
 
-image: alpine
-
 stages:
 - sonarqube
 - build
@@ -42,7 +40,4 @@ sonarqube-check:
   allow_failure: true
   only:
   - master
-sast:
-  stage: test
-include:
-- template: Auto-DevOps.gitlab-ci.yml
+
