@@ -55,7 +55,6 @@ public class DBFriendship {
                 isFriends = resultSet.getString("friend1") == null ? false : true;
             }
 
-
             prStatement = connection.prepareStatement(isQuery);
             prStatement.setString(1, username);
             prStatement.setString(2, friend);
@@ -65,11 +64,8 @@ public class DBFriendship {
             prStatement.setBoolean(6, false);
             ResultSet resultSet1 = prStatement.executeQuery();
 
-
             while (resultSet1.next()) {
-
                 isOngoingRequest = resultSet1.getString("friend1") == null ? false : true;
-
             }
 
             if (isFriends == false && isOngoingRequest == false) {
@@ -98,6 +94,31 @@ public class DBFriendship {
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return requestSuccessFlag;
+        }
+    }
+
+    public static void respondToRequest(String friend1, String friend2){
+        loadDriver();
+        try {
+            Connection connection = getConnection();
+
+            String updateRequest = "UPDATE friendship\n" +
+                    "SET valid = true\n" +
+                    "WHERE (friend1 = ?\n" +
+                    "AND friend2 = ?)" +
+                    "OR (friend1 = ?" +
+                    "AND friend2 = ?)";
+            PreparedStatement statement = connection.prepareStatement(updateRequest);
+            statement.setString(1, friend1);
+            statement.setString(2, friend2);
+            statement.setString(3, friend2);
+            statement.setString(4, friend1);
+            statement.execute();
+
+            statement.close();
+            connection.close();
+        } catch (SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
         }
     }
 
@@ -130,6 +151,6 @@ public class DBFriendship {
     }
 
     public static void main(String[] args) {
-        DBFriendship.sendFriendRequest("LoopingLaurens", "LiranTheDude");
+        DBFriendship.respondToRequest("LoopingLaurens", "KaganTheMan");
     }
 }
