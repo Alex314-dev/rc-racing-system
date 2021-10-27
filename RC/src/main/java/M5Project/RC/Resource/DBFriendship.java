@@ -295,13 +295,6 @@ public class DBFriendship {
         }
     }
 
-    public static List<String> getAllFriendsUsernames() {
-        //TODO
-        List<String> usernames = new ArrayList<>();
-        return usernames;
-    }
-
-
         /**
          * Helper function to load the driver
          */
@@ -324,12 +317,14 @@ public class DBFriendship {
     }
 
     public static void main(String[] args) {
-        //DBFriendship.sendFriendRequest("AlexP", "LoopingLaurens");
+        //DBFriendship.sendFriendRequest("LoopingLaurens", "AlexP");
         //DBFriendship.deleteFriend("LoopingLaurens", "AlexP");
+        //DBFriendship.respondToRequest("AlexP", "LoopingLaurens");
+        List<String> friends = DBFriendship.getRequests("LoopingLaurens", false);
 
-        List<Player> friends = DBFriendship.getFriendsWinsLosses("KaganTheMan");
-        for (Player friend: friends) {
-            System.out.println(friend.toStringFriend());
+//        List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
+        for (String friend: friends) {
+            System.out.println(friend);
         }
 
     }
