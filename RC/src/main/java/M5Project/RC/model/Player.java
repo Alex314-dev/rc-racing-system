@@ -9,6 +9,8 @@ public class Player {
     private String username;
     private String email;
     private String name;
+    private int wins;
+    private int losses;
 
     public Player() {
         ;
@@ -18,6 +20,33 @@ public class Player {
         this.username = username;
         this.email = email;
         this.name = name;
+    }
+
+    /**
+     * Constructor for a friend with wins and losses
+     * @param username
+     * @param losses
+     */
+    public Player(String username, int wins, int losses) {
+        this.username = username;
+        this.wins = wins;
+        this.losses = losses;
+    }
+
+    public int getWins() {
+        return this.wins;
+    }
+
+    public int getLosses() {
+        return this.losses;
+    }
+
+    public void setLosses(int loss) {
+       this.losses = loss;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
     }
 
     public String getUsername() {
@@ -53,6 +82,10 @@ public class Player {
     @Override
     public String toString() {
         return "Player{" + "email=" + this.email + ", username='" + this.username + '\'' + '}';
+    }
+
+    public String toStringFriend() {
+        return "Friend: " + this.username + ", Wins: " + this.wins + ", Losses: " + this.losses;
     }
 
 }
