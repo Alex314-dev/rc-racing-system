@@ -2,34 +2,32 @@ package M5Project.RC.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
 public class Challenge {
     private int challengeID;
-    private String username1;
-    private String username2;
-    private Timestamp date;
-    private Float overallTimeUser1;
-    private List<Float> sectorTimeUser1;
-    private Float overallTimeUser2;
-    private List<Float> sectorTimeUser2;
+    private Boolean isFinished;
+    private Boolean isAccepted;
+    private String challenger;
+    private String challengee;
+    private Integer raceIDUser1;
+    private Integer raceIDUser2;
 
     public Challenge() {
         ;
     }
 
-    public Challenge(int challengeID, String username1, String username2, Timestamp date, float overallTimeUser1, List<Float> sectorTimeUser1, float overallTimeUser2, List<Float> sectorTimeUser2) {
+    public Challenge(int challengeID, Boolean isFinished, Boolean isAccepted, String challenger, String challengee, Integer raceIDUser1, Integer raceIDUser2) {
         this.challengeID = challengeID;
-        this.username1 = username1;
-        this.username2 = username2;
-        this.date = date;
-        this.overallTimeUser1 = overallTimeUser1;
-        this.sectorTimeUser1 = sectorTimeUser1;
-        this.overallTimeUser2 = overallTimeUser2;
-        this.sectorTimeUser2 = sectorTimeUser2;
+        this.isFinished = isFinished;
+        this.isAccepted = isAccepted;
+        this.challenger = challenger;
+        this.challengee = challengee;
+        this.raceIDUser1 = raceIDUser1;
+        this.raceIDUser2 = raceIDUser2;
     }
+
 
     @Id
     public int getChallengeID() {
@@ -40,73 +38,57 @@ public class Challenge {
         this.challengeID = challengeID;
     }
 
-    public String getUsername1() {
-        return username1;
+    public Boolean getFinished() {
+        return isFinished;
     }
 
-    public void setUsername1(String username1) {
-        this.username1 = username1;
+    public void setFinished(Boolean finished) {
+        isFinished = finished;
     }
 
-    public String getUsername2() {
-        return username2;
+    public Boolean getAccepted() {
+        return isAccepted;
     }
 
-    public void setUsername2(String username2) {
-        this.username2 = username2;
+    public void setAccepted(Boolean accepted) {
+        isAccepted = accepted;
     }
 
-    public Timestamp getDate() {
-        return date;
+    public String getChallenger() {
+        return challenger;
     }
 
-    public void setDate(Timestamp date) {
-        this.date = date;
+    public void setChallenger(String challenger) {
+        this.challenger = challenger;
     }
 
-    public Float getOverallTimeUser1() {
-        return overallTimeUser1;
+    public String getChallengee() {
+        return challengee;
     }
 
-    public void setOverallTimeUser1(Float overallTimeUser1) {
-        this.overallTimeUser1 = overallTimeUser1;
+    public void setChallengee(String challengee) {
+        this.challengee = challengee;
     }
 
-    public List<Float> getSectorTimeUser1() {
-        return sectorTimeUser1;
+    public Integer getRaceIDUser1() {
+        return raceIDUser1;
     }
 
-    public void setSectorTimeUser1(List<Float> sectorTimeUser1) {
-        this.sectorTimeUser1 = sectorTimeUser1;
+    public void setRaceIDUser1(Integer raceIDUser1) {
+        this.raceIDUser1 = raceIDUser1;
     }
 
-    public Float getOverallTimeUser2() {
-        return overallTimeUser2;
+    public Integer getRaceIDUser2() {
+        return raceIDUser2;
     }
 
-    public void setOverallTimeUser2(Float overallTimeUser2) {
-        this.overallTimeUser2 = overallTimeUser2;
-    }
-
-    public List<Float> getSectorTimeUser2() {
-        return sectorTimeUser2;
-    }
-
-    public void setSectorTimeUser2(List<Float> sectorTimeUser2) {
-        this.sectorTimeUser2 = sectorTimeUser2;
+    public void setRaceIDUser2(Integer raceIDUser2) {
+        this.raceIDUser2 = raceIDUser2;
     }
 
     @Override
     public String toString() {
-        String toString = "Challenge{" + "id=" + this.challengeID + ", date='" + this.date + " player1:"  + this.username1 + ", time:" + this.overallTimeUser1 + '\'';
-        for (int i = 0; i < 3; i++) {
-            toString += ", sector=" + (i+1) + ", result=" + getSectorTimeUser1().get(i);
-        }
-
-        toString += "player2:"  + this.username2 + ", time:" + this.overallTimeUser2 + '\'';
-        for (int i = 0; i < 3; i++) {
-            toString += ", sector=" + (i+1) + ", result=" + getSectorTimeUser2().get(i);
-        }
+        String toString = "Challenge{" + "id=" + this.challengeID + ", player1:"  + this.challenger + ", raceID User1:" + this.raceIDUser1 + ", raceID User2:" + this.raceIDUser2 + '\'';
         return toString + "}";
     }
 
