@@ -23,8 +23,8 @@ public class DatabaseTest {
     static final String USER = "dab_di20212b_100";
     static final String PASS = System.getenv("RC_DB_PASS");
 
-    static final int NUM_RACES = 20;
-    static final int NUM_USERS = 13;
+    static final int NUM_RACES = 23;
+    static final int NUM_USERS = 15;
     static final String RACE_USER = "AlexP";
 
 
