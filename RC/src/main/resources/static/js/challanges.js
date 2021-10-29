@@ -4,7 +4,6 @@ $(window).on('load', function() {
     getCredentials ();
 
 
-
     function getCredentials () {
     	var xmlhttp = new XMLHttpRequest();
     	xmlhttp.onreadystatechange = function() {
