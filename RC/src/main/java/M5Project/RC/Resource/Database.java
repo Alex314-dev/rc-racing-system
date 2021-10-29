@@ -98,7 +98,6 @@ public class Database {
         String email = player.getEmail();
         String username = player.getUsername();
         boolean flag = false;
-
             Connection connection =
                     DriverManager.getConnection(DB_URL, USER, PASS);
 
