@@ -20,7 +20,6 @@ public class ControllerPage {
 
     @GetMapping("/race")
     public String racePage(Principal principal) {
-
         return "race.html";
     }
 

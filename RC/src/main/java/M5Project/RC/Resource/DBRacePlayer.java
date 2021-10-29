@@ -89,7 +89,7 @@ public class DBRacePlayer {
         }
     }
 
-    public static boolean insertNewPlayer(Player player) throws ClassNotFoundException, SQLException{
+    public static boolean insertNewPlayer(Player player) throws ClassNotFoundException, SQLException {
         loadDriver();
 
         String email = player.getEmail();

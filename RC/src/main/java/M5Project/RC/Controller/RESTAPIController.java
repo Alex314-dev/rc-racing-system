@@ -1,27 +1,17 @@
 package M5Project.RC.Controller;
 
 import M5Project.RC.Dao.PlayerDao;
+import M5Project.RC.Dao.RaceDao;
 import M5Project.RC.JavaClientSocket.ClientSocket;
-import M5Project.RC.Resource.Database;
-import M5Project.RC.Security.AfterLogin;
 import M5Project.RC.model.Player;
 import M5Project.RC.model.Race;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.management.DynamicMBean;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.PatternSyntaxException;
 
 @RestController
@@ -49,11 +39,10 @@ public class RESTAPIController {
 
             try {
                 if (username.matches("\\b[a-zA-Z][a-zA-Z0-9\\-._]{3,}\\b")) {
-                    Database db = new Database();
                     Player newPlayer = PlayerDao.instance.getPlayer(principal.getName());
                     try {
                         newPlayer.setUsername(username);
-                        db.insertNewPlayer(newPlayer);
+                        PlayerDao.instance.addPlayerToDB(newPlayer);
                         response.sendRedirect("/race");
                     } catch (ClassNotFoundException e) {
                         response.sendRedirect("/newuser?error=wrong");
@@ -62,7 +51,6 @@ public class RESTAPIController {
                     } catch (SQLException throwables) {
                         response.sendRedirect("/newuser?error=exists");
                         newPlayer.setUsername("");
-                        System.out.println("sqlExept");
                         throwables.printStackTrace();
                     }
                 } else {
@@ -80,12 +68,12 @@ public class RESTAPIController {
 
     @GetMapping("/rest/allraces")
     public List<Race> allRaces() {
-        return Database.getRacesByUser(null);
+        return RaceDao.instance.getRaces(null);
     }
 
     @GetMapping("/rest/myraces")
     public List<Race> myRaces(Principal principal) {
-        return Database.getRacesByUser(PlayerDao.instance.getPlayer(principal.getName()).getUsername());
+        return RaceDao.instance.getRaces(PlayerDao.instance.getPlayer(principal.getName()).getUsername());
     }
 
     @GetMapping("/rest/race")
@@ -119,7 +107,7 @@ public class RESTAPIController {
         float overallTime = times.get(times.size() - 1);
         times.remove(times.size() - 1);
 
-        Database.addNewRace(username, overallTime, times);
+        RaceDao.instance.addRaceToDB(username, overallTime, times);
         ClientSocket.instance.setOngoingGame(false);
         return overallTime;
     }
