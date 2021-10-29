@@ -1,13 +1,14 @@
 package M5Project.RC.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import M5Project.RC.Resource.DBRacePlayer;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import M5Project.RC.Resource.Database;
 import M5Project.RC.model.Race;
 import M5Project.RC.model.Player;
 
@@ -23,8 +24,8 @@ public class DatabaseTest {
     static final String USER = "dab_di20212b_100";
     static final String PASS = System.getenv("RC_DB_PASS");
 
-    static final int NUM_RACES = 20;
-    static final int NUM_USERS = 13;
+    static final int NUM_RACES = 23;
+    static final int NUM_USERS = 15;
     static final String RACE_USER = "AlexP";
 
 
@@ -33,7 +34,7 @@ public class DatabaseTest {
      */
     @Test
     void checkAllRaces(){
-        List<Race> races = Database.getRacesByUser(null);
+        List<Race> races = DBRacePlayer.getRacesByUser(null);
         int actualRaces = races.size();
 
         assertEquals(NUM_RACES, actualRaces);
@@ -44,7 +45,7 @@ public class DatabaseTest {
      */
     @Test
     void checkAllRacesUser(){
-        List<Race> races = Database.getRacesByUser(RACE_USER);
+        List<Race> races = DBRacePlayer.getRacesByUser(RACE_USER);
         int actualRaces = races.size();
         assertEquals(RACE_USER, races.get(0).getPlayer());
         assertEquals(RACE_USER, races.get(1).getPlayer());
@@ -58,7 +59,7 @@ public class DatabaseTest {
      */
     @Test
     void checkAllRacesNoUser(){
-        List<Race> races = Database.getRacesByUser("TestUser");
+        List<Race> races = DBRacePlayer.getRacesByUser("TestUser");
         int actualRaces = races.size();
 
         assertEquals(0, actualRaces);
@@ -75,8 +76,8 @@ public class DatabaseTest {
         sectorTimes.add(10000f);
         sectorTimes.add(11000f);
 
-        Database.addNewRace(RACE_USER, raceTime, sectorTimes);
-        List<Race> races = Database.getRacesByUser(null); //getting all races
+        DBRacePlayer.addNewRace(RACE_USER, raceTime, sectorTimes);
+        List<Race> races = DBRacePlayer.getRacesByUser(null); //getting all races
 
         assertEquals(NUM_RACES + 1, races.size());
 
@@ -90,7 +91,7 @@ public class DatabaseTest {
     @Test
     void checkUsernameFromEmail(){
         String email = "AlexP@email.com";
-        String username = Database.getPlayerUsername(email);
+        String username = DBRacePlayer.getPlayerUsername(email);
 
         assertEquals(RACE_USER, username);
 
@@ -101,7 +102,7 @@ public class DatabaseTest {
      */
     @Test
     void checkAllUsernames() {
-        List<String> usernames = Database.getAllUsernames();
+        List<String> usernames = DBRacePlayer.getAllUsernames();
 
         assertEquals(NUM_USERS, usernames.size());
     }
@@ -111,8 +112,8 @@ public class DatabaseTest {
      */
     @Test
     void checkPlayerRegistered() {
-        assertTrue(Database.isPlayerRegistered("AlexP@email.com"));
-        assertFalse(Database.isPlayerRegistered(("new.email@email.com")));
+        assertTrue(DBRacePlayer.isPlayerRegistered("AlexP@email.com"));
+        assertFalse(DBRacePlayer.isPlayerRegistered(("new.email@email.com")));
     }
 
     //TODO check insert existing user
@@ -122,9 +123,9 @@ public class DatabaseTest {
     @Test
     void checkInsertNewUser() throws SQLException, ClassNotFoundException {
         Player newPlayer = new Player("NewPlayer", "new.email@email.com", null);
-        assertTrue(Database.insertNewPlayer(newPlayer));
+        assertTrue(DBRacePlayer.insertNewPlayer(newPlayer));
 
-        List<String> usernames = Database.getAllUsernames(); //get all players
+        List<String> usernames = DBRacePlayer.getAllUsernames(); //get all players
         assertEquals(NUM_USERS+1, usernames.size());
 
         deleteNewPlayer();
@@ -136,9 +137,9 @@ public class DatabaseTest {
     @Test
     void checkInsertNewExistingUser() throws SQLException, ClassNotFoundException {
         Player newPlayer = new Player("KaganTheMan", "kagantheman@mail.com", null);
-        assertFalse(Database.insertNewPlayer(newPlayer));
+        assertFalse(DBRacePlayer.insertNewPlayer(newPlayer));
 
-        List<String> usernames = Database.getAllUsernames(); //get all players
+        List<String> usernames = DBRacePlayer.getAllUsernames(); //get all players
         assertEquals(NUM_USERS, usernames.size());
     }
 
