@@ -8,7 +8,6 @@ import java.util.List;
 public class Challenge {
     private int challengeID;
     private Boolean isFinished;
-    private Boolean isAccepted;
     private String challenger;
     private String challengee;
     private Integer raceIDUser1;
@@ -18,10 +17,9 @@ public class Challenge {
         ;
     }
 
-    public Challenge(int challengeID, Boolean isFinished, Boolean isAccepted, String challenger, String challengee, Integer raceIDUser1, Integer raceIDUser2) {
+    public Challenge(int challengeID, Boolean isFinished, String challenger, String challengee, Integer raceIDUser1, Integer raceIDUser2) {
         this.challengeID = challengeID;
         this.isFinished = isFinished;
-        this.isAccepted = isAccepted;
         this.challenger = challenger;
         this.challengee = challengee;
         this.raceIDUser1 = raceIDUser1;
@@ -44,14 +42,6 @@ public class Challenge {
 
     public void setFinished(Boolean finished) {
         isFinished = finished;
-    }
-
-    public Boolean getAccepted() {
-        return isAccepted;
-    }
-
-    public void setAccepted(Boolean accepted) {
-        isAccepted = accepted;
     }
 
     public String getChallenger() {
@@ -88,7 +78,7 @@ public class Challenge {
 
     @Override
     public String toString() {
-        String toString = "Challenge{" + "id=" + this.challengeID + ", player1:"  + this.challenger + ", raceID User1:" + this.raceIDUser1 + ", raceID User2:" + this.raceIDUser2 + '\'';
+        String toString = "Challenge{" + "id=" + this.challengeID + ", player1:"  + this.challenger + " , player2: " + this.challengee + ", raceID User1:" + this.raceIDUser1 + ", raceID User2:" + this.raceIDUser2 + '\'';
         return toString + "}";
     }
 
