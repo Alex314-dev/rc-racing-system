@@ -35,7 +35,7 @@ def receive_and_send(conn, addr):
         if "GO" in msg_received:
             valid_protocol = True
 
-            result = race()
+            result = race(conn)
 
             if result["status"]:
                 valid_race = True
@@ -51,9 +51,13 @@ def receive_and_send(conn, addr):
         valid_protocol = False
         valid_race = False
 
-def race():
+def timer(conn):
+    conn.sendall("Started\r\n".encode("utf-8"))
+
+def race(conn):
     time1 = read_sensor(23) # 23
     if time1 == -1: return { "status": False } # add || timeX < 5(or another value) to the if statement for the real racing scenerios
+    timer(conn);
     time2 = read_sensor(23) # 24
     if time2 == -1: return { "status": False }
     time3 = read_sensor(23) # 25
@@ -82,7 +86,7 @@ def read_sensor(pin): # the value of pin shall be either 23, 24, or 25 as they a
             timeout_thread.terminate()
 
             ftime = time.time()
-            time.sleep(0.7) # -- for testing purposes -- delete after connecting 3 IR sensors
+            time.sleep(0.1) # -- for testing purposes -- delete after connecting 3 IR sensors
             return ftime
         elif bridge.is_set(): # check the timeout event
             print("Timeout")
