@@ -88,6 +88,20 @@ public class RESTAPIController {
         return Database.getRacesByUser(PlayerDao.instance.getPlayer(principal.getName()).getUsername());
     }
 
+    @GetMapping("/rest/timer")
+    public boolean timer(Principal principal) {
+        if (!ClientSocket.instance.isOngoingGame()) {
+            return false; // there is no race going on
+        }
+
+        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        if (ClientSocket.instance.getCurrentRacer().equals(username)) {
+            return ClientSocket.instance.isRaceStarted();
+        } else {
+            return false; // you are not the one racing ztupid
+        }
+    }
+
     @GetMapping("/rest/race")
     public float normalRace(Principal principal) {
         if (ClientSocket.instance.isOngoingGame()) {
@@ -96,17 +110,20 @@ public class RESTAPIController {
 
         ClientSocket.instance.setOngoingGame(true);
         String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        ClientSocket.instance.setCurrentRacer(username);
 
         String result = "";
         try {
             result = ClientSocket.instance.startRace();
         } catch (Exception e) {
+            ClientSocket.instance.setCurrentRacer("");
             ClientSocket.instance.setOngoingGame(false);
             e.printStackTrace();
             return -1;
         }
 
         if (result.contains("Invalid")) {
+            ClientSocket.instance.setCurrentRacer("");
             ClientSocket.instance.setOngoingGame(false);
             return -1;
         }
@@ -120,6 +137,7 @@ public class RESTAPIController {
         times.remove(times.size() - 1);
 
         Database.addNewRace(username, overallTime, times);
+        ClientSocket.instance.setCurrentRacer("");
         ClientSocket.instance.setOngoingGame(false);
         return overallTime;
     }
