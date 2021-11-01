@@ -10,14 +10,14 @@ public class Challenge {
     private Boolean isFinished;
     private String challenger;
     private String challengee;
-    private Integer raceIDUser1;
-    private Integer raceIDUser2;
+    private int raceIDUser1;
+    private int raceIDUser2;
 
     public Challenge() {
         ;
     }
 
-    public Challenge(int challengeID, Boolean isFinished, String challenger, String challengee, Integer raceIDUser1, Integer raceIDUser2) {
+    public Challenge(int challengeID, Boolean isFinished, String challenger, String challengee, int raceIDUser1, int raceIDUser2) {
         this.challengeID = challengeID;
         this.isFinished = isFinished;
         this.challenger = challenger;
@@ -60,19 +60,19 @@ public class Challenge {
         this.challengee = challengee;
     }
 
-    public Integer getRaceIDUser1() {
+    public int getRaceIDUser1() {
         return raceIDUser1;
     }
 
-    public void setRaceIDUser1(Integer raceIDUser1) {
+    public void setRaceIDUser1(int raceIDUser1) {
         this.raceIDUser1 = raceIDUser1;
     }
 
-    public Integer getRaceIDUser2() {
+    public int getRaceIDUser2() {
         return raceIDUser2;
     }
 
-    public void setRaceIDUser2(Integer raceIDUser2) {
+    public void setRaceIDUser2(int raceIDUser2) {
         this.raceIDUser2 = raceIDUser2;
     }
 
