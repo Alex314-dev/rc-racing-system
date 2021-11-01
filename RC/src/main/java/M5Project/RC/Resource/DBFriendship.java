@@ -119,7 +119,7 @@ public class DBFriendship {
             statement.setString(2, friend2);
             statement.setString(3, friend2);
             statement.setString(4, friend1);
-            statement.execute();
+            statement.executeUpdate();
 
             statement.close();
             connection.close();
@@ -319,13 +319,13 @@ public class DBFriendship {
     public static void main(String[] args) {
         //DBFriendship.sendFriendRequest("LoopingLaurens", "AlexP");
         //DBFriendship.deleteFriend("LoopingLaurens", "AlexP");
-        //DBFriendship.respondToRequest("AlexP", "LoopingLaurens");
-        List<String> friends = DBFriendship.getRequests("LoopingLaurens", false);
-
-//        List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
-        for (String friend: friends) {
-            System.out.println(friend);
-        }
+        DBFriendship.respondToRequest("KaganTheMan", "LoopingLaurens");
+//        List<String> friends = DBFriendship.getRequests("LoopingLaurens", false);
+//
+////        List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
+//        for (String friend: friends) {
+//            System.out.println(friend);
+//        }
 
     }
 }
