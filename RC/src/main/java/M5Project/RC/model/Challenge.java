@@ -8,20 +8,18 @@ import java.util.List;
 public class Challenge {
     private int challengeID;
     private Boolean isFinished;
-    private Boolean isAccepted;
     private String challenger;
     private String challengee;
-    private Integer raceIDChallenger;
-    private Integer raceIDChallengee;
+    private int raceIDChallenger;
+    private int raceIDChallengee;
 
     public Challenge() {
         ;
     }
 
-    public Challenge(int challengeID, Boolean isFinished, Boolean isAccepted, String challenger, String challengee, Integer raceIDChallenger, Integer raceIDChallengee) {
+    public Challenge(int challengeID, Boolean isFinished, String challenger, String challengee, int raceIDChallenger, int raceIDChallengee) {
         this.challengeID = challengeID;
-        this.isFinished = false;
-        this.isAccepted = isAccepted;
+        this.isFinished = isFinished;
         this.challenger = challenger;
         this.challengee = challengee;
         this.raceIDChallenger = raceIDChallenger;
@@ -46,14 +44,6 @@ public class Challenge {
         isFinished = finished;
     }
 
-    public Boolean getAccepted() {
-        return isAccepted;
-    }
-
-    public void setAccepted(Boolean accepted) {
-        isAccepted = accepted;
-    }
-
     public String getChallenger() {
         return challenger;
     }
@@ -70,19 +60,19 @@ public class Challenge {
         this.challengee = challengee;
     }
 
-    public Integer getRaceIDChallenger() {
+    public int getRaceIDChallenger() {
         return raceIDChallenger;
     }
 
-    public void setRaceIDChallenger(Integer raceIDChallenger) {
+    public void setRaceIDChallenger(int raceIDChallenger) {
         this.raceIDChallenger = raceIDChallenger;
     }
 
-    public Integer getRaceIDChallengee() {
+    public int getRaceIDChallengee() {
         return raceIDChallengee;
     }
 
-    public void setRaceIDChallengee(Integer raceIDChallengee) {
+    public void setRaceIDChallengee(int raceIDChallengee) {
         this.raceIDChallengee = raceIDChallengee;
     }
 
