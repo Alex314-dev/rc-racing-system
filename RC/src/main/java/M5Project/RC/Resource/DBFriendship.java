@@ -119,7 +119,7 @@ public class DBFriendship {
             statement.setString(2, friend2);
             statement.setString(3, friend2);
             statement.setString(4, friend1);
-            statement.execute();
+            statement.executeUpdate();
 
             statement.close();
             connection.close();
