@@ -99,4 +99,9 @@ public class RESTAPIController {
         }
         return -1;
     }
+
+    @GetMapping("/rest/acceptChallenge")
+    public float acceptChallenge(Principal principal) {
+        ;
+    }
 }
