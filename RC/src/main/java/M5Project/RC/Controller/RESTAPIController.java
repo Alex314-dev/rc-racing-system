@@ -4,6 +4,7 @@ import M5Project.RC.Dao.ChallengeDao;
 import M5Project.RC.Dao.PlayerDao;
 import M5Project.RC.Dao.RaceDao;
 import M5Project.RC.JavaClientSocket.ClientSocket;
+import M5Project.RC.Resource.DBChallenge;
 import M5Project.RC.model.Player;
 import M5Project.RC.model.Race;
 import org.springframework.web.bind.annotation.*;
@@ -79,49 +80,23 @@ public class RESTAPIController {
 
     @GetMapping("/rest/race")
     public float normalRace(Principal principal) {
-        if (ClientSocket.instance.isOngoingGame()) {
-            return -1;
-        }
-
-        ClientSocket.instance.setOngoingGame(true);
-        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
-
-        String result = "";
-        try {
-            result = ClientSocket.instance.startRace();
-        } catch (IOException e) {
-            ClientSocket.instance.setOngoingGame(false);
-            e.printStackTrace();
-            return -1;
-        }
-
-        if (result.contains("Invalid")) {
-            ClientSocket.instance.setOngoingGame(false);
-            return -1;
-        }
-
-        String[] resultStrArr = result.split("~");
-        List<Float> times = new ArrayList<Float>();
-        for (String r : resultStrArr) {
-            times.add(Float.parseFloat(r));
-        }
-        float overallTime = times.get(times.size() - 1);
-        times.remove(times.size() - 1);
-
-        RaceDao.instance.addRaceToDB(username, overallTime, times);
-        ClientSocket.instance.setOngoingGame(false);
-        return overallTime;
+        return RaceDao.instance.initiateARace(principal);
     }
 
     @PostMapping("/rest/challengeRequest")
-    public boolean challengeRequest(HttpServletResponse response, @RequestParam String challenger, @RequestParam String challengee, Principal principal)
-    {
+    public float challengeRequest(@RequestParam String challengee, Principal principal) {
+        String challenger = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         if (ChallengeDao.instance.challengeRequest(challenger, challengee)) {
-            ;
+            float overallTime = RaceDao.instance.initiateARace(principal);
+            if (overallTime > 0) {
+                if (DBChallenge.startNewChallenge(challenger, challengee)) {
+                    return overallTime;
+                }
+                return -1;
+            }
+
+            return overallTime;
         }
-
-
-
-        return false;
+        return -1;
     }
 }

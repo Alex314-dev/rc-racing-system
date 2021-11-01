@@ -128,7 +128,7 @@ public class DBChallenge {
      * @param challenger This user's username
      * @param challengee This user's chalengee
      */
-    public static void startNewChallenge(String challenger, String challengee) {
+    public static boolean startNewChallenge(String challenger, String challengee) {
         loadDriver();
 
         try {
@@ -156,7 +156,10 @@ public class DBChallenge {
             connection.close();
         } catch(SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
+            return false;
         }
+
+        return true;
     }
 
     /**
