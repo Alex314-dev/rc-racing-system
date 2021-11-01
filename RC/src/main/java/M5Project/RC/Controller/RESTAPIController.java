@@ -116,6 +116,12 @@ public class RESTAPIController {
     @PostMapping("/rest/challengeRequest")
     public boolean challengeRequest(HttpServletResponse response, @RequestParam String challenger, @RequestParam String challengee, Principal principal)
     {
-        return ChallengeDao.instance.challengeRequest(challenger, challengee);
+        if (ChallengeDao.instance.challengeRequest(challenger, challengee)) {
+            ;
+        }
+
+
+
+        return false;
     }
 }
