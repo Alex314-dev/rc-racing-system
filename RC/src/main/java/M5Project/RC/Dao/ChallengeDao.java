@@ -8,8 +8,7 @@ public enum ChallengeDao {
 
     public boolean challengeRequest(String challenger, String challengee) {
         if (DBChallenge.checkIfFriends(challenger, challengee)) {
-            if (!DBChallenge.alreadyInAChallenge(challenger, challengee))
-                return true;
+            return !DBChallenge.alreadyInAChallenge(challenger, challengee);
         }
         return false;
     }
