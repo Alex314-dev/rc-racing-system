@@ -62,24 +62,24 @@ public class DBChallenge {
                     "WHERE r.player = ?\n" +
                     "ORDER BY r.raceid DESC\n" +
                     "LIMIT 1) AS sr\n" +
-                    "WHERE challengeid = ?" +
-                    "AND challengee = ?";
+                    "WHERE challengeid = ?\n" +
+                    "AND challengee = ?\n" +
+                    "AND isfinished = false";
 
             PreparedStatement statement = connection.prepareStatement(respond);
             statement.setString(1, username);
             statement.setInt(2, id);
             statement.setString(3, username);
-            statement.executeUpdate();
+            int result = statement.executeUpdate();
 
             statement.close();
             connection.close();
 
+            return result != 0;
         } catch(SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return false;
         }
-
-        return true;
     }
 
     /**
