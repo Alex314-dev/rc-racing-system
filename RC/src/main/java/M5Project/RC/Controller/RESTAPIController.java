@@ -1,5 +1,6 @@
 package M5Project.RC.Controller;
 
+import M5Project.RC.Dao.ChallengeDao;
 import M5Project.RC.Dao.PlayerDao;
 import M5Project.RC.Dao.RaceDao;
 import M5Project.RC.JavaClientSocket.ClientSocket;
@@ -110,5 +111,11 @@ public class RESTAPIController {
         RaceDao.instance.addRaceToDB(username, overallTime, times);
         ClientSocket.instance.setOngoingGame(false);
         return overallTime;
+    }
+
+    @PostMapping("/rest/challengeRequest")
+    public boolean challengeRequest(HttpServletResponse response, @RequestParam String challenger, @RequestParam String challengee, Principal principal)
+    {
+        return ChallengeDao.instance.challengeRequest(challenger, challengee);
     }
 }
