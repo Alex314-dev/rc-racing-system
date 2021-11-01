@@ -14,4 +14,8 @@ public enum ChallengeDao {
         return false;
     }
 
+    public boolean respondToChallenge(int challengeID, String challengee) {
+        return DBChallenge.respondToChallenge(challengee, challengeID);
+    }
+
 }

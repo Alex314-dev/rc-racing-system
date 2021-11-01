@@ -100,8 +100,16 @@ public class RESTAPIController {
         return -1;
     }
 
-    @GetMapping("/rest/acceptChallenge")
-    public float acceptChallenge(Principal principal) {
-        ;
+    @PostMapping("/rest/acceptChallenge")
+    public float acceptChallenge(@RequestParam int id, Principal principal) {
+        float overallTime = RaceDao.instance.initiateARace(principal);
+        if (overallTime > 0) {
+            String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+            if (ChallengeDao.instance.respondToChallenge(id, challengee)) {
+                return overallTime;
+            }
+            return -1;
+        }
+        return overallTime;
     }
 }
