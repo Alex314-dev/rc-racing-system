@@ -106,7 +106,10 @@ public class RESTAPIController {
         if (overallTime > 0) {
             String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
             if (ChallengeDao.instance.respondToChallenge(id, challengee)) {
-                return overallTime;
+                if (ChallengeDao.instance.changeScores(challengee)) { // if we make this async it would be bazinga
+                    return overallTime;
+                }
+                return -1;
             }
             return -1;
         }

@@ -26,7 +26,7 @@ public class DBChallenge {
      * @param loser The player who lost
      * @param draw If it is a draw
      */
-    public static void updateScores(String winner, String loser, boolean draw) {
+    public static boolean updateScores(String winner, String loser, boolean draw) {
         loadDriver();
         try {
             Connection connection = getConnection();
@@ -75,7 +75,10 @@ public class DBChallenge {
 
         } catch(SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -341,7 +344,8 @@ public class DBChallenge {
                     "WHERE (c.challenger = ?" +
                     " AND c.isfinished = true)\n" +
                     " OR (c.challengee = ?" +
-                    " AND c.isfinished = true)\n";
+                    " AND c.isfinished = true)\n" +
+                    "ORDER BY c.challengeid DESC";
 
             PreparedStatement statement = connection.prepareStatement(getChallenges);
             statement.setString(1, username);
