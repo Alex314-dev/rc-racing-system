@@ -18,6 +18,99 @@ public class DBChallenge {
     static final String PASS = System.getenv("RC_DB_PASS");
 
     /**
+     * Method to update the scores after a successful challenge.
+     * First a check is done to see if the race is a draw or not. If it is not, proceed to update a friend1 as winner and friend2 as loser situation.
+     * If this update returns 0, proceed to update a friend2 as winner and friend1 as loser situation.
+     * If we have a draw, increment both friends results.
+     * @param winner The player who won
+     * @param loser The player who lost
+     * @param draw If it is a draw
+     */
+    public static void updateScores(String winner, String loser, boolean draw) {
+        loadDriver();
+        try {
+            Connection connection = getConnection();
+            String updateScore = "";
+            PreparedStatement statement = null;
+
+            if (!draw) {
+                updateScore = "UPDATE friendship\n" +
+                        "SET friend1win = friend1win + 1\n" +
+                        "WHERE friend1 = ?\n" +
+                        "AND friend2 = ?";
+                statement = connection.prepareStatement(updateScore);
+                statement.setString(1, winner);
+                statement.setString(2, loser);
+
+            } else {
+                updateScore = "UPDATE friendship\n" +
+                        "SET friend1win = friend1win + 1, friend2win = friend2win + 1\n" +
+                        "WHERE (friend1 = ?\n" +
+                        "AND friend2 = ?)\n" +
+                        "OR (\n" +
+                        "friend1 = ?\n" +
+                        "AND friend2 = ?)";
+                statement = connection.prepareStatement(updateScore);
+                statement.setString(1, winner);
+                statement.setString(2, loser);
+                statement.setString(3, loser);
+                statement.setString(4, winner);
+            }
+
+            int result = statement.executeUpdate();
+
+            if (result == 0) {
+                updateScore = "UPDATE friendship\n" +
+                        "SET friend2win = friend2win + 1\n" +
+                        "WHERE friend1 = ?\n" +
+                        "AND friend2 = ?";
+                statement = connection.prepareStatement(updateScore);
+                statement.setString(1, loser);
+                statement.setString(2, winner);
+                statement.executeUpdate();
+            }
+
+            statement.close();
+            connection.close();
+
+        } catch(SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+        }
+    }
+
+    /**
+     * Method to get race overall time from race id.
+     * @param id The race id
+     * @return The race time
+     */
+    public static float raceTimeFromRaceId(int id) {
+        loadDriver();
+        float  time = 0.0f;
+        try {
+            Connection connection = getConnection();
+            String getTime = "SELECT r.overalltime\n" +
+                    "FROM race r\n" +
+                    "WHERE r.raceid = ?";
+
+            PreparedStatement statement = connection.prepareStatement(getTime);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            while(resultSet.next()) {
+                time = resultSet.getFloat("overalltime");
+            }
+
+            statement.close();
+            connection.close();
+        } catch(SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+            return 0.0f;
+        }
+
+        return time;
+    }
+
+    /**
      * Mathod to delete a challenge, after a rejected challenge request
      * @param challengee This user,as the challengee
      * @param id The challenge id
@@ -344,10 +437,10 @@ public class DBChallenge {
     }
 
     public static void main(String[] args) {
-        List<Challenge> challenges = DBChallenge.getAllChallengeRequests("LiranTheDude", false);
-        for (Challenge challenge: challenges) {
-            System.out.println(challenge.toString());
-        }
+//        List<Challenge> challenges = DBChallenge.getAllChallengeRequests("LiranTheDude", false);
+//        for (Challenge challenge: challenges) {
+//            System.out.println(challenge.toString());
+//        }
 
         //System.out.println(DBChallenge.checkIfFriends("KrisCross", "LoopingLaurens"));
 
@@ -362,5 +455,9 @@ public class DBChallenge {
 
         //DBChallenge.respondToChallenge("KaganTheMan", 25);
         //DBChallenge.deleteChallenge("LiranTheDude", "AlexP", 25);
+
+        //System.out.println(DBChallenge.raceTimeFromRaceId(47));
+
+        DBChallenge.updateScores("LiranTheDude", "SexyBeast", true);
     }
 }
