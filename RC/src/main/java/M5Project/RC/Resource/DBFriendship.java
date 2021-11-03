@@ -26,6 +26,8 @@ public class DBFriendship {
      * @return  the requestSuccessFlag: -1 if SQL error, 0 if successful friend request, 1 if already friends, 2 if already in request
      */
     public static int sendFriendRequest(String username, String friend){
+        if (username.equals(friend)) { return -1; }
+
         loadDriver();
         boolean isFriends = false;
         boolean isOngoingRequest = false;
@@ -52,6 +54,7 @@ public class DBFriendship {
             prStatement.setBoolean(6, true);
             ResultSet resultSet = prStatement.executeQuery();
 
+
             while (resultSet.next()) {
                 isFriends = resultSet.getString("friend1") == null ? false : true;
             }
@@ -65,9 +68,11 @@ public class DBFriendship {
             prStatement.setBoolean(6, false);
             ResultSet resultSet1 = prStatement.executeQuery();
 
+
             while (resultSet1.next()) {
                 isOngoingRequest = resultSet1.getString("friend1") == null ? false : true;
             }
+
 
             if (isFriends == false && isOngoingRequest == false) {
                 String newRequestQuery = "INSERT INTO friendship(friend1, friend2, valid, friend1win, friend2win)\n" +
@@ -81,9 +86,11 @@ public class DBFriendship {
                 System.out.println("Request sent");
 
                 requestSuccessFlag =  0;
+
             } else if (isFriends == false){
                 System.out.println("Already in request");
                 requestSuccessFlag =  2;
+                
             } else if (isOngoingRequest == false){
                 System.out.println("Already in friendship");
                 requestSuccessFlag = 1;
@@ -97,13 +104,14 @@ public class DBFriendship {
             return requestSuccessFlag;
         }
     }
-
+    
     /**
      * Respond to a request. AKA change the valid flag to true for the given players
      * @param friend1
      * @param friend2
+     * @return -1 if error, 0 if successful update
      */
-    public static void respondToRequest(String friend1, String friend2){
+    public static int respondToRequest(String friend1, String friend2){
         loadDriver();
         try {
             Connection connection = getConnection();
@@ -119,12 +127,19 @@ public class DBFriendship {
             statement.setString(2, friend2);
             statement.setString(3, friend2);
             statement.setString(4, friend1);
-            statement.executeUpdate();
+            int flag = statement.executeUpdate();
 
             statement.close();
             connection.close();
+
+            if (flag != 0) {
+               return 0;
+            }
+            return -1;
+
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
+            return -1;
         }
     }
 
@@ -322,7 +337,7 @@ public class DBFriendship {
         DBFriendship.respondToRequest("KaganTheMan", "LoopingLaurens");
 //        List<String> friends = DBFriendship.getRequests("LoopingLaurens", false);
 //
-////        List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
+            List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
 //        for (String friend: friends) {
 //            System.out.println(friend);
 //        }
