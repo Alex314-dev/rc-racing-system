@@ -19,6 +19,15 @@ public enum ChallengeDao {
         return DBChallenge.respondToChallenge(challengee, challengeID);
     }
 
+    public boolean changeScoresInvalidRace(int id, String challenger, String challengee, boolean challengerWins) {
+        if (challengerWins) {
+            DBChallenge.forceCompleteChallenge(id);
+            return DBChallenge.updateScores(challenger, challengee, false);
+        } else {
+            return DBChallenge.updateScores(challengee, challenger, false);
+        }
+    }
+
     public boolean changeScores(String challengee) {
         List<Challenge> doneChallenges = DBChallenge.getAllDoneChallenges(challengee);
         if (doneChallenges == null || doneChallenges.size() == 0) {
@@ -54,5 +63,9 @@ public enum ChallengeDao {
 
     public List<Challenge> getSentChallengeRequests(String username) {
         return DBChallenge.getAllChallengeRequests(username, false);
+    }
+
+    public boolean checkIfChallengeExists(String challenger, String challengee, int id) {
+        return DBChallenge.getChallengeFromId(challenger, challengee, id);
     }
 }
