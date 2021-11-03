@@ -95,6 +95,8 @@ public class RESTAPIController {
                 }
                 return -1;
             }
+            // in this scenario we have the challenger sending a request but getting an invalid race
+            // this will update the scores but there will not be an entry in the challenge table about this.
             ChallengeDao.instance.changeScoresInvalidRace(-1, challenger, challengee, false);
             return overallTime;
         }
