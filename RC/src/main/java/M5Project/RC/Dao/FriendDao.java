@@ -13,8 +13,8 @@ public enum FriendDao {
         return DBFriendship.sendFriendRequest(sender, friendToAdd);
     }
 
-    public int acceptFriendRequest(String current, String sender) {
-        return DBFriendship.respondToRequest(current, sender);
+    public int acceptFriendRequest(String current, String friendToAccept) {
+        return DBFriendship.respondToRequest(current, friendToAccept);
     }
 
     public List<String> getPendingRequests(String username) {

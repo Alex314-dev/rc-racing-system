@@ -140,14 +140,15 @@ public class RESTAPIController {
 
     @PostMapping("/rest/sendFriendRequest")
     public int sendFriendRequest(@RequestParam String friendToAdd, Principal principal) {
+        System.out.println("FRIEND = " + friendToAdd);
         String sender = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         return FriendDao.instance.sendFriendRequest(sender, friendToAdd);
     }
 
     @PostMapping("/rest/acceptFriendRequest")
-    public int acceptFriendRequest(@RequestParam String sender, Principal principal) {
+    public int acceptFriendRequest(@RequestParam String friendToAccept, Principal principal) {
         String current = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
-        return FriendDao.instance.acceptFriendRequest(current, sender);
+        return FriendDao.instance.acceptFriendRequest(current, friendToAccept);
     }
 
     @GetMapping("/rest/getPendingRequests")
