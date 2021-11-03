@@ -130,16 +130,16 @@ public class DBChallenge {
             PreparedStatement statement = connection.prepareStatement(deleteRequest);
             statement.setInt(1, id);
             statement.setString(2, challengee);
-            statement.executeUpdate();
+            int result = statement.executeUpdate();
 
             statement.close();
             connection.close();
+
+            return result != 0;
         } catch(SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return false;
         }
-
-        return true;
     }
 
     /**

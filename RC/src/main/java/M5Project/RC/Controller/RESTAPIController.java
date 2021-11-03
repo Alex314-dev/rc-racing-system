@@ -94,7 +94,7 @@ public class RESTAPIController {
                 }
                 return -1;
             }
-
+            // TODO: decide if we are going to change the scores here
             return overallTime;
         }
         return -1;
@@ -113,6 +113,14 @@ public class RESTAPIController {
             }
             return -1;
         }
+        // TODO: decide if we are going to change the scores here
         return overallTime;
+    }
+
+    @PostMapping("/rest/rejectChallenge")
+    public boolean rejectChallenge(@RequestParam int id, Principal principal) {
+        String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        // TODO: decide if we are going to change the scores here
+        return DBChallenge.deleteChallenge(challengee, id);
     }
 }
