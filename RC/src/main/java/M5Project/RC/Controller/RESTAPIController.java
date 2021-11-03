@@ -125,9 +125,9 @@ public class RESTAPIController {
     public boolean rejectChallenge(@RequestParam String challenger, @RequestParam int id, Principal principal) {
         String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         if (ChallengeDao.instance.checkIfChallengeExists(challenger, challengee, id)) {
-            ChallengeDao.instance.changeScoresInvalidRace(id, challenger, challengee, true);
+            return ChallengeDao.instance.changeScoresInvalidRace(id, challenger, challengee, true);
         }
-        return ChallengeDao.instance.deleteChallenge(challengee, id);
+        return false;
     }
 
     @GetMapping("/rest/getPendingChallengeRequests")
