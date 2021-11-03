@@ -113,7 +113,7 @@ public class TestDBChallenge {
         for (Challenge challenge: pendingChallenges) {
             id = challenge.getChallengeID();
         }
-        DBChallenge.deleteChallenge("AlexP", "LordDebel", id);
+        DBChallenge.deleteChallenge("LordDebel", id);
 
         //Should be 0, because no other pending requests
         assertEquals(0, DBChallenge.getAllChallengeRequests("LordDebel", true).size());
@@ -123,7 +123,7 @@ public class TestDBChallenge {
     @Test
     void deleteChallengeInCorrectChallengee(){
         //Existing challenge with incorrect challengee
-        DBChallenge.deleteChallenge("KaganTheMan", "LordDebel", 30);
+        DBChallenge.deleteChallenge("LordDebel", 30);
         assertEquals(4, DBChallenge.getAllChallengeRequests("LoopingLaurens", true).size());
     }
 }
