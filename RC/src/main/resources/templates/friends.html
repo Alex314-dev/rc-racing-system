@@ -76,7 +76,67 @@
         </a>
     </div>
 </div>
+<div class="friends-wrapper">
+    <div class="list freindsactive"><span>Friend's list</span></div>
+    <div class="requests"><span>Add Friend</span></div>
+</div>
 
+<div class="friends-list-wrapper">
+    <table id = "table_friends">
+        <thead>
+            <tr>
+                <th>Friend</th>
+                <th>Wins</th>
+                <th>Looses</th>
+                <th>Total</th>
+                <th>Unfriend</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="add-friends-wrapper">
+    <div id = "search-wrapper">
+        <form id="add_friend_form" action="/rest/addfriend" method="post">
+            <input type="text" id="friend" name="username" placeholder="Add Friend">
+            <button type="submit" id="friend_submit" class="btn-success">
+                <i class="fas fa-user-plus"></i>
+            </button>
+        </form>
+    </div>
+
+    <div id = "requests-wrapper">
+        <div class = "pending">
+            <b>Pending Requests (To)</b>
+            <hr>
+            <div style="height: 85%; overflow-y: scroll">
+                <table id = "pending_table" style="width: 100%">
+                    <colgroup>
+                        <col span="1" style="width: 60%;">
+                        <col span="1" style="width: 20%;">
+                        <col span="1" style="width: 20%;">
+                    </colgroup>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class = "outgoing">
+            <b>Outgoing Requests (From)</b>
+            <hr>
+            <div style="height: 85%; overflow-y: scroll">
+                <table id = "outgoing_table" style="width: 100%">
+                    <colgroup>
+                        <col span="1" style="width: 75%;">
+                        <col span="1" style="width: 35%;">
+                    </colgroup>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 
 </body>

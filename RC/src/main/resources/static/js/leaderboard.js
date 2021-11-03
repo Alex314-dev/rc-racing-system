@@ -14,7 +14,6 @@ $(window).on('load', function() {
     datatable = $("#table_races").DataTable( {
         "pageLength": 20,
         "lengthChange": false,
-        "lengthChange": false,
         "responsive": true,
         "scrollY": "calc(100vh - 450px)",
         "scrollCollapse": true,
