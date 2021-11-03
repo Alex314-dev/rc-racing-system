@@ -44,4 +44,15 @@ public enum ChallengeDao {
         return result;
     }
 
+    public boolean deleteChallenge(String challengee, int id) {
+        return DBChallenge.deleteChallenge(challengee, id);
+    }
+
+    public List<Challenge> getPendingChallengeRequests(String username) {
+        return DBChallenge.getAllChallengeRequests(username, true);
+    }
+
+    public List<Challenge> getSentChallengeRequests(String username) {
+        return DBChallenge.getAllChallengeRequests(username, false);
+    }
 }

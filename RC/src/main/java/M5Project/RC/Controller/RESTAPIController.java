@@ -5,6 +5,7 @@ import M5Project.RC.Dao.PlayerDao;
 import M5Project.RC.Dao.RaceDao;
 import M5Project.RC.JavaClientSocket.ClientSocket;
 import M5Project.RC.Resource.DBChallenge;
+import M5Project.RC.model.Challenge;
 import M5Project.RC.model.Player;
 import M5Project.RC.model.Race;
 import org.springframework.web.bind.annotation.*;
@@ -121,6 +122,18 @@ public class RESTAPIController {
     public boolean rejectChallenge(@RequestParam int id, Principal principal) {
         String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         // TODO: decide if we are going to change the scores here
-        return DBChallenge.deleteChallenge(challengee, id);
+        return ChallengeDao.instance.deleteChallenge(challengee, id);
+    }
+
+    @GetMapping("/rest/getPendingChallengeRequests")
+    public List<Challenge> getPendingChallengeRequests(Principal principal) {
+        String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return ChallengeDao.instance.getPendingChallengeRequests(challengee);
+    }
+
+    @GetMapping("/rest/getSentChallengeRequests")
+    public List<Challenge> getSendChallengeRequests(Principal principal) {
+        String challenger = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return ChallengeDao.instance.getSentChallengeRequests(challenger);
     }
 }
