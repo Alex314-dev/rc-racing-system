@@ -182,6 +182,8 @@ public class DBChallenge {
      * @return The race time
      */
     public static float raceTimeFromRaceId(int id) {
+        if (id == 0) { return 0.0f; }
+        
         loadDriver();
         float  time = 0.0f;
         try {
@@ -536,10 +538,11 @@ public class DBChallenge {
     }
 
     public static void main(String[] args) {
-//        List<Challenge> challenges = DBChallenge.getAllChallengeRequests("LiranTheDude", false);
-//        for (Challenge challenge: challenges) {
-//            System.out.println(challenge.toString());
-//        }
+        //List<Challenge> challenges = DBChallenge.getAllChallengeRequests("LiranTheDude", false);
+        List<Challenge> challenges = DBChallenge.getAllDoneChallenges("SexyBeast");
+        for (Challenge challenge: challenges) {
+            System.out.println(challenge.toString());
+        }
 
         //System.out.println(DBChallenge.checkIfFriends("KrisCross", "LoopingLaurens"));
 
@@ -566,6 +569,6 @@ public class DBChallenge {
         //System.out.println(getChallengeFromId("kristian58", "SomeGuy", 28));
         //DBChallenge.deleteALlChallengesUsers("SexyBeast", "LordDebel");
 
-        DBChallenge.forceCompleteChallenge(52);
+        //DBChallenge.forceCompleteChallenge(52);
     }
 }
