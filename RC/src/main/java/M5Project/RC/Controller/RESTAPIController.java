@@ -1,6 +1,7 @@
 package M5Project.RC.Controller;
 
 import M5Project.RC.Dao.ChallengeDao;
+import M5Project.RC.Dao.FriendDao;
 import M5Project.RC.Dao.PlayerDao;
 import M5Project.RC.Dao.RaceDao;
 import M5Project.RC.JavaClientSocket.ClientSocket;
@@ -136,4 +137,43 @@ public class RESTAPIController {
         String challenger = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         return ChallengeDao.instance.getSentChallengeRequests(challenger);
     }
+
+    @PostMapping("/rest/sendFriendRequest")
+    public int sendFriendRequest(@RequestParam String friendToAdd, Principal principal) {
+        String sender = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return FriendDao.instance.sendFriendRequest(sender, friendToAdd);
+    }
+
+    @PostMapping("/rest/acceptFriendRequest")
+    public int acceptFriendRequest(@RequestParam String sender, Principal principal) {
+        String current = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return FriendDao.instance.acceptFriendRequest(current, sender);
+    }
+
+    @GetMapping("/rest/getPendingRequests")
+    public List<String> getPendingRequests(Principal principal) {
+        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return FriendDao.instance.getPendingRequests(username);
+    }
+
+    @GetMapping("/rest/getSentRequests")
+    public List<String> getSentRequests(Principal principal) {
+        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return FriendDao.instance.getSentRequests(username);
+    }
+
+    @GetMapping("/rest/getFriendsWinsLosses")
+    public List<Player> getFriendsWinsLosses(Principal principal) {
+        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return FriendDao.instance.getFriendsWinsLosses(username);
+    }
+
+    @DeleteMapping("/rest/deleteFriend")
+    public int deleteFriend(@RequestParam String friendToDelete, Principal principal) {
+        String current = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return FriendDao.instance.deleteFriend(current, friendToDelete);
+    }
+
+
+
 }
