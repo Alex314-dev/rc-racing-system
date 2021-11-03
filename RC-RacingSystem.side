@@ -1,0 +1,28 @@
+{
+  "id": "7e75cea2-70b6-46fc-9695-fc7fed4c0845",
+  "version": "2.0",
+  "name": "RC-RacingSystem",
+  "url": "https://localhost:8443/race",
+  "tests": [{
+    "id": "3b465349-b939-4009-bdb4-4fc148a20ac5",
+    "name": "Untitled",
+    "commands": [{
+      "id": "fc0c98e4-6f92-4220-986d-aafc3fcff2bb",
+      "comment": "Username validation",
+      "command": "assert",
+      "target": "/html/body/div[1]/div[1]/div/span",
+      "targets": [],
+      "value": "liranneta23"
+    }]
+  }],
+  "suites": [{
+    "id": "a3ff5b51-6ed4-4923-b271-f9d566250c6d",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["3b465349-b939-4009-bdb4-4fc148a20ac5"]
+  }],
+  "urls": ["https://localhost:8443/", "https://localhost:8443/rest/player", "https://localhost:8443/race#", "https://localhost:8443/race"],
+  "plugins": []
+}
