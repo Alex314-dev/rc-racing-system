@@ -18,6 +18,28 @@ public class DBChallenge {
     static final String PASS = System.getenv("RC_DB_PASS");
 
     /**
+     * Method to forcefully complete a challenge.
+     * Used when we have an invalid race or rejected challenge.
+     * @param id The challenge id
+     */
+    public static void forceCompleteChallenge(int id) {
+        loadDriver();
+        try {
+            Connection connection = getConnection();
+            String delete = "DELETE FROM challenge\n" +
+                    "WHERE challengeid = ?";
+            PreparedStatement statement = connection.prepareStatement(delete);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+
+            statement.close();
+            connection.close();
+        } catch(SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+        }
+    }
+
+    /**
      * Method to delete all challenges between two users.
      * Used when a friendship is deleted.
      * @param user1
@@ -526,7 +548,7 @@ public class DBChallenge {
 //        } else {
 //            System.out.println("Not in a challenge");
 
-        DBChallenge.startNewChallenge("SexyBeast", "LordDebel");
+        //DBChallenge.startNewChallenge("SexyBeast", "LordDebel");
         //DBChallenge.startNewChallenge("LordDebel", "SexyBeast");
 //            DBChallenge.startNewChallenge("LiranTheDude", "LoopingLaurens");
 
@@ -542,5 +564,7 @@ public class DBChallenge {
 
         //System.out.println(getChallengeFromId("kristian58", "SomeGuy", 28));
         //DBChallenge.deleteALlChallengesUsers("SexyBeast", "LordDebel");
+
+        //DBChallenge.forceCompleteChallenge(36);
     }
 }
