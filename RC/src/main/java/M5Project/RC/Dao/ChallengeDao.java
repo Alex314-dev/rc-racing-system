@@ -43,9 +43,9 @@ public enum ChallengeDao {
 
         boolean result;
         if (challengerTime > challengeeTime) {
-            result = DBChallenge.updateScores(challenger, challengee, false);
-        } else if (challengerTime < challengeeTime) {
             result = DBChallenge.updateScores(challengee, challenger, false);
+        } else if (challengerTime < challengeeTime) {
+            result = DBChallenge.updateScores(challenger, challengee, false);
         } else {
             result = DBChallenge.updateScores(challenger, challengee, true);
         }
