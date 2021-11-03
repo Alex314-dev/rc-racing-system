@@ -1,3 +1,5 @@
+
+
 package M5Project.RC.Resource;
 
 import M5Project.RC.model.Player;
@@ -90,7 +92,7 @@ public class DBFriendship {
             } else if (isFriends == false){
                 System.out.println("Already in request");
                 requestSuccessFlag =  2;
-                
+
             } else if (isOngoingRequest == false){
                 System.out.println("Already in friendship");
                 requestSuccessFlag = 1;
@@ -104,7 +106,7 @@ public class DBFriendship {
             return requestSuccessFlag;
         }
     }
-    
+
     /**
      * Respond to a request. AKA change the valid flag to true for the given players
      * @param friend1
@@ -133,7 +135,7 @@ public class DBFriendship {
             connection.close();
 
             if (flag != 0) {
-               return 0;
+                return 0;
             }
             return -1;
 
@@ -317,9 +319,9 @@ public class DBFriendship {
         }
     }
 
-        /**
-         * Helper function to load the driver
-         */
+    /**
+     * Helper function to load the driver
+     */
     private static void loadDriver(){
         try {
             Class.forName(JDBC_DRIVER);
@@ -339,12 +341,12 @@ public class DBFriendship {
     }
 
     public static void main(String[] args) {
-        //DBFriendship.sendFriendRequest("LoopingLaurens", "SexyBeast");
-        //DBFriendship.deleteFriend("LoopingLaurens", "AlexP");
-       //DBFriendship.respondToRequest("SexyBeast", "LoopingLaurens");
+        //DBFriendship.sendFriendRequest("SexyBeast", "LordDebel");
+        //DBFriendship.deleteFriend("SexyBeast", "LordDebel");
+        //DBFriendship.respondToRequest("SexyBeast", "LoopingLaurens");
 //        List<String> friends = DBFriendship.getRequests("LoopingLaurens", false);
 //
-           // List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
+        // List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
 //        for (String friend: friends) {
 //            System.out.println(friend);
 //        }
