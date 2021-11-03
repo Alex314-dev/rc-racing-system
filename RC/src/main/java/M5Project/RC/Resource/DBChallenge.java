@@ -26,7 +26,8 @@ public class DBChallenge {
         loadDriver();
         try {
             Connection connection = getConnection();
-            String delete = "DELETE FROM challenge\n" +
+            String delete = "UPDATE challenge\n" +
+                    "SET isfinished = true \n" +
                     "WHERE challengeid = ?";
             PreparedStatement statement = connection.prepareStatement(delete);
             statement.setInt(1, id);
@@ -565,6 +566,6 @@ public class DBChallenge {
         //System.out.println(getChallengeFromId("kristian58", "SomeGuy", 28));
         //DBChallenge.deleteALlChallengesUsers("SexyBeast", "LordDebel");
 
-        //DBChallenge.forceCompleteChallenge(36);
+        DBChallenge.forceCompleteChallenge(52);
     }
 }
