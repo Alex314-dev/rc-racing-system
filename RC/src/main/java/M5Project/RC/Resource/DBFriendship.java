@@ -141,7 +141,7 @@ public class DBFriendship {
      * then return all pending requests, if not, return all outgoing requests.
      * @param username the username of the current user
      * @param pending the pending flag (decides output)
-     * @return
+     * @return null in case of SQL error, otherwise the list of friends (as Strings)
      */
     public static List<String> getRequests(String username, boolean pending) {
         loadDriver();
@@ -186,8 +186,9 @@ public class DBFriendship {
     /**
      * Method to delete a friendship between the current player and a specified user
      * @param friend friend to unfriend
+     * @return 0 in case of SQL error, 1 if delete was completed successfully
      */
-    public static void deleteFriend(String username, String friend){
+    public static int deleteFriend(String username, String friend){
         loadDriver();
         try {
             Connection connection = getConnection();
@@ -208,7 +209,9 @@ public class DBFriendship {
 
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
+            return -1;
         }
+        return 0;
     }
 
     /**
