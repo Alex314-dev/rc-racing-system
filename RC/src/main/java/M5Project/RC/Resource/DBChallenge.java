@@ -18,6 +18,43 @@ public class DBChallenge {
     static final String PASS = System.getenv("RC_DB_PASS");
 
     /**
+     * Method to return a boolean if challenger, challengee, id correspond to a challenge row.
+     * Used for making sure after a declined/timed out race, these players are actually in this challenge.
+     * @param challenger
+     * @param challengee
+     * @param id
+     * @return true if challenge exists, false if it does not or sql error
+     */
+    public static boolean getChallengeFromId(String challenger, String challengee, int id) {
+        loadDriver();
+        try {
+            Connection connection = getConnection();
+            String getChallengge = "SELECT * \n" +
+                    "FROM challenge c\n" +
+                    "WHERE c.challenger = ?\n" +
+                    "AND c.challengee = ?\t\n" +
+                    "AND c.challengeid = ?\n" +
+                    "AND c.isfinished = false";
+
+            PreparedStatement statement = connection.prepareStatement(getChallengge);
+            statement.setString(1, challenger);
+            statement.setString(2, challengee);
+            statement.setInt(3, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                return true;
+            }
+
+            return false;
+
+        } catch(SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+            return false;
+        }
+    }
+
+    /**
      * Method to update the scores after a successful challenge.
      * First a check is done to see if the race is a draw or not. If it is not, proceed to update a friend1 as winner and friend2 as loser situation.
      * If this update returns 0, proceed to update a friend2 as winner and friend1 as loser situation.
@@ -457,8 +494,8 @@ public class DBChallenge {
 //            System.out.println("Not in a challenge");
 
             //DBChallenge.startNewChallenge("AlexP", "LoopingLaurens");
-            DBChallenge.startNewChallenge("KaganTheMan", "LoopingLaurens");
-            DBChallenge.startNewChallenge("LiranTheDude", "LoopingLaurens");
+//            DBChallenge.startNewChallenge("KaganTheMan", "LoopingLaurens");
+//            DBChallenge.startNewChallenge("LiranTheDude", "LoopingLaurens");
 
 
         //       }
@@ -468,6 +505,8 @@ public class DBChallenge {
 
         //System.out.println(DBChallenge.raceTimeFromRaceId(47));
 
-        DBChallenge.updateScores("LiranTheDude", "SexyBeast", true);
+        //DBChallenge.updateScores("LiranTheDude", "SexyBeast", true);
+
+        //System.out.println(getChallengeFromId("kristian58", "SomeGuy", 28));
     }
 }
