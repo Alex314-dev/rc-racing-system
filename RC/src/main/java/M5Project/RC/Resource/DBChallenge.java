@@ -18,6 +18,59 @@ public class DBChallenge {
     static final String PASS = System.getenv("RC_DB_PASS");
 
     /**
+     * Method to forcefully complete a challenge.
+     * Used when we have an invalid race or rejected challenge.
+     * @param id The challenge id
+     */
+    public static void forceCompleteChallenge(int id) {
+        loadDriver();
+        try {
+            Connection connection = getConnection();
+            String delete = "DELETE FROM challenge\n" +
+                    "WHERE challengeid = ?";
+            PreparedStatement statement = connection.prepareStatement(delete);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+
+            statement.close();
+            connection.close();
+        } catch(SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+        }
+    }
+
+    /**
+     * Method to delete all challenges between two users.
+     * Used when a friendship is deleted.
+     * @param user1
+     * @param user2
+     */
+    public static void deleteALlChallengesUsers(String user1, String user2) {
+        loadDriver();
+        try {
+            Connection connection = getConnection();
+            String deleteAll = "DELETE FROM challenge\n" +
+                    "WHERE (challenger = ?\n" +
+                    "AND challengee = ?)\n" +
+                    "OR (challenger = ?\n" +
+                    "AND challengee = ?)";
+
+            PreparedStatement statement = connection.prepareStatement(deleteAll);
+            statement.setString(1, user1);
+            statement.setString(2, user2);
+            statement.setString(3, user2);
+            statement.setString(4, user1);
+            statement.executeUpdate();
+
+            statement.close();
+            connection.close();
+
+        } catch(SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+        }
+    }
+
+    /**
      * Method to return a boolean if challenger, challengee, id correspond to a challenge row.
      * Used for making sure after a declined/timed out race, these players are actually in this challenge.
      * @param challenger
@@ -43,9 +96,13 @@ public class DBChallenge {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
+                statement.close();
+                connection.close();
                 return true;
             }
 
+            statement.close();
+            connection.close();
             return false;
 
         } catch(SQLException sqle) {
@@ -491,8 +548,8 @@ public class DBChallenge {
 //        } else {
 //            System.out.println("Not in a challenge");
 
-            //DBChallenge.startNewChallenge("AlexP", "LoopingLaurens");
-//            DBChallenge.startNewChallenge("KaganTheMan", "LoopingLaurens");
+        //DBChallenge.startNewChallenge("SexyBeast", "LordDebel");
+        //DBChallenge.startNewChallenge("LordDebel", "SexyBeast");
 //            DBChallenge.startNewChallenge("LiranTheDude", "LoopingLaurens");
 
 
@@ -506,5 +563,8 @@ public class DBChallenge {
         //DBChallenge.updateScores("LiranTheDude", "SexyBeast", true);
 
         //System.out.println(getChallengeFromId("kristian58", "SomeGuy", 28));
+        //DBChallenge.deleteALlChallengesUsers("SexyBeast", "LordDebel");
+
+        //DBChallenge.forceCompleteChallenge(36);
     }
 }
