@@ -26,6 +26,8 @@ public class DBFriendship {
      * @return  the requestSuccessFlag: -1 if SQL error, 0 if successful friend request, 1 if already friends, 2 if already in request
      */
     public static int sendFriendRequest(String username, String friend){
+        if (username.equals(friend)) { return -1; }
+
         loadDriver();
         boolean isFriends = false;
         boolean isOngoingRequest = false;
@@ -69,7 +71,7 @@ public class DBFriendship {
                 isOngoingRequest = resultSet1.getString("friend1") == null ? false : true;
             }
 
-            if (isFriends == false && isOngoingRequest == false) {
+            if (isFriends && isOngoingRequest) {
                 String newRequestQuery = "INSERT INTO friendship(friend1, friend2, valid, friend1win, friend2win)\n" +
                         "VALUES (?, ?, false, 0,  0)";
 
@@ -81,10 +83,10 @@ public class DBFriendship {
                 System.out.println("Request sent");
 
                 requestSuccessFlag =  0;
-            } else if (isFriends == false){
+            } else if (isFriends){
                 System.out.println("Already in request");
                 requestSuccessFlag =  2;
-            } else if (isOngoingRequest == false){
+            } else if (isOngoingRequest){
                 System.out.println("Already in friendship");
                 requestSuccessFlag = 1;
             }
@@ -330,7 +332,7 @@ public class DBFriendship {
         DBFriendship.respondToRequest("KaganTheMan", "LoopingLaurens");
 //        List<String> friends = DBFriendship.getRequests("LoopingLaurens", false);
 //
-////        List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
+            List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
 //        for (String friend: friends) {
 //            System.out.println(friend);
 //        }
