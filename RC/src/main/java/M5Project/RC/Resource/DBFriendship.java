@@ -27,7 +27,7 @@ public class DBFriendship {
      */
     public static int sendFriendRequest(String username, String friend){
         if (username.equals(friend)) { return -1; }
-
+        
         loadDriver();
         boolean isFriends = false;
         boolean isOngoingRequest = false;
@@ -71,7 +71,7 @@ public class DBFriendship {
                 isOngoingRequest = resultSet1.getString("friend1") == null ? false : true;
             }
 
-            if (isFriends && isOngoingRequest) {
+            if (isFriends == false && isOngoingRequest == false) {
                 String newRequestQuery = "INSERT INTO friendship(friend1, friend2, valid, friend1win, friend2win)\n" +
                         "VALUES (?, ?, false, 0,  0)";
 
@@ -83,10 +83,10 @@ public class DBFriendship {
                 System.out.println("Request sent");
 
                 requestSuccessFlag =  0;
-            } else if (isFriends){
+            } else if (isFriends == false){
                 System.out.println("Already in request");
                 requestSuccessFlag =  2;
-            } else if (isOngoingRequest){
+            } else if (isOngoingRequest == false){
                 System.out.println("Already in friendship");
                 requestSuccessFlag = 1;
             }
