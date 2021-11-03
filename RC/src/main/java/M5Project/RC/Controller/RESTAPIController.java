@@ -1,8 +1,12 @@
 package M5Project.RC.Controller;
 
+import M5Project.RC.Dao.ChallengeDao;
+import M5Project.RC.Dao.FriendDao;
 import M5Project.RC.Dao.PlayerDao;
 import M5Project.RC.Dao.RaceDao;
 import M5Project.RC.JavaClientSocket.ClientSocket;
+import M5Project.RC.Resource.DBChallenge;
+import M5Project.RC.model.Challenge;
 import M5Project.RC.model.Player;
 import M5Project.RC.model.Race;
 import org.springframework.web.bind.annotation.*;
@@ -78,37 +82,99 @@ public class RESTAPIController {
 
     @GetMapping("/rest/race")
     public float normalRace(Principal principal) {
-        if (ClientSocket.instance.isOngoingGame()) {
-            return -2;
+        return RaceDao.instance.initiateARace(principal);
+    }
+
+    @PostMapping("/rest/challengeRequest")
+    public float challengeRequest(@RequestParam String challengee, Principal principal) {
+        String challenger = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        if (ChallengeDao.instance.challengeRequest(challenger, challengee)) {
+            float overallTime = RaceDao.instance.initiateARace(principal);
+            if (overallTime > 0) {
+                if (DBChallenge.startNewChallenge(challenger, challengee)) {
+                    return overallTime;
+                }
+                return -1;
+            }
+            // TODO: decide if we are going to change the scores here
+            return overallTime;
         }
+        return -1;
+    }
 
-        ClientSocket.instance.setOngoingGame(true);
-        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
-
-        String result = "";
-        try {
-            result = ClientSocket.instance.startRace();
-        } catch (Exception e) {
-            ClientSocket.instance.setOngoingGame(false);
-            e.printStackTrace();
+    @PostMapping("/rest/acceptChallenge")
+    public float acceptChallenge(@RequestParam int id, Principal principal) {
+        float overallTime = RaceDao.instance.initiateARace(principal);
+        if (overallTime > 0) {
+            String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+            if (ChallengeDao.instance.respondToChallenge(id, challengee)) {
+                if (ChallengeDao.instance.changeScores(challengee)) { // if we make this async it would be bazinga
+                    return overallTime;
+                }
+                return -1;
+            }
             return -1;
         }
-
-        if (result.contains("Invalid")) {
-            ClientSocket.instance.setOngoingGame(false);
-            return -1;
-        }
-
-        String[] resultStrArr = result.split("~");
-        List<Float> times = new ArrayList<Float>();
-        for (String r : resultStrArr) {
-            times.add(Float.parseFloat(r));
-        }
-        float overallTime = times.get(times.size() - 1);
-        times.remove(times.size() - 1);
-
-        RaceDao.instance.addRaceToDB(username, overallTime, times);
-        ClientSocket.instance.setOngoingGame(false);
+        // TODO: decide if we are going to change the scores here
         return overallTime;
     }
+
+    @PostMapping("/rest/rejectChallenge")
+    public boolean rejectChallenge(@RequestParam int id, Principal principal) {
+        String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        // TODO: decide if we are going to change the scores here
+        return ChallengeDao.instance.deleteChallenge(challengee, id);
+    }
+
+    @GetMapping("/rest/getPendingChallengeRequests")
+    public List<Challenge> getPendingChallengeRequests(Principal principal) {
+        String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return ChallengeDao.instance.getPendingChallengeRequests(challengee);
+    }
+
+    @GetMapping("/rest/getSentChallengeRequests")
+    public List<Challenge> getSendChallengeRequests(Principal principal) {
+        String challenger = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return ChallengeDao.instance.getSentChallengeRequests(challenger);
+    }
+
+    @PostMapping("/rest/sendFriendRequest")
+    public int sendFriendRequest(@RequestParam String friendToAdd, Principal principal) {
+        System.out.println("FRIEND = " + friendToAdd);
+        String sender = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return FriendDao.instance.sendFriendRequest(sender, friendToAdd);
+    }
+
+    @PostMapping("/rest/acceptFriendRequest")
+    public int acceptFriendRequest(@RequestParam String friendToAccept, Principal principal) {
+        String current = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return FriendDao.instance.acceptFriendRequest(current, friendToAccept);
+    }
+
+    @GetMapping("/rest/getPendingRequests")
+    public List<String> getPendingRequests(Principal principal) {
+        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return FriendDao.instance.getPendingRequests(username);
+    }
+
+    @GetMapping("/rest/getSentRequests")
+    public List<String> getSentRequests(Principal principal) {
+        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return FriendDao.instance.getSentRequests(username);
+    }
+
+    @GetMapping("/rest/getFriendsWinsLosses")
+    public List<Player> getFriendsWinsLosses(Principal principal) {
+        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return FriendDao.instance.getFriendsWinsLosses(username);
+    }
+
+    @DeleteMapping("/rest/deleteFriend")
+    public int deleteFriend(@RequestParam String friendToDelete, Principal principal) {
+        String current = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return FriendDao.instance.deleteFriend(current, friendToDelete);
+    }
+
+
+
 }

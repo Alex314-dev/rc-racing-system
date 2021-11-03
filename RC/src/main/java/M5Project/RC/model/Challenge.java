@@ -8,24 +8,22 @@ import java.util.List;
 public class Challenge {
     private int challengeID;
     private Boolean isFinished;
-    private Boolean isAccepted;
     private String challenger;
     private String challengee;
-    private Integer raceIDUser1;
-    private Integer raceIDUser2;
+    private int raceIDChallenger;
+    private int raceIDChallengee;
 
     public Challenge() {
         ;
     }
 
-    public Challenge(int challengeID, Boolean isFinished, Boolean isAccepted, String challenger, String challengee, Integer raceIDUser1, Integer raceIDUser2) {
+    public Challenge(int challengeID, Boolean isFinished, String challenger, String challengee, int raceIDChallenger, int raceIDChallengee) {
         this.challengeID = challengeID;
         this.isFinished = isFinished;
-        this.isAccepted = isAccepted;
         this.challenger = challenger;
         this.challengee = challengee;
-        this.raceIDUser1 = raceIDUser1;
-        this.raceIDUser2 = raceIDUser2;
+        this.raceIDChallenger = raceIDChallenger;
+        this.raceIDChallengee = raceIDChallengee;
     }
 
 
@@ -46,14 +44,6 @@ public class Challenge {
         isFinished = finished;
     }
 
-    public Boolean getAccepted() {
-        return isAccepted;
-    }
-
-    public void setAccepted(Boolean accepted) {
-        isAccepted = accepted;
-    }
-
     public String getChallenger() {
         return challenger;
     }
@@ -70,25 +60,25 @@ public class Challenge {
         this.challengee = challengee;
     }
 
-    public Integer getRaceIDUser1() {
-        return raceIDUser1;
+    public int getRaceIDChallenger() {
+        return raceIDChallenger;
     }
 
-    public void setRaceIDUser1(Integer raceIDUser1) {
-        this.raceIDUser1 = raceIDUser1;
+    public void setRaceIDChallenger(int raceIDChallenger) {
+        this.raceIDChallenger = raceIDChallenger;
     }
 
-    public Integer getRaceIDUser2() {
-        return raceIDUser2;
+    public int getRaceIDChallengee() {
+        return raceIDChallengee;
     }
 
-    public void setRaceIDUser2(Integer raceIDUser2) {
-        this.raceIDUser2 = raceIDUser2;
+    public void setRaceIDChallengee(int raceIDChallengee) {
+        this.raceIDChallengee = raceIDChallengee;
     }
 
     @Override
     public String toString() {
-        String toString = "Challenge{" + "id=" + this.challengeID + ", player1:"  + this.challenger + ", raceID User1:" + this.raceIDUser1 + ", raceID User2:" + this.raceIDUser2 + '\'';
+        String toString = "Challenge{" + "id=" + this.challengeID + ", player1:"  + this.challenger + ", raceID Challenger:" + this.raceIDChallenger + ", raceID Challengee:" + this.raceIDChallengee + '\'';
         return toString + "}";
     }
 
