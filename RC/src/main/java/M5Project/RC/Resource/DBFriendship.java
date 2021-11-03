@@ -343,7 +343,7 @@ public class DBFriendship {
     public static void main(String[] args) {
         //DBFriendship.sendFriendRequest("SexyBeast", "LordDebel");
         //DBFriendship.deleteFriend("SexyBeast", "LordDebel");
-        //DBFriendship.respondToRequest("SexyBeast", "LoopingLaurens");
+        DBFriendship.respondToRequest("SexyBeast", "LordDebel");
 //        List<String> friends = DBFriendship.getRequests("LoopingLaurens", false);
 //
         // List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
