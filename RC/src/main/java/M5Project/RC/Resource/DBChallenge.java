@@ -453,9 +453,13 @@ public class DBChallenge {
 //            System.out.println("In a challenge");
 //        } else {
 //            System.out.println("Not in a challenge");
-//
-//            DBChallenge.startNewChallenge("LiranTheDude", "KaganTheMan");
-//        }
+
+            //DBChallenge.startNewChallenge("AlexP", "LoopingLaurens");
+            DBChallenge.startNewChallenge("KaganTheMan", "LoopingLaurens");
+            DBChallenge.startNewChallenge("LiranTheDude", "LoopingLaurens");
+
+
+        //       }
 
         //DBChallenge.respondToChallenge("KaganTheMan", 25);
         //DBChallenge.deleteChallenge("LiranTheDude", "AlexP", 25);
