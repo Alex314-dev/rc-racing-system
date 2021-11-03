@@ -26,7 +26,7 @@ public class DBChallenge {
      * @param loser The player who lost
      * @param draw If it is a draw
      */
-    public static void updateScores(String winner, String loser, boolean draw) {
+    public static boolean updateScores(String winner, String loser, boolean draw) {
         loadDriver();
         try {
             Connection connection = getConnection();
@@ -75,7 +75,10 @@ public class DBChallenge {
 
         } catch(SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -115,28 +118,28 @@ public class DBChallenge {
      * @param challengee This user,as the challengee
      * @param id The challenge id
      */
-    public static void deleteChallenge(String challenger, String challengee, int id) {
+    public static boolean deleteChallenge(String challengee, int id) {
         loadDriver();
         try {
             Connection connection = getConnection();
             String deleteRequest = "DELETE FROM challenge\n" +
                     "WHERE challengeid = ? \n" +
                     "AND isfinished = false \n" +
-                    "AND challengee = ? " +
-                    "AND challenger = ?";
+                    "AND challengee = ?";
 
             PreparedStatement statement = connection.prepareStatement(deleteRequest);
             statement.setInt(1, id);
             statement.setString(2, challengee);
-            statement.setString(3, challenger);
             statement.executeUpdate();
 
             statement.close();
             connection.close();
         } catch(SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
+            return false;
         }
 
+        return true;
     }
 
     /**
@@ -235,21 +238,21 @@ public class DBChallenge {
 
 
             String newChallenge = "INSERT INTO challenge (challengeid, isfinished, \n" +
-                        "challenger, challengee, challengerrace, challengeerace)\n" +
-                        "SELECT nextval('challange_challangeid_seq'::regclass),\n" +
-                        "false, r.player, ?, \n" +
-                        "r.raceid, NULL\n" +
-                        "FROM race r, friendship f\n" +
-                        "WHERE r.player = ? \n" +
-                        "ORDER BY r.raceid DESC\n" +
-                        "LIMIT 1";
+                    "challenger, challengee, challengerrace, challengeerace)\n" +
+                    "SELECT nextval('challange_challangeid_seq'::regclass),\n" +
+                    "false, r.player, ?, \n" +
+                    "r.raceid, NULL\n" +
+                    "FROM race r, friendship f\n" +
+                    "WHERE r.player = ? \n" +
+                    "ORDER BY r.raceid DESC\n" +
+                    "LIMIT 1";
 
-                statement = connection.prepareStatement(newChallenge);
-                statement.setString(1, challengee);
-                statement.setString(2, challenger);
-                statement.execute();
+            statement = connection.prepareStatement(newChallenge);
+            statement.setString(1, challengee);
+            statement.setString(2, challenger);
+            statement.execute();
 
-                statement.close();
+            statement.close();
 
             connection.close();
         } catch(SQLException sqle) {
@@ -343,7 +346,8 @@ public class DBChallenge {
                     "WHERE (c.challenger = ?" +
                     " AND c.isfinished = true)\n" +
                     " OR (c.challengee = ?" +
-                    " AND c.isfinished = true)\n";
+                    " AND c.isfinished = true)\n" +
+                    "ORDER BY c.challengeid DESC";
 
             PreparedStatement statement = connection.prepareStatement(getChallenges);
             statement.setString(1, username);
@@ -366,8 +370,8 @@ public class DBChallenge {
             return challenges;
 
         } catch (SQLException sqle) {
-                System.err.println("Error connecting: " + sqle);
-                return null;
+            System.err.println("Error connecting: " + sqle);
+            return null;
         }
     }
 
@@ -451,9 +455,13 @@ public class DBChallenge {
 //            System.out.println("In a challenge");
 //        } else {
 //            System.out.println("Not in a challenge");
-//
-//            DBChallenge.startNewChallenge("LiranTheDude", "KaganTheMan");
-//        }
+
+            //DBChallenge.startNewChallenge("AlexP", "LoopingLaurens");
+            DBChallenge.startNewChallenge("KaganTheMan", "LoopingLaurens");
+            DBChallenge.startNewChallenge("LiranTheDude", "LoopingLaurens");
+
+
+        //       }
 
         //DBChallenge.respondToChallenge("KaganTheMan", 25);
         //DBChallenge.deleteChallenge("LiranTheDude", "AlexP", 25);

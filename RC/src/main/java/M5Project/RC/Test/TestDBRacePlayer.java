@@ -13,7 +13,7 @@ import M5Project.RC.model.Race;
 import M5Project.RC.model.Player;
 
 
-public class DatabaseTest {
+public class TestDBRacePlayer {
 
     static final String JDBC_DRIVER = "org.postgresql.Driver";
     static final String host = "bronto.ewi.utwente.nl";

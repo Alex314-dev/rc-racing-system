@@ -97,13 +97,14 @@ public class DBFriendship {
             return requestSuccessFlag;
         }
     }
-
+    
     /**
      * Respond to a request. AKA change the valid flag to true for the given players
      * @param friend1
      * @param friend2
+     * @return -1 if error, 0 if successful update
      */
-    public static void respondToRequest(String friend1, String friend2){
+    public static int respondToRequest(String friend1, String friend2){
         loadDriver();
         try {
             Connection connection = getConnection();
@@ -119,12 +120,19 @@ public class DBFriendship {
             statement.setString(2, friend2);
             statement.setString(3, friend2);
             statement.setString(4, friend1);
-            statement.executeUpdate();
+            int flag = statement.executeUpdate();
 
             statement.close();
             connection.close();
+
+            if (flag != 0) {
+               return 0;
+            }
+            return -1;
+
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
+            return -1;
         }
     }
 
