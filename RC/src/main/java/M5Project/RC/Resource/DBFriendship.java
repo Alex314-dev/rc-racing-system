@@ -214,6 +214,10 @@ public class DBFriendship {
             statement.setString(4, username);
             statement.execute();
 
+            statement.close();
+            connection.close();
+
+            DBChallenge.deleteALlChallengesUsers(username, friend);
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return -1;
@@ -335,12 +339,12 @@ public class DBFriendship {
     }
 
     public static void main(String[] args) {
-        //DBFriendship.sendFriendRequest("LoopingLaurens", "AlexP");
+        //DBFriendship.sendFriendRequest("LoopingLaurens", "SexyBeast");
         //DBFriendship.deleteFriend("LoopingLaurens", "AlexP");
-        DBFriendship.respondToRequest("KaganTheMan", "LoopingLaurens");
+       //DBFriendship.respondToRequest("SexyBeast", "LoopingLaurens");
 //        List<String> friends = DBFriendship.getRequests("LoopingLaurens", false);
 //
-            List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
+           // List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
 //        for (String friend: friends) {
 //            System.out.println(friend);
 //        }
