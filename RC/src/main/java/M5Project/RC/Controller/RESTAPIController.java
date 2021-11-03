@@ -133,6 +133,12 @@ public class RESTAPIController {
         return false;
     }
 
+    @GetMapping("/rest/getDoneChallenges")
+    public List<Challenge> getAllDoneChallenges(Principal principal) {
+        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return ChallengeDao.instance.getDoneChallenges(username);
+    }
+
     @GetMapping("/rest/getPendingChallengeRequests")
     public List<Challenge> getPendingChallengeRequests(Principal principal) {
         String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();

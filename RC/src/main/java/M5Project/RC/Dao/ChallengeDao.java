@@ -68,4 +68,8 @@ public enum ChallengeDao {
     public boolean checkIfChallengeExists(String challenger, String challengee, int id) {
         return DBChallenge.getChallengeFromId(challenger, challengee, id);
     }
+
+    public List<Challenge> getDoneChallenges(String username) {
+        return DBChallenge.getAllDoneChallenges(username);
+    }
 }
