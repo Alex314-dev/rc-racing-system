@@ -12,7 +12,7 @@ public class DBChallenge {
     static final String host = "bronto.ewi.utwente.nl";
     static final String dbName = "dab_di20212b_100";
     static final String DB_URL = "jdbc:postgresql://" + host + ":5432/" +
-            dbName +"?currentSchema=rc_racing_system_db";
+            dbName +"?currentSchema=rc_racing_system_db_dev";
 
     static final String USER = "dab_di20212b_100";
     static final String PASS = System.getenv("RC_DB_PASS");
@@ -539,10 +539,10 @@ public class DBChallenge {
 
     public static void main(String[] args) {
         //List<Challenge> challenges = DBChallenge.getAllChallengeRequests("LiranTheDude", false);
-        List<Challenge> challenges = DBChallenge.getAllDoneChallenges("SexyBeast");
-        for (Challenge challenge: challenges) {
-            System.out.println(challenge.toString());
-        }
+//        List<Challenge> challenges = DBChallenge.getAllChallengeRequests("LordDebel", true);
+//        for (Challenge challenge: challenges) {
+//            System.out.println(challenge.toString());
+//        }
 
         //System.out.println(DBChallenge.checkIfFriends("KrisCross", "LoopingLaurens"));
 
