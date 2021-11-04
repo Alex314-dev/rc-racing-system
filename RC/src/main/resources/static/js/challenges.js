@@ -216,12 +216,18 @@ $(window).on('load', function() {
                            title: 'Server error',
                            text: 'Something went wrong!',
                          })
-                     }  else {
+                     }  else if (body >= 0){
                         Swal.fire(
                           'Done',
                           'Your time: ' + body + 'seconds',
                           'success'
                         )
+                     } else {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Server error',
+                          text: 'Something went wrong!',
+                        })
                      }
                 }).catch((error) => {
                      Swal.fire({
