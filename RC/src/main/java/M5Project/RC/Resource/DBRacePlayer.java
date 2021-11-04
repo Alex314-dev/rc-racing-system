@@ -95,10 +95,8 @@ public class DBRacePlayer {
         String email = player.getEmail();
         String username = player.getUsername();
         boolean flag = false;
-
         Connection connection =
                 DriverManager.getConnection(DB_URL, USER, PASS);
-
         String emailEmailQuery = "SELECT COUNT(p.username) " +
                 "FROM player p " +
                 "WHERE p.email = ?";

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Your in</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="css/leaderboard.css">
+    <link rel="stylesheet" href="css/challenges.css">
     <link rel="stylesheet" href="css/loadingpage.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <!--DataTables BootStrap -->
@@ -13,17 +13,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--anime.js - animation library-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"
-        integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
+            integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q=="
+            crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
     <!--DataTables Script-->
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
     <!--Js-->
-    <script src="js/leaderboard.js"></script>
+    <script src="js/challenges.js"></script>
     <script src="js/loadingpage.js"></script>
     <!--fontawosome-icons-->
     <script src="https://kit.fontawesome.com/59dce4be9c.js" crossorigin="anonymous"></script>
+    <!--SweetAlerts-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="loader-wrapper">
@@ -57,11 +59,11 @@
             <img src="images/race.png">
             <hr>
         </a>
-        <a class="leaderboard active" href="/leaderboard">
+        <a class="leaderboard" href="/leaderboard">
             <img src="images/leaderboard.png">
             <hr>
         </a>
-        <a class="challenge" href="/challenges">
+        <a class="challenge active" href="/challenges">
             <img src="images/challenge.png">
             <hr>
         </a>
@@ -77,22 +79,63 @@
     </div>
 </div>
 
-<h1>Leaderboard</h1>
+    <div class="challenges-buttons-wrapper">
+        <h1>Challenges</h1>
+        <div class="done activechallenge"><span>Done</span></div>
+        <div class="waiting"><span>Waiting</span></div>
+        <div class="sent"><span>Sent</span></div>
+        <div class="challenges"><span>Challenge</span></div>
+    </div>
 
-<div class = "races"></div>
-    <table id = "table_races">
-        <thead>
-        <tr>
-            <th>Date</th>
-            <th>Player</th>
-            <th>Sector 1</th>
-            <th>Sector 2</th>
-            <th>Sector 3</th>
-            <th>Time</th>
-        </tr>
-        </thead>
-    </table>
-</div>
+    <div class = "done-wrapper">
+        <table id = "table_done">
+            <thead>
+            <tr>
+                <th>Challenger</th>
+                <th>Time</th>
+                <th>Challengee</th>
+                <th>Time</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class = "waiting-wrapper">
+        <table id = "table_waiting">
+            <thead>
+            <tr>
+                <th>Challenger</th>
+                <th>Time</th>
+                <th></th> <!--Accept -->
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class = "sent-wrapper">
+        <table id = "table_sent">
+            <thead>
+            <tr>
+                <th>Challengee</th>
+                <th>Lap Time</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class = "challenge-wrapper">
+        <table id = "table_challenge">
+            <thead>
+            <tr>
+                <th>Friend</th>
+                <th>Score</th>
+                <th></th> <!--Challenge -->
+            </tr>
+            </thead>
+        </table>
+    </div>
+
 
 </body>
 </html>

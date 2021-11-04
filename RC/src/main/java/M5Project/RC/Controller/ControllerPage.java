@@ -28,9 +28,9 @@ public class ControllerPage {
         return "leaderboard.html";
     }
 
-    @GetMapping("/challanges")
+    @GetMapping("/challenges")
     public String challangesPage() {
-        return "challanges.html";
+        return "challenges.html";
     }
 
     @GetMapping("/friends")
