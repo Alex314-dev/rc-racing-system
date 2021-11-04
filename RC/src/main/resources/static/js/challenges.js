@@ -175,6 +175,7 @@ $(window).on('load', function() {
     });
 
     $(document).on("click", "#challengeAccept", function() {
+
         var value = $(this).attr("data-value");
         var id = value.split(",")[0];
         var challenger = value.split(",")[1];
@@ -182,6 +183,11 @@ $(window).on('load', function() {
     })
 
     function acceptChallenge(id, challenger) {
+        Swal.fire(
+          'Challenge Started',
+          'GO GO GO',
+          'success'
+        )
 
         var acceptChallengeData = {'challenger': challenger, 'id': id};
                 var formBody = [];
@@ -236,7 +242,7 @@ $(window).on('load', function() {
                        text: 'Something went wrong!',
                      })
              });
-
+        getWaitingData();
     }
 
     function showDone() {
@@ -258,7 +264,6 @@ $(window).on('load', function() {
         $('.sent-wrapper').css('display','none');
         $('.challenge-wrapper').css('display','none');
         $('.waiting-wrapper').css('display','block');
-        //datatable.columns.adjust().draw();
         $('.done').removeClass('activechallenge');
         $('.sent').removeClass('activechallenge');
         $('.challenges').removeClass('activechallenge');
