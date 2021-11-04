@@ -235,6 +235,7 @@ $(window).on('load', function() {
                           text: 'Something went wrong!',
                         })
                      }
+                     getWaitingData();
                 }).catch((error) => {
                      Swal.fire({
                        icon: 'error',
@@ -242,7 +243,6 @@ $(window).on('load', function() {
                        text: 'Something went wrong!',
                      })
              });
-        getWaitingData();
     }
 
     function showDone() {
