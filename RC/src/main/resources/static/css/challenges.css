@@ -98,7 +98,7 @@
   
   .race:hover img, .leaderboard:hover img, .challenge:hover img, .friends:hover img {
       filter: invert(50%);
-      animation-duration: 0.5s;
+      animation: pulse 0.5s infinite;
   }
   
   .race:hover hr, .leaderboard:hover hr, .challenge:hover hr, .friends:hover hr {
@@ -108,7 +108,7 @@
       color: grey;
       background-color: grey;
       border-color: grey;
-      animation-duration: 0.5s;
+      animation: pulse 0.5s infinite;
   }
   
   
@@ -180,5 +180,23 @@
 
 .dataTables_info {
     padding: 15px;
+}
+
+#challengeAccept, #challengeCreate {
+    box-shadow: 1px 2px 8px rgb(0 0 0 / 15%);
+    border-radius: 15px;
+    background: #e55e85;
+    font-weight: 600;
+    cursor: POINTER;
+    color: white;
+    display: inline-block;
+    padding: 5px 15px 5px 15px;
+    animation: pulse 0.5s infinite;
+}
+
+#challengeAccept:hover, #challengeCreateL:hover {
+    box-shadow: 1px 2px 8px rgb(0 0 0 / 45%);
+    border-radius: 15px;
+    background: #c41949;
 }
 

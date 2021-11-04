@@ -114,7 +114,7 @@ body {
 
 .race:hover img, .leaderboard:hover img, .challenge:hover img, .friends:hover img {
   filter: invert(50%);
-  animation-duration: 0.5s;
+  animation: pulse 0.5s infinite;
 }
 
 .race:hover hr, .leaderboard:hover hr, .challenge:hover hr, .friends:hover hr {
@@ -124,7 +124,7 @@ body {
   color: grey;
   background-color: grey;
   border-color: grey;
-  animation-duration: 0.5s;
+  animation: pulse 0.5s infinite;
 }
 
 
