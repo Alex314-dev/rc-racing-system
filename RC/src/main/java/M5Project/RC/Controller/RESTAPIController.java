@@ -4,8 +4,6 @@ import M5Project.RC.Dao.ChallengeDao;
 import M5Project.RC.Dao.FriendDao;
 import M5Project.RC.Dao.PlayerDao;
 import M5Project.RC.Dao.RaceDao;
-import M5Project.RC.JavaClientSocket.ClientSocket;
-import M5Project.RC.Resource.DBChallenge;
 import M5Project.RC.model.Challenge;
 import M5Project.RC.model.ErrorMessage;
 import M5Project.RC.model.Player;
@@ -15,15 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
 @RestController
 @CrossOrigin
 public class RESTAPIController {
-    //private static final String template = "Welcome %s!";
-
 
     @GetMapping("/rest/player")
     public Player player(Principal principal)
@@ -92,7 +87,7 @@ public class RESTAPIController {
         if (ChallengeDao.instance.challengeRequest(challenger, challengee)) {
             float overallTime = RaceDao.instance.initiateARace(principal);
             if (overallTime > 0) {
-                if (DBChallenge.startNewChallenge(challenger, challengee)) {
+                if (ChallengeDao.instance.startNewChallenge(challenger, challengee)) {
                     return overallTime;
                 }
                 return ErrorMessage.SERVER_ERROR;
@@ -112,11 +107,8 @@ public class RESTAPIController {
         String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         float overallTime = RaceDao.instance.initiateARace(principal);
         if (overallTime > 0) {
-            if (ChallengeDao.instance.respondToChallenge(id, challengee)) {
-                if (ChallengeDao.instance.changeScores(challengee)) { // if we make this async it would be bazinga
-                    return overallTime;
-                }
-                return ErrorMessage.SERVER_ERROR;
+            if (ChallengeDao.instance.respondToChallenge(id, challengee) && ChallengeDao.instance.changeScores(challengee)) {
+                return overallTime;
             }
             return ErrorMessage.SERVER_ERROR;
         }
@@ -124,7 +116,7 @@ public class RESTAPIController {
         if (overallTime != ErrorMessage.ONGOING_RACE && ChallengeDao.instance.checkIfChallengeExists(challenger, challengee, id)) {
             ChallengeDao.instance.changeScoresInvalidRace(id, challenger, challengee, true);
         }
-        return overallTime; //error msg
+        return overallTime;
     }
 
     @PostMapping("/rest/rejectChallenge")

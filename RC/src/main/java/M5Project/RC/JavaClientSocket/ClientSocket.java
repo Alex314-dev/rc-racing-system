@@ -16,7 +16,7 @@ public enum ClientSocket {
     private PrintWriter out;
     private BufferedReader in;
 
-    private ClientSocket() {
+    ClientSocket() {
         try (Scanner input = new Scanner(System.in)) {
             System.out.print("Input the IP address and the port of the RPI: ");
             String[] rpiIP = input.nextLine().split(" ");
@@ -38,12 +38,6 @@ public enum ClientSocket {
         System.out.println("[=>] Starting the race.");
         String resp = in.readLine();
         return resp;
-    }
-
-    public void closeConn() throws IOException {
-        in.close();
-        out.close();
-        client.close();
     }
 
     public boolean isOngoingGame() {
