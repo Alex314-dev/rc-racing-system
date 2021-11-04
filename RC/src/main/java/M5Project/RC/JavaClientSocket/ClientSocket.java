@@ -33,7 +33,7 @@ public enum ClientSocket {
         in = new BufferedReader(new InputStreamReader(client.getInputStream()));
     }
 
-    public String startRace() throws IOException {
+    public String startRace() throws IOException, NullPointerException {
         out.println("GO");
         System.out.println("[=>] Starting the race.");
         String resp = in.readLine();
