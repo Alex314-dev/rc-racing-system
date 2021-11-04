@@ -155,6 +155,7 @@ $(window).on('load', function() {
                 )
                 getOutgoingRequests();
                 getPendingRequests();
+                getFriends ();
              } else {
                  Swal.fire({
                    icon: 'error',
