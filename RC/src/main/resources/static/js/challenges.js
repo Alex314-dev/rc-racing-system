@@ -88,7 +88,7 @@ $(window).on('load', function() {
 				if (challengee == "No Data Available") {
 				    return "";
 				}
-				return '<div id="challengeAccept" data-value="'+challengee+'">Challenge</div>';} }
+				return '<div id="challengeCreate" data-value="'+challengee+'">Challenge</div>';} }
 			]
             });
 
@@ -184,6 +184,73 @@ $(window).on('load', function() {
         showWaiting ();
     });
 
+    $(document).on("click", "#challengeCreate", function() {
+        var challengee = $(this).attr("data-value");
+        createChallenge(challengee);
+    })
+
+    function createChallenge(challengee) {
+            Swal.fire(
+              'Challenge Created',
+              'GO GO GO',
+              'success'
+            )
+            var acceptChallengeData = {'challengee': challengee};
+                    var formBody = [];
+                    for (var property in acceptChallengeData) {
+                      var encodedKey = encodeURIComponent(property);
+                      var encodedValue = encodeURIComponent(acceptChallengeData[property]);
+                      formBody.push(encodedKey + "=" + encodedValue);
+                    }
+                    formBody = formBody.join("&");
+
+                    fetch('/rest/challengeRequest', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                      },
+                      body: formBody
+                    }).then((resp) => {
+                         return resp.json(); // or resp.text() or whatever the server sends
+                    }).then((body) => {
+                        console.log(body);
+                         if (body == -2) {
+                             Swal.fire({
+                               icon: 'error',
+                               title: 'Ongoing race/Server error',
+                               text: 'There is an ongoing race!',
+                             })
+                            getOutgoingRequests();
+                            getPendingRequests();
+                         } else if (body == -1) {
+                             Swal.fire({
+                               icon: 'error',
+                               title: 'Server error',
+                               text: 'Something went wrong!',
+                             })
+                         }  else if (body >= 0){
+                            Swal.fire(
+                              'Done',
+                              'Your time: ' + body + 'seconds',
+                              'success'
+                            )
+                         } else {
+                            Swal.fire({
+                              icon: 'error',
+                              title: 'Server error',
+                              text: 'Something went wrong!',
+                            })
+                         }
+                         getWaitingData();
+                    }).catch((error) => {
+                         Swal.fire({
+                           icon: 'error',
+                           title: 'Server error',
+                           text: 'Something went wrong!',
+                         })
+                 });
+        }
+
     $(document).on("click", "#challengeAccept", function() {
 
         var value = $(this).attr("data-value");
@@ -198,7 +265,6 @@ $(window).on('load', function() {
           'GO GO GO',
           'success'
         )
-
         var acceptChallengeData = {'challenger': challenger, 'id': id};
                 var formBody = [];
                 for (var property in acceptChallengeData) {
@@ -245,7 +311,7 @@ $(window).on('load', function() {
                           text: 'Something went wrong!',
                         })
                      }
-                     getWaitingData();
+                     getChallengeData();
                 }).catch((error) => {
                      Swal.fire({
                        icon: 'error',
@@ -264,7 +330,7 @@ $(window).on('load', function() {
         //datatable.columns.adjust().draw();
         $('.waiting').removeClass('activechallenge');
         $('.sent').removeClass('activechallenge');
-        $('.challenge').removeClass('activechallenge');
+        $('.challenges').removeClass('activechallenge');
         $('.done').addClass('activechallenge');
     }
 
