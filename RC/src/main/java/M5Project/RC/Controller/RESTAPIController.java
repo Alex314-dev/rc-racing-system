@@ -103,7 +103,7 @@ public class RESTAPIController {
             }
             return overallTime;
         }
-        return -1;
+        return -2;
     }
 
     @PostMapping("/rest/acceptChallenge")
