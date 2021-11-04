@@ -125,10 +125,60 @@
   }
   
   .active hr {
-      text-align: center;
-      width: 60%;
-      height: 1px;
-      color: black;
-      background-color: black;
-      border-color: black;
+          text-align: center;
+          width: 60%;
+          height: 1px;
+          color: black;
+          background-color: black;
+          border-color: black;
   }
+
+  .challenges-buttons-wrapper {
+        display: flex;
+        justify-content: center;
+        font-size: calc(12px + 0.5vw);
+  }
+
+  .done, .waiting, .sent, .challenges {
+        margin: 10px 15px 15px 15px;
+        padding: 5px 15px 5px 15px;
+        border-radius: 25px;
+        box-shadow: 0px 4px 20px rgb(0 0 0 / 15%);
+        color: #c41949;
+        background-color: #d3d3d3;
+        font-weight: 500;
+        cursor: pointer;
+        animation: linear 1s;
+  }
+
+  .done:hover, .waiting:hover, .sent:hover, .challenges:hover {
+        color: #e7e7e7;
+        background-color: #af214a;
+        box-shadow: 0px 4px 20px rgb(0 0 0 / 50%);
+  }
+
+  .activechallenge {
+        color: #d3d3d3;
+        background-color: #c41949;
+  }
+
+  .waiting-wrapper, .sent-wrapper, .challenge-wrapper {
+        display: none;
+  }
+
+#table_done_wrapper, #table_waiting_wrapper, #table_sent_wrapper, #table_challenge_wrapper  {
+    font-size: calc(12pt + 0.25vw);
+    text-align: center;
+    background: white;
+    width: 65%;
+    min-width: 500px;
+    border-radius: 25px;
+    padding: 10px 25px 0px 25px;
+    filter: drop-shadow(0px 3px 6px rgb(0 0 0 / 0.75));
+    margin: auto;
+}
+
+.dataTables_info {
+    padding: 15px;
+}
+

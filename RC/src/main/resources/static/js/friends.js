@@ -221,8 +221,6 @@ $(window).on('load', function() {
 
     });
 
-
-
 	function getFriends () {
       fetch('/rest/getFriendsWinsLosses').then(function(response) {
         return response.json();

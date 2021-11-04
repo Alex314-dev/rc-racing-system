@@ -24,6 +24,8 @@
     <script src="js/loadingpage.js"></script>
     <!--fontawosome-icons-->
     <script src="https://kit.fontawesome.com/59dce4be9c.js" crossorigin="anonymous"></script>
+    <!--SweetAlerts-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="loader-wrapper">
@@ -77,6 +79,62 @@
     </div>
 </div>
 
+    <div class="challenges-buttons-wrapper">
+        <h1>Challenges</h1>
+        <div class="done activechallenge"><span>Done</span></div>
+        <div class="waiting"><span>Waiting</span></div>
+        <div class="sent"><span>Sent</span></div>
+        <div class="challenges"><span>Challenge</span></div>
+    </div>
+
+    <div class = "done-wrapper">
+        <table id = "table_done">
+            <thead>
+            <tr>
+                <th>Challenger</th>
+                <th>Time</th>
+                <th>Challengee</th>
+                <th>Time</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class = "waiting-wrapper">
+        <table id = "table_waiting">
+            <thead>
+            <tr>
+                <th>Challenger</th>
+                <th>Time</th>
+                <th></th> <!--Accept -->
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class = "sent-wrapper">
+        <table id = "table_sent">
+            <thead>
+            <tr>
+                <th>Challengee</th>
+                <th>Lap Time</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class = "challenge-wrapper">
+        <table id = "table_challenge">
+            <thead>
+            <tr>
+                <th>Friend</th>
+                <th>Score</th>
+                <th></th> <!--Challenge -->
+            </tr>
+            </thead>
+        </table>
+    </div>
 
 
 </body>
