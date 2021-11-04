@@ -182,7 +182,7 @@
     padding: 15px;
 }
 
-#challengeAccept, #challengeCreate {
+#challengeAccept, #challengeCreate, #challengeReject {
     box-shadow: 1px 2px 8px rgb(0 0 0 / 15%);
     border-radius: 15px;
     background: #e55e85;
@@ -194,7 +194,7 @@
     animation: pulse 0.5s infinite;
 }
 
-#challengeAccept:hover, #challengeCreate:hover {
+#challengeAccept:hover, #challengeCreate:hover, #challengeReject:hover {
     box-shadow: 1px 2px 8px rgb(0 0 0 / 45%);
     border-radius: 15px;
     background: #c41949;
