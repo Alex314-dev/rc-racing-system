@@ -223,23 +223,39 @@ $(window).on('load', function() {
                             getOutgoingRequests();
                             getPendingRequests();
                          } else if (body == -1) {
-                             Swal.fire({
+                            Swal.fire({
+                              icon: 'error',
+                              title: 'Invalid Race',
+                              text: 'You were too slow or something went wrong!',
+                            });
+                         } else if (body == -3) {
+                          Swal.fire({
                                icon: 'error',
-                               title: 'Server error',
-                               text: 'Something went wrong!',
-                             })
-                         }  else if (body >= 0){
+                               title: 'Ongoing Challenge',
+                               text: 'There is an ongoing challenge between you and this user.',
+                             });
+
+                         } else if (body == -4) {
+                          Swal.fire({
+                               icon: 'error',
+                               title: 'Server Error',
+                               text: 'Internal error occurred.',
+                             });
+
+                         } else if (body >= 0){
                             Swal.fire(
                               'Done',
                               'Your time: ' + body + 'seconds',
                               'success'
                             )
                          } else {
-                            Swal.fire({
-                              icon: 'error',
-                              title: 'Server error',
-                              text: 'Something went wrong!',
-                            })
+                           Swal.fire({
+                             icon: 'error',
+                             title: 'Unexpected Error',
+                             text: 'Oh shoot, run!',
+                             }).then(function() {
+                                   location.reload();
+                               } );
                          }
                          getWaitingData();
                     }).catch((error) => {
@@ -285,32 +301,48 @@ $(window).on('load', function() {
                 }).then((body) => {
                     console.log(body);
                      if (body == -2) {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Ongoing race',
+                            text: 'There is an ongoing race!',
+                          })
+                         getOutgoingRequests();
+                         getPendingRequests();
+                      } else if (body == -1) {
                          Swal.fire({
                            icon: 'error',
-                           title: 'Ongoing race/Server error',
-                           text: 'There is an ongoing race!',
-                         })
-                        getOutgoingRequests();
-                        getPendingRequests();
-                     } else if (body == -1) {
-                         Swal.fire({
-                           icon: 'error',
-                           title: 'Server error',
-                           text: 'Something went wrong!',
-                         })
-                     }  else if (body >= 0){
-                        Swal.fire(
-                          'Done',
-                          'Your time: ' + body + 'seconds',
-                          'success'
-                        )
-                     } else {
+                           title: 'Invalid Race',
+                           text: 'You were too slow or something went wrong!',
+                         });
+                      } else if (body == -3) {
+                       Swal.fire({
+                            icon: 'error',
+                            title: 'Ongoing Challenge',
+                            text: 'There is an ongoing challenge between you and this user.',
+                          });
+
+                      } else if (body == -4) {
+                       Swal.fire({
+                            icon: 'error',
+                            title: 'Server Error',
+                            text: 'Internal error occurred.',
+                          });
+
+                      } else if (body >= 0){
+                         Swal.fire(
+                           'Done',
+                           'Your time: ' + body + 'seconds',
+                           'success'
+                         )
+                      } else {
                         Swal.fire({
                           icon: 'error',
-                          title: 'Server error',
-                          text: 'Something went wrong!',
-                        })
-                     }
+                          title: 'Unexpected Error',
+                          text: 'Oh shoot, run!',
+                          }).then(function() {
+                                location.reload();
+                            } );
+                      }
                      getChallengeData();
                 }).catch((error) => {
                      Swal.fire({
