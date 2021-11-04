@@ -146,7 +146,7 @@ public class RESTAPIController {
     }
 
     @GetMapping("/rest/getSentChallengeRequests")
-    public List<Challenge> getSendChallengeRequests(Principal principal) {
+    public List<Challenge> getSentChallengeRequests(Principal principal) {
         String challenger = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         return ChallengeDao.instance.getSentChallengeRequests(challenger);
     }
@@ -187,7 +187,4 @@ public class RESTAPIController {
         String current = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         return FriendDao.instance.deleteFriend(current, friendToDelete);
     }
-
-
-
 }
