@@ -7,6 +7,7 @@ import M5Project.RC.Dao.RaceDao;
 import M5Project.RC.JavaClientSocket.ClientSocket;
 import M5Project.RC.Resource.DBChallenge;
 import M5Project.RC.model.Challenge;
+import M5Project.RC.model.ErrorMessage;
 import M5Project.RC.model.Player;
 import M5Project.RC.model.Race;
 import org.springframework.web.bind.annotation.*;
@@ -94,16 +95,16 @@ public class RESTAPIController {
                 if (DBChallenge.startNewChallenge(challenger, challengee)) {
                     return overallTime;
                 }
-                return -1;
+                return ErrorMessage.SERVER_ERROR;
             }
             // in this scenario we have the challenger sending a request but getting an invalid race
             // this will update the scores but there will not be an entry in the challenge table about this.
-            if (overallTime != -2) {
+            if (overallTime != ErrorMessage.ONGOING_RACE) {
                 ChallengeDao.instance.changeScoresInvalidRace(-1, challenger, challengee, false);
             }
             return overallTime;
         }
-        return -1;
+        return ErrorMessage.ONGOING_CHALLENGE;
     }
 
     @PostMapping("/rest/acceptChallenge")
@@ -115,15 +116,15 @@ public class RESTAPIController {
                 if (ChallengeDao.instance.changeScores(challengee)) { // if we make this async it would be bazinga
                     return overallTime;
                 }
-                return -1;
+                return ErrorMessage.SERVER_ERROR;
             }
-            return -1;
+            return ErrorMessage.SERVER_ERROR;
         }
 
-        if (overallTime != -2 && ChallengeDao.instance.checkIfChallengeExists(challenger, challengee, id)) {
+        if (overallTime != ErrorMessage.ONGOING_RACE && ChallengeDao.instance.checkIfChallengeExists(challenger, challengee, id)) {
             ChallengeDao.instance.changeScoresInvalidRace(id, challenger, challengee, true);
         }
-        return overallTime;
+        return overallTime; //error msg
     }
 
     @PostMapping("/rest/rejectChallenge")

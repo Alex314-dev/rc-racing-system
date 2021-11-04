@@ -2,6 +2,7 @@ package M5Project.RC.Dao;
 
 import M5Project.RC.JavaClientSocket.ClientSocket;
 import M5Project.RC.Resource.DBRacePlayer;
+import M5Project.RC.model.ErrorMessage;
 import M5Project.RC.model.Race;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public enum RaceDao {
 
     public float initiateARace(Principal principal) {
         if (ClientSocket.instance.isOngoingGame()) {
-            return -2;
+            return ErrorMessage.ONGOING_RACE;
         }
 
         ClientSocket.instance.setOngoingGame(true);
@@ -41,12 +42,12 @@ public enum RaceDao {
         } catch (IOException e) {
             ClientSocket.instance.setOngoingGame(false);
             e.printStackTrace();
-            return -1;
+            return ErrorMessage.SERVER_ERROR;
         }
 
         if (result.contains("Invalid")) {
             ClientSocket.instance.setOngoingGame(false);
-            return -1;
+            return ErrorMessage.INVALID_RACE;
         }
 
         String[] resultStrArr = result.split("~");
