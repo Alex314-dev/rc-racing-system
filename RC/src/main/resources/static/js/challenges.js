@@ -217,7 +217,7 @@ $(window).on('load', function() {
                          if (body == -2) {
                              Swal.fire({
                                icon: 'error',
-                               title: 'Ongoing race/Server error',
+                               title: 'Ongoing race',
                                text: 'There is an ongoing race!',
                              })
                             getOutgoingRequests();
