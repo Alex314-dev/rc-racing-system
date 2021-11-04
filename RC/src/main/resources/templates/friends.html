@@ -24,6 +24,8 @@
     <script src="js/loadingpage.js"></script>
     <!--fontawosome-icons-->
     <script src="https://kit.fontawesome.com/59dce4be9c.js" crossorigin="anonymous"></script>
+    <!--SweetAlerts-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="loader-wrapper">
@@ -97,8 +99,8 @@
 
 <div class="add-friends-wrapper">
     <div id = "search-wrapper">
-        <form id="add_friend_form" action="/rest/addfriend" method="post">
-            <input type="text" id="friend" name="username" placeholder="Add Friend">
+        <form id="add_friend_form" action="/rest/sendFriendRequest" method="post">
+            <input type="text" id="friend" name="friendToAdd" placeholder="Add Friend">
             <button type="submit" id="friend_submit" class="btn-success">
                 <i class="fas fa-user-plus"></i>
             </button>
