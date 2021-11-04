@@ -20,8 +20,8 @@ $(window).on('load', function() {
         data: friendList,
         columns: [
             {"data": "username", "width": "40%"},
-			{"data": "wins", "width": "15%"},
 			{"data": "losses", "width": "15%"},
+			{"data": "wins", "width": "15%"},
 			{"data": null, "width": "15%",
             render: function ( data, type, row ) {
                 var total = row.wins + row.losses;

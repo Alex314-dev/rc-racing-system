@@ -3,7 +3,7 @@ $(window).on('load', function() {
     var userInfo;
     var doneData = [{"challenger": "No Data Available", "challengerTime": 0,  "challengee": "", "challengeeTime": ""}];
     var waitingData= [{"challenger": "No Data Available", "challengerTime": 0, "challengeID": ""}];
-    var sentData = [{"username": "No Data Available", "wins": 0,  "losses": 0}];
+    var sentData = [{"challengee": "No Data Available", "challengerTime": 0}];
     var challengeData = [{"username": "No Data Available", "wins": 0,  "losses": 0}];
     getCredentials ();
     getDoneData();
@@ -47,13 +47,12 @@ $(window).on('load', function() {
                     var challenger = row.challenger;
                     var challengeID = row.challengeID;
                     // challenger name and challengeID
-                    return '<div id="challengeAccept" data-value="'+challengeID+','+challenger+'" id="'+challengeID+'"   " >Accept</div>';} }
+                    return '<div id="challengeAccept" data-value="'+challengeID+','+challenger+'">Accept</div>';} }
                 ]
             });
-            getWaitingData();
-    /**
+
         datatableSent = $("#table_sent").DataTable( {
-            "pageLength": challengeData.length,
+            "pageLength": sentData.length,
             "lengthChange": false,
             "paging": false,
             "responsive": true,
@@ -62,54 +61,36 @@ $(window).on('load', function() {
             "scrollCollapse": true,
             "searching": false,
             "order": [[ 1, "asc" ]],
-            data: challengeData,
+            data: sentData,
             columns: [
-                {"data": "username", "width": "40%"},
-                {"data": "wins", "width": "15%"},
-                {"data": "losses", "width": "15%"},
-                {"data": null, "width": "15%",
-                render: function ( data, type, row ) {
-                    var total = row.wins + row.losses;
-                    return total;} },
-                {"data": null, "orderable": false, "width": "15%",
-                render: function ( data, type, row ) {
-                    var username = row.username;
-                    if (username == "No Data Available") {
-                        return "";
-                    }
-                    return '<i class="fas fa-user-times remove" id="remove" data-value='+username+'></i>';} }
+                {"data": "challengee", "width": "40%"},
+                {"data": "challengerTime", "width": "15%"},
                 ]
             });
 
         datatableChallenge = $("#table_challenge").DataTable( {
-            "pageLength": friendList.length,
-            "lengthChange": false,
-            "paging": false,
-            "responsive": true,
-            "orderCellsTop": true,
-            "scrollY": "calc(100vh - 425px)",
-            "scrollCollapse": true,
-            "searching": false,
-            "order": [[ 1, "asc" ]],
-            data: friendList,
-            columns: [
-                {"data": "username", "width": "40%"},
-                {"data": "wins", "width": "15%"},
-                {"data": "losses", "width": "15%"},
-                {"data": null, "width": "15%",
-                render: function ( data, type, row ) {
-                    var total = row.wins + row.losses;
-                    return total;} },
-                {"data": null, "orderable": false, "width": "15%",
-                render: function ( data, type, row ) {
-                    var username = row.username;
-                    if (username == "No Data Available") {
-                        return "";
-                    }
-                    return '<i class="fas fa-user-times remove" id="remove" data-value='+username+'></i>';} }
-                ]
+        "pageLength": challengeData.length,
+        "lengthChange": false,
+        "paging": false,
+        "responsive": true,
+        "scrollY": "calc(100vh - 425px)",
+        "scrollCollapse": true,
+        "searching": false,
+        "order": [[ 1, "asc" ]],
+        data: challengeData,
+        columns: [
+            {"data": "username", "width": "40%"},
+			{"data": "losses", "width": "15%"},
+			{"data": "wins", "width": "15%"},
+			{"data": null, "orderable": false, "width": "15%",
+			render: function ( data, type, row ) {
+				var challengee = row.username;
+				if (challengee == "No Data Available") {
+				    return "";
+				}
+				return '<div id="challengeAccept" data-value="'+challengee+'">Challenge</div>';} }
+			]
             });
-    **/
 
 
     function getCredentials () {
@@ -157,8 +138,37 @@ $(window).on('load', function() {
           });
     }
 
+    function getSentData() {
+          fetch('/rest/getSentChallengeRequests').then(function(response) {
+            return response.json();
+          }).then(function(data) {
+            sentData = data;
+            if ($.fn.dataTable.isDataTable("#table_sent")) {
+                datatableSent.clear().draw();
+                datatableSent.rows.add(sentData);
+                datatableSent.columns.adjust().draw();
+                }
+          }).catch(function() {
+            console.log("Something Went Wrong");
+          });
+    }
+
+    function getChallengeData() {
+          fetch('/rest/getFriendsWinsLosses').then(function(response) {
+            return response.json();
+          }).then(function(data) {
+            challengeData = data;
+            if ($.fn.dataTable.isDataTable("#table_challenge")) {
+                datatableChallenge.clear().draw();
+                datatableChallenge.rows.add(challengeData);
+                datatableChallenge.columns.adjust().draw();
+                }
+          }).catch(function() {
+            console.log("Something Went Wrong");
+          });
+    }
+
     $('.done').on( "click", function() {
-        getDoneData();
         showDone();
     });
 
@@ -271,12 +281,11 @@ $(window).on('load', function() {
     }
 
     function showSent() {
-        //TODO get DONE data
+        getSentData();
         $('.waiting-wrapper').css('display','none');
         $('.done-wrapper').css('display','none');
         $('.challenge-wrapper').css('display','none');
         $('.sent-wrapper').css('display','block');
-        //datatable.columns.adjust().draw();
         $('.waiting').removeClass('activechallenge');
         $('.done').removeClass('activechallenge');
         $('.challenges').removeClass('activechallenge');
@@ -284,12 +293,11 @@ $(window).on('load', function() {
     }
 
     function showChallenges() {
-        //TODO get DONE data
+        getChallengeData();
         $('.waiting-wrapper').css('display','none');
         $('.sent-wrapper').css('display','none');
         $('.done-wrapper').css('display','none');
         $('.challenge-wrapper').css('display','block');
-        //datatable.columns.adjust().draw();
         $('.waiting').removeClass('activechallenge');
         $('.sent').removeClass('activechallenge');
         $('.done').removeClass('activechallenge');
