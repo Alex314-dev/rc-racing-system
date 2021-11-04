@@ -18,7 +18,7 @@ public class TestDBChallenge {
     static final String host = "bronto.ewi.utwente.nl";
     static final String dbName = "dab_di20212b_100";
     static final String DB_URL = "jdbc:postgresql://" + host + ":5432/" +
-            dbName +"?currentSchema=rc_racing_system_db";
+            dbName +"?currentSchema=rc_racing_system_db_dev";
 
     static final String USER = "dab_di20212b_100";
     static final String PASS = System.getenv("RC_DB_PASS");
@@ -103,7 +103,7 @@ public class TestDBChallenge {
         //tying to alter LiranTheDude's challenge to LoopingLaurens
         DBChallenge.respondToChallenge("kristian58", 31);
         List<Challenge> challenges = DBChallenge.getAllDoneChallenges("LiranTheDude");
-        assertEquals(1, challenges.size()); //The number was 1 and should be 1 after the attempted forgery.
+        assertEquals(2, challenges.size()); //The number was 2 and should be 2 after the attempted forgery.
     }
 
     @Test
