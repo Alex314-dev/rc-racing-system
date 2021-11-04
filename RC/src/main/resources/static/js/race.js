@@ -132,11 +132,18 @@ $(window).on('load', function() {
                     } else if (response == -2.0) {
                         Swal.fire({
                           icon: 'error',
-                          title: 'There is an outgoing race',
+                          title: 'There is an ongoing race',
                           text: 'Please wait for it to finish!',
                         });
-                    } else if (response > 0.0) {
+                    } else if (response == -4.0) {
                         Swal.fire({
+                          icon: 'error',
+                          title: 'Server Error',
+                          text: 'Internal error occurred.',
+                        });
+
+                    } else if (response > 0.0) {
+                         Swal.fire({
                               title: "Race Finished. Good job!",
                               text: "Your time:" + response,
                               type: "success"
@@ -146,8 +153,8 @@ $(window).on('load', function() {
                     } else {
                         Swal.fire({
                               icon: 'error',
-                              title: 'Invalid Race',
-                              text: 'Something went wrong!',
+                              title: 'Unexpected Error',
+                              text: 'Oh shoot, run!',
                               }).then(function() {
                                     location.reload();
                                 } );
