@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum RaceDao {
-
     instance;
 
     //if null get all races

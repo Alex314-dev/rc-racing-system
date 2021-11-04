@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 public enum PlayerDao {
-
     instance;
 
     private Map<String, Player> players = new HashMap<String, Player>();
@@ -47,5 +46,4 @@ public enum PlayerDao {
         List<Player> friends = DBFriendship.getFriendsWinsLosses(username);
         return friends;
     }
-
 }

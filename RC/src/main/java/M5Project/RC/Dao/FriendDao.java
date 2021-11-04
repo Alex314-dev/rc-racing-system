@@ -8,7 +8,6 @@ import java.util.List;
 public enum FriendDao {
     instance;
 
-
     public int sendFriendRequest(String sender, String friendToAdd) {
         return DBFriendship.sendFriendRequest(sender, friendToAdd);
     }
