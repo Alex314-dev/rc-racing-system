@@ -1,5 +1,7 @@
 package M5Project.RC.model;
 
+import M5Project.RC.Resource.DBChallenge;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
@@ -11,7 +13,9 @@ public class Challenge {
     private String challenger;
     private String challengee;
     private int raceIDChallenger;
+    private float challengerTime;
     private int raceIDChallengee;
+    private float challengeeTime;
 
     public Challenge() {
         ;
@@ -23,7 +27,9 @@ public class Challenge {
         this.challenger = challenger;
         this.challengee = challengee;
         this.raceIDChallenger = raceIDChallenger;
+        this.challengerTime = DBChallenge.raceTimeFromRaceId(raceIDChallenger);
         this.raceIDChallengee = raceIDChallengee;
+        this.challengeeTime = DBChallenge.raceTimeFromRaceId(raceIDChallengee);
     }
 
 
@@ -74,6 +80,22 @@ public class Challenge {
 
     public void setRaceIDChallengee(int raceIDChallengee) {
         this.raceIDChallengee = raceIDChallengee;
+    }
+
+    public float getChallengerTime() {
+        return this.challengerTime;
+    }
+
+    public void setChallengerTime(float challengerTime) {
+        this.challengerTime = challengerTime;
+    }
+
+    public float getChallengeeTime() {
+        return challengeeTime;
+    }
+
+    public void setChallengeeTime(float challengeeTime) {
+        this.challengeeTime = challengeeTime;
     }
 
     @Override

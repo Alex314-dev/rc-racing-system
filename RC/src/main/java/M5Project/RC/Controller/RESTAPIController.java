@@ -96,17 +96,19 @@ public class RESTAPIController {
                 }
                 return -1;
             }
-            // TODO: decide if we are going to change the scores here
+            // in this scenario we have the challenger sending a request but getting an invalid race
+            // this will update the scores but there will not be an entry in the challenge table about this.
+            ChallengeDao.instance.changeScoresInvalidRace(-1, challenger, challengee, false);
             return overallTime;
         }
         return -1;
     }
 
     @PostMapping("/rest/acceptChallenge")
-    public float acceptChallenge(@RequestParam int id, Principal principal) {
+    public float acceptChallenge(@RequestParam String challenger, @RequestParam int id, Principal principal) {
+        String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         float overallTime = RaceDao.instance.initiateARace(principal);
         if (overallTime > 0) {
-            String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
             if (ChallengeDao.instance.respondToChallenge(id, challengee)) {
                 if (ChallengeDao.instance.changeScores(challengee)) { // if we make this async it would be bazinga
                     return overallTime;
@@ -115,15 +117,26 @@ public class RESTAPIController {
             }
             return -1;
         }
-        // TODO: decide if we are going to change the scores here
+
+        if (ChallengeDao.instance.checkIfChallengeExists(challenger, challengee, id)) {
+            ChallengeDao.instance.changeScoresInvalidRace(id, challenger, challengee, true);
+        }
         return overallTime;
     }
 
     @PostMapping("/rest/rejectChallenge")
-    public boolean rejectChallenge(@RequestParam int id, Principal principal) {
+    public boolean rejectChallenge(@RequestParam String challenger, @RequestParam int id, Principal principal) {
         String challengee = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
-        // TODO: decide if we are going to change the scores here
-        return ChallengeDao.instance.deleteChallenge(challengee, id);
+        if (ChallengeDao.instance.checkIfChallengeExists(challenger, challengee, id)) {
+            return ChallengeDao.instance.changeScoresInvalidRace(id, challenger, challengee, true);
+        }
+        return false;
+    }
+
+    @GetMapping("/rest/getDoneChallenges")
+    public List<Challenge> getAllDoneChallenges(Principal principal) {
+        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return ChallengeDao.instance.getDoneChallenges(username);
     }
 
     @GetMapping("/rest/getPendingChallengeRequests")
@@ -133,7 +146,7 @@ public class RESTAPIController {
     }
 
     @GetMapping("/rest/getSentChallengeRequests")
-    public List<Challenge> getSendChallengeRequests(Principal principal) {
+    public List<Challenge> getSentChallengeRequests(Principal principal) {
         String challenger = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         return ChallengeDao.instance.getSentChallengeRequests(challenger);
     }
@@ -174,7 +187,4 @@ public class RESTAPIController {
         String current = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         return FriendDao.instance.deleteFriend(current, friendToDelete);
     }
-
-
-
 }
