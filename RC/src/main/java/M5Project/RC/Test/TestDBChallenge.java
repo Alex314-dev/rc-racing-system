@@ -16,15 +16,6 @@ import M5Project.RC.model.Race;
 import M5Project.RC.model.Player;
 
 public class TestDBChallenge {
-    static final String JDBC_DRIVER = "org.postgresql.Driver";
-    static final String host = "bronto.ewi.utwente.nl";
-    static final String dbName = "dab_di20212b_100";
-    static final String DB_URL = "jdbc:postgresql://" + host + ":5432/" +
-            dbName + "?currentSchema=rc_racing_system_db_dev";
-
-    static final String USER = "dab_di20212b_100";
-    static final String PASS = System.getenv("RC_DB_PASS");
-
 
     @Test
     void getAllDoneChallenges() {
