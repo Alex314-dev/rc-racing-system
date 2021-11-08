@@ -17,6 +17,9 @@ import M5Project.RC.model.Player;
 
 public class TestDBChallenge {
 
+    /**
+     * Test if we can get all done challenges for a user
+     */
     @Test
     void getAllDoneChallenges() {
         List<Challenge> doneChallenges = DBChallenge.getAllDoneChallenges("KaganTheMan");
@@ -28,38 +31,61 @@ public class TestDBChallenge {
 
     }
 
+    /**
+     * Test if we can get all pending challenges for a user
+     */
     @Test
     void getAllPendingChallenges() {
         List<Challenge> pendingChallenges = DBChallenge.getAllChallengeRequests("LoopingLaurens", true);
         assertEquals(4, pendingChallenges.size());
     }
 
+    /**
+     * Test if we can get all sent challenges for a user
+     */
     @Test
     void getAllSentChallenges() {
         List<Challenge> sentChallenges = DBChallenge.getAllChallengeRequests("LiranTheDude", false);
         assertEquals(2, sentChallenges.size());
     }
 
+    /**
+     * Test if we get true when 2 users are friends
+     */
     @Test
     void checkIfFriendsTrue() {
         assertTrue(DBChallenge.checkIfFriends("KaganTheMan", "AlexP"));
     }
 
+    /**
+     * Test if we get false when 2 users are not friends
+     */
     @Test
     void checkIfFriendsFalse() {
         assertFalse(DBChallenge.checkIfFriends("kristian58", "AlexP"));
     }
 
+    /**
+     * Test if 2 users are already in a challenge
+     * Should return true as they are actually in a challenge
+     */
     @Test
     void checkIfInChallengeTrue() {
         assertTrue(DBChallenge.alreadyInAChallenge("AlexP", "LoopingLaurens"));
     }
 
+    /**
+     * Test if 2 users are already in a challenge
+     * Should return false as they are not actually in a challenge
+     */
     @Test
     void checkIfInChallengeFalse() {
         assertFalse(DBChallenge.alreadyInAChallenge("AlexP", "KaganTheMan"));
     }
 
+    /**
+     * Test if challenging an existing user works
+     */
     @Test
     void requestChallengeExistingUser() {
         DBChallenge.startNewChallenge("AlexP", "LordDebel");
@@ -68,6 +94,9 @@ public class TestDBChallenge {
         assertEquals(1, challenges.size());
     }
 
+    /**
+     * Test if challenging a non existing user does not work
+     */
     @Test
     void requestChallengeNonExistingUser() {
         DBChallenge.startNewChallenge("KrisCross", "TestUser");
@@ -75,6 +104,9 @@ public class TestDBChallenge {
         assertEquals(0, challenges.size());
     }
 
+    /**
+     * Test if responding to an existing challenge updates the done challenges for that user
+     */
     @Test
     void respondExistingChallenge() {
         List<Challenge> pendingChallenges = DBChallenge.getAllChallengeRequests("kristian58", true);
@@ -99,6 +131,9 @@ public class TestDBChallenge {
         assertEquals(2, challenges.size()); //The number was 2 and should be 2 after the attempted forgery.
     }
 
+    /**
+     * Test deleting all challenges for a correct pair of users
+     */
     @Test
     void deleteAllChallengesCorrectPairs() {
         DBChallenge.deleteALlChallengesUsers("LordDebel", "AlexP");
@@ -110,6 +145,9 @@ public class TestDBChallenge {
 
     }
 
+    /**
+     * Test force completion of a challenge
+     */
     @Test
     void checkForceCompleteChallenge() {
         DBChallenge.startNewChallenge("AlexP", "KrisCross");
@@ -129,16 +167,25 @@ public class TestDBChallenge {
 
     }
 
+    /**
+     * Test getting a challenge from a correct id
+     */
     @Test
     void checkGetChallengeFromIDCorrectID() {
         assertTrue(DBChallenge.getChallengeFromId("kristian58", "LoopingLaurens", 28));
     }
 
+    /**
+     * Test getting a challenge from an incorrect id
+     */
     @Test
     void checkGetChallengeFromIDIncorrectID() {
         assertFalse(DBChallenge.getChallengeFromId("kristian58", "LoopingLaurens", 30));
     }
 
+    /**
+     * Test if the scores between two friends will be correctly updated if friend2 is the winner
+     */
     @Test
     void checkUpdateScoresFriend2Winner() {
         List<Player> friends = DBFriendship.getFriendsWinsLosses("KrisCross");
@@ -162,6 +209,10 @@ public class TestDBChallenge {
         assertEquals(friendWinsBeforeRace + 1, friendWinsAfterRace);
     }
 
+
+    /**
+     * Test if the scores between two friends will be correctly updated if friend1 is the winner
+     */
     @Test
     void checkUpdateScoresFriend1Winner() {
         List<Player> friends = DBFriendship.getFriendsWinsLosses("LiranTheDude");
@@ -185,6 +236,10 @@ public class TestDBChallenge {
         assertEquals(friendWinsBeforeRace + 1, friendWinsAfterRace);
     }
 
+
+    /**
+     * Test if the scores between two friends will be correctly updated if they have a draw
+     */
     @Test
     void checkUpdateScoresDraw() {
         List<Player> friendsLiran = DBFriendship.getFriendsWinsLosses("LiranTheDude");
@@ -225,13 +280,19 @@ public class TestDBChallenge {
         assertEquals(friend2WinsBeforeRace + 1, friend2WinsAfterRace);
     }
 
-
+    /**
+     * Test if we get the correct race time from an existing id
+     */
     @Test
     void checkRaceTimeFromId() {
         float actualTime= DBChallenge.raceTimeFromRaceId(52);
         assertEquals(9.861000061035156, actualTime);
     }
 
+
+    /**
+     * Test if we get time 0 for race id 0;
+     */
     @Test
     void checkRaceTimeFromIdNoRace() {
         float actualTime= DBChallenge.raceTimeFromRaceId(0);
