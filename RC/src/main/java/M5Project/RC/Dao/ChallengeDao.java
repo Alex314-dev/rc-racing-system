@@ -9,14 +9,15 @@ public enum ChallengeDao {
     instance;
 
     public boolean challengeRequest(String challenger, String challengee) {
-        if (DBChallenge.checkIfFriends(challenger, challengee)) {
-            return !DBChallenge.alreadyInAChallenge(challenger, challengee);
-        }
-        return false;
+        return DBChallenge.checkIfFriends(challenger, challengee) && !DBChallenge.alreadyInAChallenge(challenger, challengee);
     }
 
     public boolean respondToChallenge(int challengeID, String challengee) {
         return DBChallenge.respondToChallenge(challengee, challengeID);
+    }
+
+    public boolean startNewChallenge(String challenger, String challengee) {
+        return DBChallenge.startNewChallenge(challenger, challengee);
     }
 
     public boolean changeScoresInvalidRace(int id, String challenger, String challengee, boolean challengerWins) {
@@ -51,10 +52,6 @@ public enum ChallengeDao {
         }
 
         return result;
-    }
-
-    public boolean deleteChallenge(String challengee, int id) {
-        return DBChallenge.deleteChallenge(challengee, id);
     }
 
     public List<Challenge> getPendingChallengeRequests(String username) {

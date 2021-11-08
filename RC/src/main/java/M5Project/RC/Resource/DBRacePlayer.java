@@ -1,5 +1,6 @@
 package M5Project.RC.Resource;
 
+import M5Project.RC.model.ErrorMessage;
 import M5Project.RC.model.Player;
 import M5Project.RC.model.Race;
 
@@ -21,7 +22,7 @@ public class DBRacePlayer {
     /**
      * Method to delete all data for the specified user.
      * @param username The username of the account
-     * @return #affected rows if the deletion was executed correctly, 0 if not
+     * @return #affected rows if the deletion was executed correctly, ErrorMessage.SERVER_ERROR if not
      */
     public static int deleteAccount(String username) {
         loadDriver();
@@ -38,7 +39,7 @@ public class DBRacePlayer {
 
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
-            return 0;
+            return ErrorMessage.SERVER_ERROR;
         }
     }
 

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum RaceDao {
-
     instance;
 
     //if null get all races
@@ -39,7 +38,7 @@ public enum RaceDao {
         String result = "";
         try {
             result = ClientSocket.instance.startRace();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             ClientSocket.instance.setOngoingGame(false);
             e.printStackTrace();
             return ErrorMessage.SERVER_ERROR;
@@ -62,7 +61,4 @@ public enum RaceDao {
         ClientSocket.instance.setOngoingGame(false);
         return overallTime;
     }
-
-
-
 }

@@ -40,14 +40,19 @@ $(window).on('load', function() {
             "order": [[ 1, "asc" ]],
             data: waitingData,
             columns: [
-                {"data": "challenger", "width": "40%"},
-                {"data": "challengerTime", "width": "25%"},
-                {"data": null, "orderable": false, "width": "35%",
+                {"data": "challenger", "width": "35%"},
+                {"data": "challengerTime", "width": "15%"},
+                {"data": null, "orderable": false, "width": "25%",
                 render: function ( data, type, row ) {
                     var challenger = row.challenger;
                     var challengeID = row.challengeID;
                     // challenger name and challengeID
-                    return '<div id="challengeAccept" data-value="'+challengeID+','+challenger+'">Accept</div>';} }
+                    return '<div id="challengeAccept" data-value="'+challengeID+','+challenger+'">Accept</div>';} },
+                {"data": null, "orderable": false, "width": "25%",
+                render: function ( data, type, row ) {
+                    var challenger = row.challenger;
+                    var challengeID = row.challengeID;
+                    return '<div id="challengeReject" data-value="'+challengeID+','+challenger+'">Reject</div>';} }
                 ]
             });
 
@@ -223,23 +228,39 @@ $(window).on('load', function() {
                             getOutgoingRequests();
                             getPendingRequests();
                          } else if (body == -1) {
-                             Swal.fire({
+                            Swal.fire({
+                              icon: 'error',
+                              title: 'Invalid Race',
+                              text: 'You were too slow or something went wrong!',
+                            });
+                         } else if (body == -3) {
+                          Swal.fire({
                                icon: 'error',
-                               title: 'Server error',
-                               text: 'Something went wrong!',
-                             })
-                         }  else if (body >= 0){
+                               title: 'Ongoing Challenge',
+                               text: 'There is an ongoing challenge between you and this user.',
+                             });
+
+                         } else if (body == -4) {
+                          Swal.fire({
+                               icon: 'error',
+                               title: 'Server Error',
+                               text: 'Internal error occurred.',
+                             });
+
+                         } else if (body >= 0){
                             Swal.fire(
                               'Done',
                               'Your time: ' + body + 'seconds',
                               'success'
                             )
                          } else {
-                            Swal.fire({
-                              icon: 'error',
-                              title: 'Server error',
-                              text: 'Something went wrong!',
-                            })
+                           Swal.fire({
+                             icon: 'error',
+                             title: 'Unexpected Error',
+                             text: 'Oh shoot, run!',
+                             }).then(function() {
+                                   location.reload();
+                               } );
                          }
                          getWaitingData();
                     }).catch((error) => {
@@ -250,6 +271,56 @@ $(window).on('load', function() {
                          })
                  });
         }
+
+    $(document).on("click", "#challengeReject", function() {
+        var value = $(this).attr("data-value");
+        var id = value.split(",")[0];
+        var challenger = value.split(",")[1];
+        rejectChallenge(id, challenger);
+    })
+
+    function rejectChallenge(id, challenger) {
+        var rejectChallengeData = {'challenger': challenger, 'id': id};
+                var formBody = [];
+                for (var property in rejectChallengeData) {
+                  var encodedKey = encodeURIComponent(property);
+                  var encodedValue = encodeURIComponent(rejectChallengeData[property]);
+                  formBody.push(encodedKey + "=" + encodedValue);
+                }
+                formBody = formBody.join("&");
+
+        fetch('/rest/rejectChallenge', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
+          body: formBody
+        }).then((resp) => {
+             return resp.json(); // or resp.text() or whatever the server sends
+        }).then((body) => {
+             console.log(body);
+             if (body == true) {
+                Swal.fire(
+                  'Rejected Challenge',
+                  'You got an automatic loss you pussy',
+                  'success'
+                )
+                getWaitingData();
+             } else {
+                 Swal.fire({
+                   icon: 'error',
+                   title: 'Server error',
+                   text: 'Something went wrong!',
+                 })
+             }
+        }).catch((error) => {
+             Swal.fire({
+               icon: 'error',
+               title: 'Server error',
+               text: 'Something went wrong!',
+             })
+     });
+    }
 
     $(document).on("click", "#challengeAccept", function() {
 
@@ -285,32 +356,48 @@ $(window).on('load', function() {
                 }).then((body) => {
                     console.log(body);
                      if (body == -2) {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Ongoing race',
+                            text: 'There is an ongoing race!',
+                          })
+                         getOutgoingRequests();
+                         getPendingRequests();
+                      } else if (body == -1) {
                          Swal.fire({
                            icon: 'error',
-                           title: 'Ongoing race/Server error',
-                           text: 'There is an ongoing race!',
-                         })
-                        getOutgoingRequests();
-                        getPendingRequests();
-                     } else if (body == -1) {
-                         Swal.fire({
-                           icon: 'error',
-                           title: 'Server error',
-                           text: 'Something went wrong!',
-                         })
-                     }  else if (body >= 0){
-                        Swal.fire(
-                          'Done',
-                          'Your time: ' + body + 'seconds',
-                          'success'
-                        )
-                     } else {
+                           title: 'Invalid Race',
+                           text: 'You were too slow or something went wrong!',
+                         });
+                      } else if (body == -3) {
+                       Swal.fire({
+                            icon: 'error',
+                            title: 'Ongoing Challenge',
+                            text: 'There is an ongoing challenge between you and this user.',
+                          });
+
+                      } else if (body == -4) {
+                       Swal.fire({
+                            icon: 'error',
+                            title: 'Server Error',
+                            text: 'Internal error occurred.',
+                          });
+
+                      } else if (body >= 0){
+                         Swal.fire(
+                           'Done',
+                           'Your time: ' + body + 'seconds',
+                           'success'
+                         )
+                      } else {
                         Swal.fire({
                           icon: 'error',
-                          title: 'Server error',
-                          text: 'Something went wrong!',
-                        })
-                     }
+                          title: 'Unexpected Error',
+                          text: 'Oh shoot, run!',
+                          }).then(function() {
+                                location.reload();
+                            } );
+                      }
                      getChallengeData();
                 }).catch((error) => {
                      Swal.fire({
