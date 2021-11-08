@@ -74,7 +74,8 @@ To setup the system follow the instructions below.
 13. Run the java class `RcApplication.java`.
 14. The java application will ask a socket to connect to. Give the same ip address and the port you wrote for the bash script.
 15. Go to localhost:8443, and discard the possible warning message coming from your browser.
-16. Create or login to your account. 
+16. Create or login to your account.
+17. Have fun with the system!
 
 
 
@@ -88,7 +89,7 @@ Below you can find detailed instructions on how to run tests.
 1. Import the collection https://www.getpostman.com/collections/a91c1413ba01c724c95f
 2. Log-in to the RC-Racing System
 3. Find what cookie you are using at the moment, and copy it
-4. Click on "Cookies" in the postman app(under the button "SEND")
+4. Click on "Cookies" in the postman app (under the button "SEND")
 5. Add the domain name "localhost"
 6. Add a cookie with the following JSESSIONID=[your cookie]; Path=/; Domain=localhost; Secure; HttpOnly;
 7. Click on "SAVE"
@@ -137,3 +138,27 @@ With the steps below you can execute all unit tests properly:
 
 
 ## Usage
+
+**TODO: Add the link to the demo video**
+
+
+
+## Contributing
+
+We are open to suggestions and accpet corrections to the system. If you wish you make any changes you can:
+1. Fork the project.
+2. Create a branch for your changes.
+3. Commit and push your changes to your own branch.
+4. Open a pull request
+
+
+
+## Contact
+
+Kağan Gülsüm            k.gulsum@student.utwente.nl
+Alex Petrov             .
+Liran Neta              .
+Kristiyan Velikov       .
+Laurens Neinders        .
+
+Project Link: [https://gitlab.utwente.nl/cs21-22/m5-project](https://gitlab.utwente.nl/cs21-22/m5-project)
