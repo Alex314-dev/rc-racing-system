@@ -87,8 +87,12 @@ $(window).on('load', function() {
         //do something here to show user that form is being submitted
         fetch(event.target.action, {
             method: 'POST',
+            redirect: 'follow',
             body: new URLSearchParams(new FormData(event.target)) // event.target is the form
         }).then((resp) => {
+                if (resp.redirected) {
+                    window.location.href = resp.url;
+                }
             return resp.json(); // or resp.text() or whatever the server sends
         }).then((body) => {
             console.log(body);
@@ -118,6 +122,7 @@ $(window).on('load', function() {
               title: 'Server error',
               text: 'Something went wrong!',
             })
+            window.location.href = "/"
         });
     });
 
@@ -139,11 +144,15 @@ $(window).on('load', function() {
 
         fetch('/rest/deleteFriend', {
           method: 'DELETE',
+          redirect: 'follow',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
           },
           body: formBody
         }).then((resp) => {
+                if (resp.redirected) {
+                    window.location.href = resp.url;
+                }
              return resp.json(); // or resp.text() or whatever the server sends
         }).then((body) => {
              console.log(body);
@@ -189,11 +198,15 @@ $(window).on('load', function() {
 
         fetch('/rest/acceptFriendRequest', {
           method: 'POST',
+          redirect: 'follow',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
           },
           body: formBody
         }).then((resp) => {
+                if (resp.redirected) {
+                    window.location.href = resp.url;
+                }
              return resp.json(); // or resp.text() or whatever the server sends
         }).then((body) => {
              console.log(body);
@@ -218,12 +231,16 @@ $(window).on('load', function() {
                title: 'Server error',
                text: 'Something went wrong!',
              })
+             window.location.href = "/"
      });
 
     });
 
 	function getFriends () {
-      fetch('/rest/getFriendsWinsLosses').then(function(response) {
+      fetch('/rest/getFriendsWinsLosses', {method: 'GET', redirect: 'follow'}).then(function(response) {
+          if (response.redirected) {
+              window.location.href = response.url;
+          }
         return response.json();
       }).then(function(data) {
         friendList = data;
@@ -234,6 +251,7 @@ $(window).on('load', function() {
             }
       }).catch(function() {
         console.log("Something Went Wrong");
+        window.location.href = "/"
       });
 	}
 
@@ -241,7 +259,10 @@ $(window).on('load', function() {
 
         $("#pending_table tbody").empty();
 
-          fetch('/rest/getPendingRequests').then(function(response) {
+          fetch('/rest/getPendingRequests', {method: 'GET', redirect: 'follow'}).then(function(response) {
+              if (response.redirected) {
+                  window.location.href = response.url;
+              }
             return response.json();
           }).then(function(data) {
             pendingReqData = data;
@@ -256,13 +277,17 @@ $(window).on('load', function() {
             }
           }).catch(function() {
             console.log("Something Went Wrong");
+            window.location.href = "/"
           });
 	}
 
 	function getOutgoingRequests () {
 	    $("#outgoing_table tbody").empty()
 
-          fetch('/rest/getSentRequests').then(function(response) {
+          fetch('/rest/getSentRequests', {method: 'GET', redirect: 'follow'}).then(function(response) {
+                  if (response.redirected) {
+                      window.location.href = response.url;
+                  }
             return response.json();
           }).then(function(data) {
             outgoingReqData = data;
@@ -277,6 +302,7 @@ $(window).on('load', function() {
             }
           }).catch(function() {
             console.log("Something Went Wrong");
+            window.location.href = "/"
           });
 	}
 

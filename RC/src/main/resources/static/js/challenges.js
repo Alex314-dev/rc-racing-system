@@ -22,9 +22,27 @@ $(window).on('load', function() {
         data: doneData,
         columns: [
             {"data": "challenger", "width": "30%"},
-            {"data": "challengerTime", "width": "20%"},
+            {"data": "null", "width": "20%",
+            "render": function ( data, type, row ) {
+                if ( type === 'display' || type === 'filter' ) {
+                    var minutes = Math.floor( row.challengerTime / 60);
+                    var seconds = row.challengerTime - minutes * 60;
+
+                    return minutes+"m "+seconds+"s"
+                }
+
+                return row.challengerTime} },
             {"data": "challengee", "width": "30%"},
-            {"data": "challengeeTime", "width": "20%"}
+            {"data": "null", "width": "20%",
+            "render": function ( data, type, row ) {
+                if ( type === 'display' || type === 'filter' ) {
+                    var minutes = Math.floor( row.challengeeTime / 60);
+                    var seconds = row.challengeeTime - minutes * 60;
+
+                    return minutes+"m "+seconds+"s"
+                }
+
+                return row.challengerTime} }
             ]
         });
 
@@ -41,7 +59,16 @@ $(window).on('load', function() {
             data: waitingData,
             columns: [
                 {"data": "challenger", "width": "35%"},
-                {"data": "challengerTime", "width": "15%"},
+                {"data": "null", "width": "15%",
+                "render": function ( data, type, row ) {
+                    if ( type === 'display' || type === 'filter' ) {
+                        var minutes = Math.floor( row.challengerTime / 60);
+                        var seconds = row.challengerTime - minutes * 60;
+
+                        return minutes+"m "+seconds+"s"
+                    }
+
+                    return row.challengerTime} },
                 {"data": null, "orderable": false, "width": "25%",
                 render: function ( data, type, row ) {
                     var challenger = row.challenger;
@@ -69,7 +96,16 @@ $(window).on('load', function() {
             data: sentData,
             columns: [
                 {"data": "challengee", "width": "40%"},
-                {"data": "challengerTime", "width": "15%"},
+                {"data": "null", "width": "15%",
+                "render": function ( data, type, row ) {
+                    if ( type === 'display' || type === 'filter' ) {
+                        var minutes = Math.floor( row.challengerTime / 60);
+                        var seconds = row.challengerTime - minutes * 60;
+
+                        return minutes+"m "+seconds+"s"
+                    }
+
+                    return row.challengerTime} },
                 ]
             });
 
@@ -114,7 +150,10 @@ $(window).on('load', function() {
     	};
 
     function getDoneData () {
-          fetch('/rest/getDoneChallenges').then(function(response) {
+          fetch('/rest/getDoneChallenges', {method: 'GET', redirect: 'follow'}).then(function(response) {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
             return response.json();
           }).then(function(data) {
             doneData = data;
@@ -123,28 +162,41 @@ $(window).on('load', function() {
                 datatableDone.rows.add(doneData);
                 datatableDone.columns.adjust().draw();
                 }
-          }).catch(function() {
-            console.log("Something Went Wrong");
+          }).catch(function(error) {
+           console.log("Something Went Wrong");
+           window.location.href = "/"
           });
     }
 
     function getWaitingData () {
-          fetch('/rest/getPendingChallengeRequests').then(function(response) {
+          fetch('/rest/getPendingChallengeRequests', {method: 'GET', redirect: 'follow'}).then(function(response) {
+                if (response.redirected) {
+                  window.location.href = response.url;
+                }
             return response.json();
           }).then(function(data) {
+          /**
+          if (response.redirected) {
+              window.location.href = response.url;
+          }
+          **/
             waitingData = data;
             if ($.fn.dataTable.isDataTable("#table_waiting")) {
                 datatableWaiting.clear().draw();
                 datatableWaiting.rows.add(waitingData);
                 datatableWaiting.columns.adjust().draw();
                 }
-          }).catch(function() {
+          }).catch(function(error) {
             console.log("Something Went Wrong");
+            window.location.href = "/"
           });
     }
 
     function getSentData() {
-          fetch('/rest/getSentChallengeRequests').then(function(response) {
+          fetch('/rest/getSentChallengeRequests', {method: 'GET', redirect: 'follow'}).then(function(response) {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
             return response.json();
           }).then(function(data) {
             sentData = data;
@@ -155,11 +207,15 @@ $(window).on('load', function() {
                 }
           }).catch(function() {
             console.log("Something Went Wrong");
+            window.location.href = "/"
           });
     }
 
     function getChallengeData() {
-          fetch('/rest/getFriendsWinsLosses').then(function(response) {
+          fetch('/rest/getFriendsWinsLosses', {method: 'GET', redirect: 'follow'}).then(function(response) {
+                if (response.redirected) {
+                  window.location.href = response.url;
+                }
             return response.json();
           }).then(function(data) {
             challengeData = data;
@@ -170,6 +226,7 @@ $(window).on('load', function() {
                 }
           }).catch(function() {
             console.log("Something Went Wrong");
+            window.location.href = "/"
           });
     }
 
@@ -211,11 +268,15 @@ $(window).on('load', function() {
 
                     fetch('/rest/challengeRequest', {
                       method: 'POST',
+                      redirect: 'follow',
                       headers: {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
                       },
                       body: formBody
                     }).then((resp) => {
+                            if (resp.redirected) {
+                                window.location.href = resp.url;
+                            }
                          return resp.json(); // or resp.text() or whatever the server sends
                     }).then((body) => {
                         console.log(body);
@@ -269,6 +330,7 @@ $(window).on('load', function() {
                            title: 'Server error',
                            text: 'Something went wrong!',
                          })
+                         window.location.href = "/"
                  });
         }
 
@@ -291,11 +353,15 @@ $(window).on('load', function() {
 
         fetch('/rest/rejectChallenge', {
           method: 'POST',
+          redirect: 'follow',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
           },
           body: formBody
         }).then((resp) => {
+                if (resp.redirected) {
+                    window.location.href = resp.url;
+                }
              return resp.json(); // or resp.text() or whatever the server sends
         }).then((body) => {
              console.log(body);
@@ -319,6 +385,7 @@ $(window).on('load', function() {
                title: 'Server error',
                text: 'Something went wrong!',
              })
+             window.location.href = "/"
      });
     }
 
@@ -347,11 +414,15 @@ $(window).on('load', function() {
 
                 fetch('/rest/acceptChallenge', {
                   method: 'POST',
+                  redirect: 'follow',
                   headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
                   },
                   body: formBody
                 }).then((resp) => {
+                        if (resp.redirected) {
+                            window.location.href = resp.url;
+                        }
                      return resp.json(); // or resp.text() or whatever the server sends
                 }).then((body) => {
                     console.log(body);
@@ -405,6 +476,7 @@ $(window).on('load', function() {
                        title: 'Server error',
                        text: 'Something went wrong!',
                      })
+                     window.location.href = "/"
              });
     }
 

@@ -102,6 +102,4 @@ $(window).on('load', function() {
                 xmlhttpraces.open("GET", "/rest/allraces", false);
                 xmlhttpraces.send();
             };
-
-
 });
