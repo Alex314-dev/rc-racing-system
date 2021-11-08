@@ -34,6 +34,8 @@ public class DBRacePlayer {
             PreparedStatement preparedStatement = connection.prepareStatement(deleteAccount);
             preparedStatement.setString(1, username);
 
+            preparedStatement.close();
+            connection.close();
             return preparedStatement.executeUpdate();
 
         } catch (SQLException sqle) {
@@ -82,6 +84,11 @@ public class DBRacePlayer {
         }
     }
 
+    /**
+     * Method to get a player username from email
+     * @param email
+     * @return
+     */
     public static String getPlayerUsername(String email) {
         loadDriver();
 
@@ -113,6 +120,13 @@ public class DBRacePlayer {
         }
     }
 
+    /**
+     * Method to insert a new player
+     * @param player
+     * @return false if the insert was unsuccessful if that user already exists, true if successful
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static boolean insertNewPlayer(Player player) throws ClassNotFoundException, SQLException {
         loadDriver();
 
