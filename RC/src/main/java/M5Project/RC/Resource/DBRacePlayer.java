@@ -19,6 +19,30 @@ public class DBRacePlayer {
     static final String PASS = System.getenv("RC_DB_PASS");
 
     /**
+     * Method to delete all data for the specified user.
+     * @param username The username of the account
+     * @return #affected rows if the deletion was executed correctly, 0 if not
+     */
+    public static int deleteAccount(String username) {
+        loadDriver();
+
+        try {
+            Connection connection = getConnection();
+            String deleteAccount = "DELETE FROM player\n" +
+                    "WHERE username = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteAccount);
+            preparedStatement.setString(1, username);
+
+            return preparedStatement.executeUpdate();
+
+        } catch (SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+            return 0;
+        }
+    }
+
+    /**
      * Check if the player is present in the database
      * @param email - email address obtained after authorization with oauth (after login)
      * @return
@@ -312,5 +336,4 @@ public class DBRacePlayer {
         Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
         return connection;
     }
-
 }

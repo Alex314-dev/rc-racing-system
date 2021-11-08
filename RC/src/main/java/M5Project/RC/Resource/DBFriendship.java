@@ -339,17 +339,4 @@ public class DBFriendship {
         Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
         return connection;
     }
-
-    public static void main(String[] args) {
-        //DBFriendship.sendFriendRequest("SexyBeast", "LordDebel");
-        //DBFriendship.deleteFriend("SexyBeast", "LordDebel");
-        DBFriendship.respondToRequest("SexyBeast", "LordDebel");
-//        List<String> friends = DBFriendship.getRequests("LoopingLaurens", false);
-//
-        // List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
-//        for (String friend: friends) {
-//            System.out.println(friend);
-//        }
-
-    }
 }
