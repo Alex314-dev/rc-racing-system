@@ -20,6 +20,9 @@ public class TestDBFriends {
 
     static final String USER = "LoopingLaurens";
 
+    /**
+     * Test that we get all friends with their corresponding wins and losses for a given user
+     */
     @Test
     @Order(1)
     void checkGetAllFriendsWinsLosses() {
@@ -27,6 +30,9 @@ public class TestDBFriends {
         assertEquals(4, friends.size());
     }
 
+    /**
+     * Test that we get all pending friend requests for a given user
+     */
     @Test
     @Order(2)
     void checkGetPendingRequests() {
@@ -34,6 +40,9 @@ public class TestDBFriends {
         assertEquals(2, pending.size());
     }
 
+    /**
+     * Test that we get all sent friend requests for a given user
+     */
     @Test
     @Order(3)
     void checkGetSentRequests() {
@@ -41,6 +50,9 @@ public class TestDBFriends {
         assertEquals(1, sent.size());
     }
 
+    /**
+     * Test that a correct friends request is sent
+     */
     @Test
     @Order(4)
     void checkAddAFriend() {
@@ -48,6 +60,9 @@ public class TestDBFriends {
         assertEquals(0, flag);
     }
 
+    /**
+     * Test that a friend request is not sent when this request is already sent
+     */
     @Test
     @Order(5)
     void checkAddFriendAlreadyInRequest() {
@@ -55,6 +70,9 @@ public class TestDBFriends {
         assertEquals(2, flag);
     }
 
+    /**
+     * Test that a friend request is not sent when the 2 users are already friends
+     */
     @Test
     @Order(6)
     void checkAddFriendAlreadyFriends() {
@@ -62,6 +80,9 @@ public class TestDBFriends {
         assertEquals(1, flag);
     }
 
+    /**
+     * Test that a user can respond to a friend request
+     */
     @Test
     @Order(7)
     void checkRespondingToRequest() {
@@ -87,6 +108,9 @@ public class TestDBFriends {
         assertTrue(hasFriend);
     }
 
+    /**
+     * Test the proper deletion of a friendship
+     */
     @Test
     @Order(8)
     void checkDeleteFriendship() {
