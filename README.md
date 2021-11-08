@@ -1,4 +1,13 @@
-# M5 Project
-The best Project ever made
+<!-- PROJECT LOGO -->
+<br>
+<div align="center">
+  <a href="https://gitlab.utwente.nl/cs21-22">
+    <img src="RC/src/main/resources/static/images/logo.png" alt="Logo" width="80" height="80">
+  </a>
 
+  <h3 align="center">RC Racing System</h3>
 
+  <p align="center">
+    An entertaining project for RC Racing.
+  </p>
+</div>
