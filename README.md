@@ -126,12 +126,12 @@ With the steps below you can execute all unit tests properly:
 1. In your preffered IDE, open the RC Racing System project.
 2. Go to `src\main\java\M5Project.RC`.
 3. Open every class in the `Resource` directory.
-4. Change the schema in the `DB_URL` string of every class to `rc_racing_system_db_dev`.
+4. Change the schema in the `DB_URL` string of every class to `rc_racing_system_db_dev`. <br>
     This is done by editing the text after `currentSchema=` in the string.
 5. Save the changes.
 6. Right-click on directory `Test`.
 7. Click `Run 'Tests in 'M5Project.RC.Test''`.
-8. After testing, revert the changes in every class in directory `Resource`.
+8. After testing, revert the changes in every class in directory `Resource`. <br>
     This means to change the schema to `rc_racing_system_db`.
 9. Save the changes.
 
@@ -139,7 +139,7 @@ With the steps below you can execute all unit tests properly:
 
 ## Usage
 
-**TODO: Add the link to the demo video**
+__TODO: Add the link to the demo video__
 
 
 
@@ -155,10 +155,10 @@ We are open to suggestions and accpet corrections to the system. If you wish you
 
 ## Contact
 
-Kağan Gülsüm            k.gulsum@student.utwente.nl
-Alex Petrov             .
-Liran Neta              .
-Kristiyan Velikov       .
-Laurens Neinders        .
+Kağan Gülsüm            k.gulsum@student.utwente.nl <br>
+Alex Petrov             . <br>
+Liran Neta              . <br>
+Kristiyan Velikov       . <br>
+Laurens Neinders        . <br>
 
 Project Link: [https://gitlab.utwente.nl/cs21-22/m5-project](https://gitlab.utwente.nl/cs21-22/m5-project)
