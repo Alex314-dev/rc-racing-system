@@ -190,4 +190,10 @@ public class RESTAPIController {
         String current = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         return FriendDao.instance.deleteFriend(current, friendToDelete);
     }
+
+    @DeleteMapping("/rest/removeAccount")
+    public int removeAccount(Principal principal) {
+        String player = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return PlayerDao.instance.removeAccount(player);
+    }
 }
