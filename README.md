@@ -112,7 +112,7 @@ Below you can find detailed instructions on how to run tests.
 	b. Click on "REC" (in the top right, below the 3 dots)
 	c. Navigate to the screen/s you wish to test
 	d. In case you want to test the value of a specific object, right-click on it, and then:
-		Selenium-IDE --> Assert --> Text
+	&emsp;Selenium-IDE --> Assert --> Text
 	e. The actions which are checked during the recording, including the "Asserts", will be added to the   SELENIUM-IDE
 	f. Choose a test you want to examine, and "Run current test"
 	h. You can examine all the tests at once, by choosing "Run all tests"
@@ -127,12 +127,12 @@ With the steps below you can execute all unit tests properly:
 2. Go to `src\main\java\M5Project.RC`.
 3. Open every class in the `Resource` directory.
 4. Change the schema in the `DB_URL` string of every class to `rc_racing_system_db_dev`. <br>
-    This is done by editing the text after `currentSchema=` in the string.
+&emsp;This is done by editing the text after `currentSchema=` in the string.
 5. Save the changes.
 6. Right-click on directory `Test`.
 7. Click `Run 'Tests in 'M5Project.RC.Test''`.
 8. After testing, revert the changes in every class in directory `Resource`. <br>
-    This means to change the schema to `rc_racing_system_db`.
+&emsp;This means to change the schema to `rc_racing_system_db`.
 9. Save the changes.
 
 
@@ -155,10 +155,10 @@ We are open to suggestions and accpet corrections to the system. If you wish you
 
 ## Contact
 
-Kağan Gülsüm            k.gulsum@student.utwente.nl <br>
-Alex Petrov             . <br>
-Liran Neta              . <br>
-Kristiyan Velikov       . <br>
-Laurens Neinders        . <br>
+Kağan Gülsüm&emsp;&emsp;&emsp;k.gulsum@student.utwente.nl <br>
+Alex Petrov&emsp;&emsp;&emsp;. <br>
+Liran Neta&emsp;&emsp;&emsp;. <br>
+Kristiyan Velikov&emsp;&emsp;&emsp;. <br>
+Laurens Neinders&emsp;&emsp;&emsp;. <br>
 
 Project Link: [https://gitlab.utwente.nl/cs21-22/m5-project](https://gitlab.utwente.nl/cs21-22/m5-project)
