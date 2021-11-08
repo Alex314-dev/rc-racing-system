@@ -36,6 +36,6 @@ public enum PlayerDao {
     }
 
     public int removeAccount(String player) {
-        return Database.removePlayer(player);
+        return DBRacePlayer.removePlayer(player);
     }
 }
