@@ -116,22 +116,24 @@ Below you can find detailed instructions on how to run tests.
 	f. Choose a test you want to examine, and "Run current test"
 	h. You can examine all the tests at once, by choosing "Run all tests"
 
-#### Database Unit Testing:
 
-All 3 database classes have been extensively unit tested. <br />
+### Database Unit Testing:
+
+All 3 database classes have been extensively unit tested.
 With the steps below you can execute all unit tests properly:
 
-1. In your corresponding compiler, open the RC Racing System project
-2. Go to src\main\java\M5Project.RC
-3. Open every class in the "Resource" directory
-4. Change the schema in the "DB_URL" string of every class to "rc_racing_system_db_dev". <br />
-This is done by editing the text after "currentSchema=" in the string
-5. Safe the changes
-6. Right-click on directory "Test"
-7. Click "Run 'Tests in 'M5Project.RC.Test''"
-8. After testing, revert the changes in every class in directory "Resource". <br />
-This means to change the schema to "rc_racing_system_db"
-9. Safe the changes
+1. In your preffered IDE, open the RC Racing System project.
+2. Go to `src\main\java\M5Project.RC`.
+3. Open every class in the `Resource` directory.
+4. Change the schema in the `DB_URL` string of every class to `rc_racing_system_db_dev`.
+    This is done by editing the text after `currentSchema=` in the string.
+5. Save the changes.
+6. Right-click on directory `Test`.
+7. Click `Run 'Tests in 'M5Project.RC.Test''`.
+8. After testing, revert the changes in every class in directory `Resource`.
+    This means to change the schema to `rc_racing_system_db`.
+9. Save the changes.
+
 
 
 ## Usage
