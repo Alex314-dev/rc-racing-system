@@ -30,7 +30,7 @@ public class TestDBRacePlayer {
     static final String RACE_USER = "AlexP";
 
 
-    /*
+    /**
      * Test if we get all races that are currently in the database
      */
     @Test
@@ -41,7 +41,7 @@ public class TestDBRacePlayer {
         assertEquals(NUM_RACES, actualRaces);
     }
 
-    /*
+    /**
      * Test if we get all races that are currently in the database for a specific user
      */
     @Test
@@ -55,7 +55,7 @@ public class TestDBRacePlayer {
         assertEquals(3, actualRaces);
     }
 
-    /*
+    /**
      * Test if we get 0 races for a user that does not exist
      */
     @Test
@@ -66,7 +66,7 @@ public class TestDBRacePlayer {
         assertEquals(0, actualRaces);
     }
 
-    /*
+    /**
      * Test inserting a new race.
      */
     @Test
@@ -86,7 +86,7 @@ public class TestDBRacePlayer {
 
     }
 
-    /*
+    /**
      * Test getting a username from email
      */
     @Test
@@ -98,7 +98,7 @@ public class TestDBRacePlayer {
 
     }
 
-    /*
+    /**
      * Test if we get all present usernames
      */
     @Test
@@ -108,7 +108,7 @@ public class TestDBRacePlayer {
         assertEquals(NUM_USERS, usernames.size());
     }
 
-    /*
+    /**
      * Test if a player who logs in is already in the database or not
      */
     @Test
@@ -117,7 +117,7 @@ public class TestDBRacePlayer {
         assertFalse(DBRacePlayer.isPlayerRegistered(("new.email@email.com")));
     }
 
-    /*
+    /**
      * Test inserting a new user
      */
     @Test
@@ -131,7 +131,7 @@ public class TestDBRacePlayer {
         deleteNewPlayer();
     }
 
-    /*
+    /**
      * Test inserting a new user whose mail already exists
      */
     @Test
