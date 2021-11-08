@@ -2,7 +2,7 @@
 <br>
 <div align="center">
   <a href="https://gitlab.utwente.nl/cs21-22">
-    <img src="RC/src/main/resources/static/images/logo.png" alt="Logo">
+    <img src="RC/src/main/resources/static/images/logo.png" alt="Logo" width="238px" height="137px">
   </a>
 
   <h3 align="center">RC Racing System</h3>
