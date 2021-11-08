@@ -3,6 +3,7 @@ package M5Project.RC.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import M5Project.RC.Resource.DBRacePlayer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
@@ -19,13 +20,13 @@ public class TestDBRacePlayer {
     static final String host = "bronto.ewi.utwente.nl";
     static final String dbName = "dab_di20212b_100";
     static final String DB_URL = "jdbc:postgresql://" + host + ":5432/" +
-            dbName +"?currentSchema=rc_racing_system_db";
+            dbName +"?currentSchema=rc_racing_system_db_dev";
 
     static final String USER = "dab_di20212b_100";
     static final String PASS = System.getenv("RC_DB_PASS");
 
-    static final int NUM_RACES = 23;
-    static final int NUM_USERS = 15;
+    static final int NUM_RACES = 57;
+    static final int NUM_USERS = 19;
     static final String RACE_USER = "AlexP";
 
 
@@ -116,7 +117,6 @@ public class TestDBRacePlayer {
         assertFalse(DBRacePlayer.isPlayerRegistered(("new.email@email.com")));
     }
 
-    //TODO check insert existing user
     /*
      * Test inserting a new user
      */

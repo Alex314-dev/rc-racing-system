@@ -539,10 +539,10 @@ public class DBChallenge {
 
     public static void main(String[] args) {
         //List<Challenge> challenges = DBChallenge.getAllChallengeRequests("LiranTheDude", false);
-        List<Challenge> challenges = DBChallenge.getAllDoneChallenges("SexyBeast");
-        for (Challenge challenge: challenges) {
-            System.out.println(challenge.toString());
-        }
+//        List<Challenge> challenges = DBChallenge.getAllChallengeRequests("LordDebel", true);
+//        for (Challenge challenge: challenges) {
+//            System.out.println(challenge.toString());
+//        }
 
         //System.out.println(DBChallenge.checkIfFriends("KrisCross", "LoopingLaurens"));
 
