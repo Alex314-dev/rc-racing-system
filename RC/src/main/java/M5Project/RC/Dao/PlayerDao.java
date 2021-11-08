@@ -35,4 +35,7 @@ public enum PlayerDao {
         return friends;
     }
 
+    public int removeAccount(String player) {
+        return Database.removePlayer(player);
+    }
 }
