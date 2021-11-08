@@ -342,8 +342,4 @@ public class DBFriendship {
         Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
         return connection;
     }
-
-    public static void main(String[] args) {
-        System.out.println(DBFriendship.sendFriendRequest("AlexP", "Thisguy"));
-    }
 }
