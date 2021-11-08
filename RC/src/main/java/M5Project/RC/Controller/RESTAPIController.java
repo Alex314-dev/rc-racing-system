@@ -73,4 +73,11 @@ public class RESTAPIController {
 
     }
 
+    @DeleteMapping("/rest/removeAccount")
+    public int removeAccount(Principal principal) {
+        String player = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return PlayerDao.instance.removeAccount(player);
+    }
+
+
 }
