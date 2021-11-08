@@ -1,12 +1,12 @@
 $(window).on('load', function() {
 
-    var userInfo;
+    var userInfo = {"username": "username"};
     var doneData = [{"challenger": "No Data Available", "challengerTime": 0,  "challengee": "", "challengeeTime": ""}];
     var waitingData= [{"challenger": "No Data Available", "challengerTime": 0, "challengeID": ""}];
     var sentData = [{"challengee": "No Data Available", "challengerTime": 0}];
     var challengeData = [{"username": "No Data Available", "wins": 0,  "losses": 0}];
     getCredentials ();
-    getDoneData();
+    getDoneData ();
 
     //Initialize done table
     datatableDone = $("#table_done").DataTable( {
@@ -36,14 +36,46 @@ $(window).on('load', function() {
             {"data": "null", "width": "20%",
             "render": function ( data, type, row ) {
                 if ( type === 'display' || type === 'filter' ) {
+                    if (row.challengeeTime == 0) {
+                        return "DNF";
+                    }
                     var minutes = Math.floor( row.challengeeTime / 60);
                     var seconds = row.challengeeTime - minutes * 60;
-
                     return minutes+"m "+seconds+"s"
                 }
-
-                return row.challengerTime} }
-            ]
+                return row.challengeeTime} }
+            ],
+            "createdRow": function( row, data, dataIndex) {
+                console.log("My Username: "+userInfo.username)
+                console.log("challenger: "+  data.challenger);
+                console.log("challengee: "+  data.challengee);
+                console.log((userInfo.username == data.challenger));
+                console.log((userInfo.username == data.challengee));
+                console.log("-----")
+                if (userInfo.username == data.challenger) {
+                    if (data.challengeeTime == 0) {
+                        $(row).addClass('win');
+                        console.log('win');
+                    } else if (data.challengeeTime > data.challengerTime) {
+                        $(row).addClass('win');
+                        console.log('win');
+                    } else if (data.challengeeTime < data.challengerTime) {
+                        $(row).addClass('lost');
+                        console.log('lost');
+                    }
+                } else if (userInfo.username == data.challengee) {
+                    if (data.challengeeTime == 0) {
+                        $(row).addClass('lost');
+                        console.log('lost');
+                    } else if (data.challengeeTime > data.challengerTime) {
+                        $(row).addClass('lost');
+                        console.log('lost');
+                  } else if (data.challengeeTime < data.challengerTime) {
+                        $(row).addClass('win');
+                        console.log('win');
+                  }
+                }
+            }
         });
 
         datatableWaiting = $("#table_waiting").DataTable( {
@@ -164,7 +196,8 @@ $(window).on('load', function() {
                 }
           }).catch(function(error) {
            console.log("Something Went Wrong");
-           window.location.href = "/"
+           console.log(error);
+           //window.location.href = "/"
           });
     }
 
@@ -486,7 +519,6 @@ $(window).on('load', function() {
         $('.sent-wrapper').css('display','none');
         $('.challenge-wrapper').css('display','none');
         $('.done-wrapper').css('display','block');
-        //datatable.columns.adjust().draw();
         $('.waiting').removeClass('activechallenge');
         $('.sent').removeClass('activechallenge');
         $('.challenges').removeClass('activechallenge');

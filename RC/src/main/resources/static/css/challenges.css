@@ -200,3 +200,10 @@
     background: #c41949;
 }
 
+.win {
+    background: #78fc78 !important;
+}
+
+.lost {
+    background: #ff7b7b !important;
+}
