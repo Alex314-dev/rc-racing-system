@@ -107,14 +107,14 @@ Below you can find detailed instructions on how to run tests.
 4. Open a project...
 5. Choose the SIDE file called "RC-RacingSystem.side", attached in the project
 6. Run the differerent tests. Pay attention to the fact that the tests are based on a testing user (liranneta23), and therefore some tests would probably fail if you run them from different users (for instance the "logging-in test")
-7. In case you want to add tests by yourself:
-	a. Add a test (click on the "+" button near "Tests")
-	b. Click on "REC" (in the top right, below the 3 dots)
-	c. Navigate to the screen/s you wish to test
-	d. In case you want to test the value of a specific object, right-click on it, and then:
-	&emsp;Selenium-IDE --> Assert --> Text
-	e. The actions which are checked during the recording, including the "Asserts", will be added to the   SELENIUM-IDE
-	f. Choose a test you want to examine, and "Run current test"
+7. In case you want to add tests by yourself: <br>
+	a. Add a test (click on the "+" button near "Tests") <br>
+	b. Click on "REC" (in the top right, below the 3 dots) <br>
+	c. Navigate to the screen/s you wish to test <br>
+	d. In case you want to test the value of a specific object, right-click on it, and then: <br>
+	&emsp;Selenium-IDE --> Assert --> Text <br>
+	e. The actions which are checked during the recording, including the "Asserts", will be added to the SELENIUM-IDE <br>
+	f. Choose a test you want to examine, and "Run current test" <br>
 	h. You can examine all the tests at once, by choosing "Run all tests"
 
 
@@ -156,9 +156,9 @@ We are open to suggestions and accpet corrections to the system. If you wish you
 ## Contact
 
 Kağan Gülsüm&emsp;&emsp;&emsp;k.gulsum@student.utwente.nl <br>
-Alex Petrov&emsp;&emsp;&emsp;. <br>
-Liran Neta&emsp;&emsp;&emsp;. <br>
-Kristiyan Velikov&emsp;&emsp;&emsp;. <br>
-Laurens Neinders&emsp;&emsp;&emsp;. <br>
+Alex Petrov&emsp;&emsp;&emsp;   . <br>
+Liran Neta&emsp;&emsp;&emsp;     . <br>
+Kristiyan Velikov&emsp;&emsp;. <br>
+Laurens Neinders&emsp;. <br>
 
 Project Link: [https://gitlab.utwente.nl/cs21-22/m5-project](https://gitlab.utwente.nl/cs21-22/m5-project)
