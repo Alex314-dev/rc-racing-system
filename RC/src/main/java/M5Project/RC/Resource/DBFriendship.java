@@ -16,7 +16,7 @@ public class DBFriendship {
     static final String host = "bronto.ewi.utwente.nl";
     static final String dbName = "dab_di20212b_100";
     static final String DB_URL = "jdbc:postgresql://" + host + ":5432/" +
-            dbName +"?currentSchema=rc_racing_system_db_dev";
+            dbName +"?currentSchema=rc_racing_system_db";
 
     static final String USER = "dab_di20212b_100";
     static final String PASS = System.getenv("RC_DB_PASS");
