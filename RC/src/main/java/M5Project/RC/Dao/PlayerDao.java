@@ -48,6 +48,6 @@ public enum PlayerDao {
     }
 
     public int removeAccount(String player) {
-        return Database.deleteAccount(player);
+        return DBRacePlayer.deleteAccount(player);
     }
 }
