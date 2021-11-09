@@ -20,6 +20,10 @@ public enum PlayerDao {
         players.put(sub, player);
     }
 
+    public void removePlayerFromMap(String sub) {
+        players.remove(sub);
+    }
+
     public boolean addPlayerToDB(Player player) throws SQLException, ClassNotFoundException {
         return DBRacePlayer.insertNewPlayer(player);
     }
@@ -45,5 +49,9 @@ public enum PlayerDao {
         String username = this.players.get(sub).getUsername();
         List<Player> friends = DBFriendship.getFriendsWinsLosses(username);
         return friends;
+    }
+
+    public int removeAccount(String player) {
+        return DBRacePlayer.deleteAccount(player);
     }
 }

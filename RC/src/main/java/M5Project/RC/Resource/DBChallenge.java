@@ -537,38 +537,4 @@ public class DBChallenge {
         return connection;
     }
 
-    public static void main(String[] args) {
-        //List<Challenge> challenges = DBChallenge.getAllChallengeRequests("LiranTheDude", false);
-//        List<Challenge> challenges = DBChallenge.getAllChallengeRequests("LordDebel", true);
-//        for (Challenge challenge: challenges) {
-//            System.out.println(challenge.toString());
-//        }
-
-        //System.out.println(DBChallenge.checkIfFriends("KrisCross", "LoopingLaurens"));
-
-        //DBChallenge.respondToChallenge("KaganTheMan", 26);
-//        if(DBChallenge.alreadyInAChallenge("LiranTheDude", "KaganTheMan")){
-//            System.out.println("In a challenge");
-//        } else {
-//            System.out.println("Not in a challenge");
-
-        //DBChallenge.startNewChallenge("SexyBeast", "LordDebel");
-        //DBChallenge.startNewChallenge("LordDebel", "SexyBeast");
-//            DBChallenge.startNewChallenge("LiranTheDude", "LoopingLaurens");
-
-
-        //       }
-
-        //DBChallenge.respondToChallenge("KaganTheMan", 25);
-        //DBChallenge.deleteChallenge("LiranTheDude", "AlexP", 25);
-
-        //System.out.println(DBChallenge.raceTimeFromRaceId(47));
-
-        //DBChallenge.updateScores("LiranTheDude", "SexyBeast", true);
-
-        //System.out.println(getChallengeFromId("kristian58", "SomeGuy", 28));
-        //DBChallenge.deleteALlChallengesUsers("SexyBeast", "LordDebel");
-
-        //DBChallenge.forceCompleteChallenge(52);
-    }
 }

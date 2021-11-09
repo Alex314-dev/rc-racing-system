@@ -25,10 +25,13 @@ public class DBFriendship {
      * Send a friend reqeust. AKA create a new row in the friends table with valid false and scores 0.
      * @param username the current user
      * @param friend desired friend
-     * @return  the requestSuccessFlag: -1 if SQL error, 0 if successful friend request, 1 if already friends, 2 if already in request
+     * @return  the requestSuccessFlag: -1 if SQL error, 0 if successful friend request,
+     * 1 if already friends, 2 if already in request, 3 if that user does not exist
      */
     public static int sendFriendRequest(String username, String friend){
         if (username.equals(friend)) { return -1; }
+
+        if (!DBRacePlayer.getAllUsernames().contains(friend)) { return 3; }
 
         loadDriver();
         boolean isFriends = false;
@@ -309,8 +312,8 @@ public class DBFriendship {
                 friend.setLosses(losses);
             }
 
-            connection.close();
             statement.close();
+            connection.close();
 
             return friends;
         } catch (SQLException sqle) {
@@ -338,18 +341,5 @@ public class DBFriendship {
     private static Connection getConnection() throws SQLException {
         Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
         return connection;
-    }
-
-    public static void main(String[] args) {
-        //DBFriendship.sendFriendRequest("SexyBeast", "LordDebel");
-        //DBFriendship.deleteFriend("SexyBeast", "LordDebel");
-        DBFriendship.respondToRequest("SexyBeast", "LordDebel");
-//        List<String> friends = DBFriendship.getRequests("LoopingLaurens", false);
-//
-        // List<Player> friends = DBFriendship.getFriendsWinsLosses("AlexP");
-//        for (String friend: friends) {
-//            System.out.println(friend);
-//        }
-
     }
 }

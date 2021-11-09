@@ -11,6 +11,8 @@ public enum ClientSocket {
     instance;
 
     private boolean ongoingGame = false;
+    private volatile boolean raceStarted = false;
+    private volatile String currentRacer = "";
 
     private Socket client;
     private PrintWriter out;
@@ -36,8 +38,15 @@ public enum ClientSocket {
     public String startRace() throws IOException, NullPointerException {
         out.println("GO");
         System.out.println("[=>] Starting the race.");
-        String resp = in.readLine();
-        return resp;
+        String startedOrTimeout = in.readLine();
+        if (startedOrTimeout != null && startedOrTimeout.contains("Started")) {
+            this.raceStarted = true;
+            String resp = in.readLine(); // either the race time or the timeout
+            this.raceStarted = false;
+            return resp;
+        } else {
+            return startedOrTimeout; // timeout
+        }
     }
 
     public boolean isOngoingGame() {
@@ -46,5 +55,17 @@ public enum ClientSocket {
 
     public void setOngoingGame(boolean ongoingGame) {
         this.ongoingGame = ongoingGame;
+    }
+
+    public String getCurrentRacer() {
+        return currentRacer;
+    }
+
+    public void setCurrentRacer(String currentRacer) {
+        this.currentRacer = currentRacer;
+    }
+
+    public boolean isRaceStarted() {
+        return raceStarted;
     }
 }

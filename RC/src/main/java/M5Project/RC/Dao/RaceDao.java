@@ -13,7 +13,7 @@ import java.util.List;
 public enum RaceDao {
     instance;
 
-    //if null get all races
+    // if null get all races
     public List<Race> getRaces(String username) {
         List<Race> races = new ArrayList<>();
 
@@ -26,7 +26,6 @@ public enum RaceDao {
         DBRacePlayer.addNewRace(username, raceTime, sectorTimes);
     }
 
-
     public float initiateARace(Principal principal) {
         if (ClientSocket.instance.isOngoingGame()) {
             return ErrorMessage.ONGOING_RACE;
@@ -34,17 +33,20 @@ public enum RaceDao {
 
         ClientSocket.instance.setOngoingGame(true);
         String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        ClientSocket.instance.setCurrentRacer(username);
 
         String result = "";
         try {
             result = ClientSocket.instance.startRace();
         } catch (IOException | NullPointerException e) {
+            ClientSocket.instance.setCurrentRacer("");
             ClientSocket.instance.setOngoingGame(false);
             e.printStackTrace();
             return ErrorMessage.SERVER_ERROR;
         }
 
         if (result.contains("Invalid")) {
+            ClientSocket.instance.setCurrentRacer("");
             ClientSocket.instance.setOngoingGame(false);
             return ErrorMessage.INVALID_RACE;
         }
@@ -58,6 +60,7 @@ public enum RaceDao {
         times.remove(times.size() - 1);
 
         RaceDao.instance.addRaceToDB(username, overallTime, times);
+        ClientSocket.instance.setCurrentRacer("");
         ClientSocket.instance.setOngoingGame(false);
         return overallTime;
     }

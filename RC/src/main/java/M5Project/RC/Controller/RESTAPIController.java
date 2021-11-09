@@ -4,6 +4,7 @@ import M5Project.RC.Dao.ChallengeDao;
 import M5Project.RC.Dao.FriendDao;
 import M5Project.RC.Dao.PlayerDao;
 import M5Project.RC.Dao.RaceDao;
+import M5Project.RC.JavaClientSocket.ClientSocket;
 import M5Project.RC.model.Challenge;
 import M5Project.RC.model.ErrorMessage;
 import M5Project.RC.model.Player;
@@ -65,6 +66,12 @@ public class RESTAPIController {
         }
 
     }
+    @GetMapping("/rest/logout")
+    public void logout(HttpServletResponse response, Principal principal) throws IOException {
+        PlayerDao.instance.removePlayerFromMap(principal.getName());
+
+        response.sendRedirect("/logout");
+    }
 
     @GetMapping("/rest/allraces")
     public List<Race> allRaces() {
@@ -74,6 +81,20 @@ public class RESTAPIController {
     @GetMapping("/rest/myraces")
     public List<Race> myRaces(Principal principal) {
         return RaceDao.instance.getRaces(PlayerDao.instance.getPlayer(principal.getName()).getUsername());
+    }
+
+    @GetMapping("/rest/timer")
+    public boolean timer(Principal principal) {
+        if (!ClientSocket.instance.isOngoingGame()) {
+            return false; // there is no race going on
+        }
+
+        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        if (ClientSocket.instance.getCurrentRacer().equals(username)) {
+            return ClientSocket.instance.isRaceStarted();
+        } else {
+            return false; // you are not the one racing
+        }
     }
 
     @GetMapping("/rest/race")
@@ -181,5 +202,11 @@ public class RESTAPIController {
     public int deleteFriend(@RequestParam String friendToDelete, Principal principal) {
         String current = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         return FriendDao.instance.deleteFriend(current, friendToDelete);
+    }
+
+    @DeleteMapping("/rest/removeAccount")
+    public int removeAccount(Principal principal) {
+        String player = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        return PlayerDao.instance.removeAccount(player);
     }
 }
