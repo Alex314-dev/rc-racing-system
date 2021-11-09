@@ -294,11 +294,7 @@ $(window).on('load', function() {
     })
 
     function createChallenge(challengee) {
-            Swal.fire(
-              'Challenge Created',
-              'GO GO GO',
-              'success'
-            )
+
             var acceptChallengeData = {'challengee': challengee};
                     var formBody = [];
                     for (var property in acceptChallengeData) {
@@ -356,6 +352,7 @@ $(window).on('load', function() {
                               'Your time: ' + body + 'seconds',
                               'success'
                             )
+                            showWaiting();
                          } else {
                            Swal.fire({
                              icon: 'error',
@@ -440,11 +437,6 @@ $(window).on('load', function() {
     })
 
     function acceptChallenge(id, challenger) {
-        Swal.fire(
-          'Challenge Started',
-          'GO GO GO',
-          'success'
-        )
         var acceptChallengeData = {'challenger': challenger, 'id': id};
                 var formBody = [];
                 for (var property in acceptChallengeData) {
@@ -502,6 +494,7 @@ $(window).on('load', function() {
                            'Your time: ' + body + 'seconds',
                            'success'
                          )
+                         showDone();
                       } else {
                         Swal.fire({
                           icon: 'error',
