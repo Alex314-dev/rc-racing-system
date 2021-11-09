@@ -197,3 +197,9 @@ body {
     background: white !important;
     border: 1px solid white !important;
 }
+
+.odd:hover, .even:hover {
+    transition-duration: 0.2s;
+    background: #c4194973;
+    color: white;
+}

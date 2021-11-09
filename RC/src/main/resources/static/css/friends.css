@@ -274,6 +274,15 @@ body {
     padding-bottom: 1em;
 }
 
+.odd:hover, .even:hover {
+    transition-duration: 0.2s;
+    background: #c4194973;
+    color: white;
+}
+
+h1 {
+    text-align: center;
+}
 
 
 

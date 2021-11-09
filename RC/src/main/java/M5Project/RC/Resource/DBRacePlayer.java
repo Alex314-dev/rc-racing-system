@@ -156,7 +156,8 @@ public class DBRacePlayer {
                     "AND s3.raceid = r.raceid\n" +
                     "AND s1.secnum = 1\n" +
                     "AND s2.secnum = 2\n" +
-                    "AND s3.secnum = 3\n";
+                    "AND s3.secnum = 3\n" +
+                    "ORDER BY r.overallTime, r.datetime ASC";
 
             PreparedStatement preparedStatement = connection.prepareStatement(queryRace);
 

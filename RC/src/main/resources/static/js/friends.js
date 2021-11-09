@@ -13,10 +13,10 @@ $(window).on('load', function() {
         "paging": false,
         "responsive": true,
         "orderCellsTop": true,
-        "scrollY": "calc(100vh - 425px)",
+        "scrollY": "calc(100vh - 460px)",
         "scrollCollapse": true,
         "searching": false,
-        "order": [[ 1, "asc" ]],
+        aaSorting: [],
         data: friendList,
         columns: [
             {"data": "username", "width": "40%"},
@@ -106,9 +106,15 @@ $(window).on('load', function() {
                 Swal.fire({
                   icon: 'error',
                   title: 'Invalid Request',
-                  text: 'You have already sent a friend request to that user!',
+                  text: 'There is already an outgoing friend request to that user!',
                 })
-            } else if (body == 0) {
+            } else if (body == 3) {
+                 Swal.fire({
+                   icon: 'error',
+                   title: 'Invalid Request',
+                   text: 'There is no user with this name!',
+                 })
+             } else if (body == 0) {
                 Swal.fire(
                   'Success',
                   'Friend Request has been sent!',
