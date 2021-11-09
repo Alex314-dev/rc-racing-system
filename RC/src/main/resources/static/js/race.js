@@ -1,5 +1,4 @@
 $(window).on('load', function() {
-
     var dataRaces;
     var datatable;
     var userInfo;
@@ -89,18 +88,17 @@ $(window).on('load', function() {
     });
 
     $("#delete_account").on('click', async function() {
-
-        const { value: username } = await Swal.fire({
-          input: 'text',
-          inputPlaceholder: 'Enter your username here...',
-          inputAttributes: {
-            'aria-label': 'Enter your username here'
-          },
-          confirmButtonText: 'Yes, delete it!',
-          icon: 'warning',
-          title: 'Are you sure you want to delete your account?',
-          text: "You won't be able to revert this!",
-          showCancelButton: true
+        const {value: username} = await Swal.fire({
+            input: 'text',
+            inputPlaceholder: 'Enter your username here...',
+            inputAttributes: {
+                'aria-label': 'Enter your username here'
+            },
+            confirmButtonText: 'Yes, delete it!',
+            icon: 'warning',
+            title: 'Are you sure you want to delete your account?',
+            text: "You won't be able to revert this!",
+            showCancelButton: true
         })
 
         if (username) {
@@ -109,7 +107,7 @@ $(window).on('load', function() {
                     if (response.redirected) {
                         window.location.href = response.url;
                     }
-                return response.json();
+                    return response.json();
                 }).then(function(data) {
                     if (data == 1) {
                         window.location.href = "rest/logout";
@@ -226,7 +224,7 @@ $(window).on('load', function() {
     }
 
     function delay(time) {
-      return new Promise(resolve => setTimeout(resolve, time));
+        return new Promise(resolve => setTimeout(resolve, time));
     }
 
     async function checkTimer() {
@@ -250,9 +248,9 @@ $(window).on('load', function() {
     }
 
     function startTimer() {
-            clearInterval(interval);
-            interval = setInterval(start, 10);
-        }
+        clearInterval(interval);
+        interval = setInterval(start, 10);
+    }
 
     function stopTimer() {
         clearInterval(interval);
@@ -268,7 +266,6 @@ $(window).on('load', function() {
     }
 
     function start() {
-
         var milString;
         var secString;
         var minString;
@@ -303,6 +300,5 @@ $(window).on('load', function() {
 
         var timeString = minString + ":" + secString + ":" + milString;
         $("#display").html(timeString);
-
     }
 });
