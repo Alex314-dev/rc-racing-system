@@ -1,5 +1,10 @@
 $(window).on('load', function() {
 
+    var interval;
+    var mil = 0;
+    var sec = 0;
+    var min = 0;
+    var timerFlag = false;
     var userInfo = {"username": "username"};
     var doneData = [{"challenger": "No Data Available", "challengerTime": 0,  "challengee": "", "challengeeTime": ""}];
     var waitingData= [{"challenger": "No Data Available", "challengerTime": 0, "challengeID": ""}];
@@ -290,87 +295,95 @@ $(window).on('load', function() {
 
     $(document).on("click", "#challengeCreate", function() {
         var challengee = $(this).attr("data-value");
+
+        $('.challenge-wrapper').css('display','none');
+        $('#loading-window').css('display','flex');
+
+        timerFlag = false;
         createChallenge(challengee);
+        checkTimer();
     })
 
     function createChallenge(challengee) {
 
             var acceptChallengeData = {'challengee': challengee};
-                    var formBody = [];
-                    for (var property in acceptChallengeData) {
-                      var encodedKey = encodeURIComponent(property);
-                      var encodedValue = encodeURIComponent(acceptChallengeData[property]);
-                      formBody.push(encodedKey + "=" + encodedValue);
+            var formBody = [];
+            for (var property in acceptChallengeData) {
+              var encodedKey = encodeURIComponent(property);
+              var encodedValue = encodeURIComponent(acceptChallengeData[property]);
+              formBody.push(encodedKey + "=" + encodedValue);
+            }
+            formBody = formBody.join("&");
+
+            fetch('/rest/challengeRequest', {
+              method: 'POST',
+              redirect: 'follow',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+              },
+              body: formBody
+            }).then((resp) => {
+                    if (resp.redirected) {
+                        window.location.href = resp.url;
                     }
-                    formBody = formBody.join("&");
-
-                    fetch('/rest/challengeRequest', {
-                      method: 'POST',
-                      redirect: 'follow',
-                      headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                      },
-                      body: formBody
-                    }).then((resp) => {
-                            if (resp.redirected) {
-                                window.location.href = resp.url;
-                            }
-                         return resp.json(); // or resp.text() or whatever the server sends
-                    }).then((body) => {
-                        console.log(body);
-                         if (body == -2) {
-                             Swal.fire({
-                               icon: 'error',
-                               title: 'Ongoing race',
-                               text: 'There is an ongoing race!',
-                             })
-                            getOutgoingRequests();
-                            getPendingRequests();
-                         } else if (body == -1) {
-                            Swal.fire({
-                              icon: 'error',
-                              title: 'Invalid Race',
-                              text: 'You were too slow or something went wrong!',
-                            });
-                         } else if (body == -3) {
-                          Swal.fire({
-                               icon: 'error',
-                               title: 'Ongoing Challenge',
-                               text: 'There is an ongoing challenge between you and this user.',
-                             });
-
-                         } else if (body == -4) {
-                          Swal.fire({
-                               icon: 'error',
-                               title: 'Server Error',
-                               text: 'Internal error occurred.',
-                             });
-
-                         } else if (body >= 0){
-                            Swal.fire(
-                              'Done',
-                              'Your time: ' + body + 'seconds',
-                              'success'
-                            )
-                            showWaiting();
-                         } else {
-                           Swal.fire({
-                             icon: 'error',
-                             title: 'Unexpected Error',
-                             text: 'Oh shoot, run!',
-                             }).then(function() {
-                                   location.reload();
-                               } );
-                         }
-                         getWaitingData();
-                    }).catch((error) => {
-                         Swal.fire({
-                           icon: 'error',
-                           title: 'Server error',
-                           text: 'Something went wrong!',
-                         })
-                         window.location.href = "/"
-                 });
+                 return resp.json(); // or resp.text() or whatever the server sends
+            }).then((body) => {
+                console.log(body);
+                 if (body == -2) {
+                     Swal.fire({
+                       icon: 'error',
+                       title: 'Ongoing race',
+                       text: 'There is an ongoing race!',
+                     })
+                    showChallenges();
+                 } else if (body == -1) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Invalid Race',
+                      text: 'You were too slow or something went wrong!',
+                    });
+                    showChallenges();
+                 } else if (body == -3) {
+                    Swal.fire({
+                       icon: 'error',
+                       title: 'Ongoing Challenge',
+                       text: 'There is an ongoing challenge between you and this user.',
+                     });
+                    showChallenges();
+                 } else if (body == -4) {
+                    Swal.fire({
+                       icon: 'error',
+                       title: 'Server Error',
+                       text: 'Internal error occurred.',
+                     });
+                    showChallenges();
+                 } else if (body >= 0){
+                    Swal.fire(
+                      'Done',
+                      'Your time: ' + body + 'seconds',
+                      'success'
+                    )
+                    showWaiting();
+                 } else {
+                   Swal.fire({
+                     icon: 'error',
+                     title: 'Unexpected Error',
+                     text: 'Oh shoot, run!',
+                     }).then(function() {
+                           location.reload();
+                       } );
+                 }
+                 endOfRace()
+                 getWaitingData();
+                 timerFlag = true;
+            }).catch((error) => {
+                 Swal.fire({
+                   icon: 'error',
+                   title: 'Server error',
+                   text: 'Something went wrong!',
+                 })
+                 window.location.href = "/"
+         });
         }
 
     $(document).on("click", "#challengeReject", function() {
@@ -382,13 +395,13 @@ $(window).on('load', function() {
 
     function rejectChallenge(id, challenger) {
         var rejectChallengeData = {'challenger': challenger, 'id': id};
-                var formBody = [];
-                for (var property in rejectChallengeData) {
-                  var encodedKey = encodeURIComponent(property);
-                  var encodedValue = encodeURIComponent(rejectChallengeData[property]);
-                  formBody.push(encodedKey + "=" + encodedValue);
-                }
-                formBody = formBody.join("&");
+        var formBody = [];
+        for (var property in rejectChallengeData) {
+          var encodedKey = encodeURIComponent(property);
+          var encodedValue = encodeURIComponent(rejectChallengeData[property]);
+          formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
 
         fetch('/rest/rejectChallenge', {
           method: 'POST',
@@ -433,86 +446,94 @@ $(window).on('load', function() {
         var value = $(this).attr("data-value");
         var id = value.split(",")[0];
         var challenger = value.split(",")[1];
+
+        $('.waiting-wrapper').css('display','none');
+        $('#loading-window').css('display','flex');
+        timerFlag = false;
         acceptChallenge(id, challenger);
+        checkTimer();
+
     })
 
     function acceptChallenge(id, challenger) {
         var acceptChallengeData = {'challenger': challenger, 'id': id};
-                var formBody = [];
-                for (var property in acceptChallengeData) {
-                  var encodedKey = encodeURIComponent(property);
-                  var encodedValue = encodeURIComponent(acceptChallengeData[property]);
-                  formBody.push(encodedKey + "=" + encodedValue);
+        var formBody = [];
+        for (var property in acceptChallengeData) {
+          var encodedKey = encodeURIComponent(property);
+          var encodedValue = encodeURIComponent(acceptChallengeData[property]);
+          formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        fetch('/rest/acceptChallenge', {
+          method: 'POST',
+          redirect: 'follow',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
+          body: formBody
+        }).then((resp) => {
+                if (resp.redirected) {
+                    window.location.href = resp.url;
                 }
-                formBody = formBody.join("&");
-
-                fetch('/rest/acceptChallenge', {
-                  method: 'POST',
-                  redirect: 'follow',
-                  headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                  },
-                  body: formBody
-                }).then((resp) => {
-                        if (resp.redirected) {
-                            window.location.href = resp.url;
-                        }
-                     return resp.json(); // or resp.text() or whatever the server sends
-                }).then((body) => {
-                    console.log(body);
-                     if (body == -2) {
-                          Swal.fire({
-                            icon: 'error',
-                            title: 'Ongoing race',
-                            text: 'There is an ongoing race!',
-                          })
-                         getOutgoingRequests();
-                         getPendingRequests();
-                      } else if (body == -1) {
-                         Swal.fire({
-                           icon: 'error',
-                           title: 'Invalid Race',
-                           text: 'You were too slow or something went wrong!',
-                         });
-                      } else if (body == -3) {
-                       Swal.fire({
-                            icon: 'error',
-                            title: 'Ongoing Challenge',
-                            text: 'There is an ongoing challenge between you and this user.',
-                          });
-
-                      } else if (body == -4) {
-                       Swal.fire({
-                            icon: 'error',
-                            title: 'Server Error',
-                            text: 'Internal error occurred.',
-                          });
-
-                      } else if (body >= 0){
-                         Swal.fire(
-                           'Done',
-                           'Your time: ' + body + 'seconds',
-                           'success'
-                         )
-                         showDone();
-                      } else {
-                        Swal.fire({
-                          icon: 'error',
-                          title: 'Unexpected Error',
-                          text: 'Oh shoot, run!',
-                          }).then(function() {
-                                location.reload();
-                            } );
-                      }
-                     getChallengeData();
-                }).catch((error) => {
-                     Swal.fire({
-                       icon: 'error',
-                       title: 'Server error',
-                       text: 'Something went wrong!',
-                     })
-                     window.location.href = "/"
-             });
+             return resp.json(); // or resp.text() or whatever the server sends
+        }).then((body) => {
+            console.log(body);
+             if (body == -2) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Ongoing race',
+                    text: 'There is an ongoing race!',
+                  })
+                showWaiting();
+              } else if (body == -1) {
+                 Swal.fire({
+                   icon: 'error',
+                   title: 'Invalid Race',
+                   text: 'You were too slow or something went wrong!',
+                 });
+                 showWaiting();
+              } else if (body == -3) {
+               Swal.fire({
+                    icon: 'error',
+                    title: 'Ongoing Challenge',
+                    text: 'There is an ongoing challenge between you and this user.',
+                  });
+               showWaiting();
+              } else if (body == -4) {
+               Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error',
+                    text: 'Internal error occurred.',
+                  });
+               showWaiting();
+              } else if (body >= 0) {
+                 Swal.fire(
+                   'Done',
+                   'Your time: ' + body + 'seconds',
+                   'success'
+                 )
+                 showDone();
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Unexpected Error',
+                  text: 'Oh shoot, run!',
+                  }).then(function() {
+                        location.reload();
+                    } );
+              }
+              endOfRace();
+              getChallengeData();
+              timerFlag = true;
+        }).catch((error) => {
+             Swal.fire({
+               icon: 'error',
+               title: 'Server error',
+               text: 'Something went wrong!',
+             })
+             window.location.href = "/"
+     });
     }
 
     function showDone() {
@@ -570,5 +591,94 @@ $(window).on('load', function() {
         $('.done').removeClass('activechallenge');
         $('.challenges').addClass('activechallenge');
     }
+
+    function endOfRace() {
+        resetTimer();
+        stopTimer();
+        //$('#loading-window').css('display','none');
+    }
+
+    async function checkTimer() {
+        while (!timerFlag) {
+            await delay(500);
+            sendTimerRequest();
+        }
+    }
+
+    function sendTimerRequest() {
+        fetch('/rest/timer', {method: 'GET', redirect: 'follow'}).then(function(response) {
+            return response.json();
+        }).then(function(data) {
+            if (data === true) {
+                startTimer();
+                timerFlag = true;
+            }
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+
+    function delay(time) {
+      return new Promise(resolve => setTimeout(resolve, time));
+    }
+
+    function startTimer() {
+        clearInterval(interval);
+        interval = setInterval(start, 10);
+    }
+
+    function stopTimer() {
+        clearInterval(interval);
+        $("#display").html("00:00:00");
+    }
+
+    function resetTimer() {
+        clearInterval(interval);
+        mil = 0;
+        sec = 0;
+        min = 0;
+        $("#display").html("00:00:00");
+    }
+
+    function start() {
+
+        var milString;
+        var secString;
+        var minString;
+
+        mil++;
+
+        if (mil <= 9) {
+            milString = "0" + mil;
+        } else if (mil > 99) {
+            mil = 0;
+            milString = "00";
+            sec++;
+        } else {
+            milString = "" + mil;
+        }
+
+        if (sec <= 9) {
+            secString = "0" + sec;
+        } else if (sec > 59) {
+            sec = 0;
+            secString = "00";
+            min ++;
+        } else {
+            secString = "" + sec;
+        }
+
+        if (min <= 9) {
+            minString = "0" + min;
+        } else {
+            minString = min;
+        }
+
+        var timeString = minString + ":" + secString + ":" + milString;
+        $("#display").html(timeString);
+
+    }
+
+
 
 });

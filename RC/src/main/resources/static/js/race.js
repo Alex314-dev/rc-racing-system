@@ -3,6 +3,10 @@ $(window).on('load', function() {
     var dataRaces;
     var datatable;
     var userInfo;
+    var interval;
+    var mil = 0;
+    var sec = 0;
+    var min = 0;
     var timerFlag = false;
     getCredentials();
     getMyRaces();
@@ -214,58 +218,11 @@ $(window).on('load', function() {
     }
 
     function endOfRace() {
-        reset();
-        pause();
+        resetTimer();
+        pauseTimer();
         $('#table_races_wrapper').css('display','block');
         $('#loading-window').css('display','none');
         $('#race_text').text('Start Race');
-    }
-
-    // Convert time to a format of hours, minutes, seconds, and milliseconds
-    function timeToString(time) {
-        let diffInHrs = time / 3600000;
-        let hh = Math.floor(diffInHrs);
-
-        let diffInMin = (diffInHrs - hh) * 60;
-        let mm = Math.floor(diffInMin);
-
-        let diffInSec = (diffInMin - mm) * 60;
-        let ss = Math.floor(diffInSec);
-
-        let diffInMs = (diffInSec - ss) * 100;
-        let ms = Math.floor(diffInMs);
-
-        let formattedMM = mm.toString().padStart(2, "0");
-        let formattedSS = ss.toString().padStart(2, "0");
-        let formattedMS = ms.toString().padStart(2, "0");
-
-        return `${formattedMM}:${formattedSS}:${formattedMS}`;
-    }
-
-    let startTime;
-    let elapsedTime = 0;
-    let timerInterval;
-
-    function print(txt) {
-      document.getElementById("display").innerHTML = txt;
-    }
-
-    function start() {
-      startTime = Date.now() - elapsedTime;
-      timerInterval = setInterval(function printTime() {
-        elapsedTime = Date.now() - startTime;
-        print(timeToString(elapsedTime));
-      }, 10);
-    }
-
-    function pause() {
-      clearInterval(timerInterval);
-    }
-
-    function reset() {
-      clearInterval(timerInterval);
-      print("00:00:00");
-      elapsedTime = 0;
     }
 
     function delay(time) {
@@ -284,11 +241,68 @@ $(window).on('load', function() {
             return response.json();
         }).then(function(data) {
             if (data === true) {
-                start();
+                startTimer();
                 timerFlag = true;
             }
         }).catch(function(error) {
             console.log(error);
         });
     }
+
+    function startTimer() {
+            clearInterval(interval);
+            interval = setInterval(start, 10);
+        }
+
+        function stopTimer() {
+            clearInterval(interval);
+            $("#display").html("00:00:00");
+        }
+
+        function resetTimer() {
+            clearInterval(interval);
+            mil = 0;
+            sec = 0;
+            min = 0;
+            $("#display").html("00:00:00");
+        }
+
+        function start() {
+
+            var milString;
+            var secString;
+            var minString;
+
+            mil++;
+
+            if (mil <= 9) {
+                milString = "0" + mil;
+            } else if (mil > 99) {
+                mil = 0;
+                milString = "00";
+                sec++;
+            } else {
+                milString = "" + mil;
+            }
+
+            if (sec <= 9) {
+                secString = "0" + sec;
+            } else if (sec > 59) {
+                sec = 0;
+                secString = "00";
+                min ++;
+            } else {
+                secString = "" + sec;
+            }
+
+            if (min <= 9) {
+                minString = "0" + min;
+            } else {
+                minString = min;
+            }
+
+            var timeString = minString + ":" + secString + ":" + milString;
+            $("#display").html(timeString);
+
+        }
 });
