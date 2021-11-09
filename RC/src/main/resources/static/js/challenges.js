@@ -363,7 +363,7 @@ $(window).on('load', function() {
                       'Your time: ' + body + 'seconds',
                       'success'
                     )
-                    showWaiting();
+                    showSent();
                  } else {
                    Swal.fire({
                      icon: 'error',
@@ -491,7 +491,7 @@ $(window).on('load', function() {
                    title: 'Invalid Race',
                    text: 'You were too slow or something went wrong!',
                  });
-                 showWaiting();
+                showWaiting();
               } else if (body == -3) {
                Swal.fire({
                     icon: 'error',
