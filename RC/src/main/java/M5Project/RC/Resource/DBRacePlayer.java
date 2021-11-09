@@ -34,9 +34,11 @@ public class DBRacePlayer {
             PreparedStatement preparedStatement = connection.prepareStatement(deleteAccount);
             preparedStatement.setString(1, username);
 
+            int result = preparedStatement.executeUpdate();
+
             preparedStatement.close();
             connection.close();
-            return preparedStatement.executeUpdate();
+            return result;
 
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
