@@ -108,7 +108,7 @@ $(window).on('load', function() {
                 return response.json();
                 }).then(function(data) {
                     if (data == 1) {
-                        window.location.href = "/logout";
+                        window.location.href = "rest/logout";
                     } else {
                         Swal.fire({
                             icon: 'error',
