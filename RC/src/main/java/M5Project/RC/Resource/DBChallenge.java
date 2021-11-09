@@ -65,7 +65,6 @@ public class DBChallenge {
 
             statement.close();
             connection.close();
-
         } catch(SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
         }
@@ -105,7 +104,6 @@ public class DBChallenge {
             statement.close();
             connection.close();
             return false;
-
         } catch(SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return false;
@@ -167,7 +165,6 @@ public class DBChallenge {
 
             statement.close();
             connection.close();
-
         } catch(SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return false;
@@ -311,7 +308,6 @@ public class DBChallenge {
             statement.close();
             connection.close();
             return false;
-
         } catch(SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return false;
@@ -348,7 +344,6 @@ public class DBChallenge {
             statement.execute();
 
             statement.close();
-
             connection.close();
         } catch(SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
@@ -414,7 +409,6 @@ public class DBChallenge {
             connection.close();
             statement.close();
             return challenges;
-
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return null;
@@ -463,7 +457,6 @@ public class DBChallenge {
             connection.close();
             statement.close();
             return challenges;
-
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return null;
@@ -508,7 +501,6 @@ public class DBChallenge {
             connection.close();
             statement.close();
             return checkFriends;
-
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return false;
@@ -519,7 +511,7 @@ public class DBChallenge {
     /**
      * Helper function to load the driver
      */
-    private static void loadDriver(){
+    private static void loadDriver() {
         try {
             Class.forName(JDBC_DRIVER);
         } catch (ClassNotFoundException cnfe) {

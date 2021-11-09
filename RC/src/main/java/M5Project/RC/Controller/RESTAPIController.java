@@ -22,22 +22,18 @@ import java.util.regex.PatternSyntaxException;
 public class RESTAPIController {
 
     @GetMapping("/rest/player")
-    public Player player(Principal principal)
-    {
+    public Player player(Principal principal) {
         return PlayerDao.instance.getPlayer(principal.getName());
     }
 
     @GetMapping("/rest/myname")
-    public String name(Principal principal)
-    {
+    public String name(Principal principal) {
         return PlayerDao.instance.getPlayer(principal.getName()).getName();
     }
 
     @PostMapping("/rest/newplayer")
     public void newEmployee(HttpServletResponse response, @RequestParam String username, Principal principal) throws IOException {
-
         if (PlayerDao.instance.getPlayer(principal.getName()).getUsername().equals("")) {
-
             try {
                 if (username.matches("\\b[a-zA-Z][a-zA-Z0-9\\-._]{3,}\\b")) {
                     Player newPlayer = PlayerDao.instance.getPlayer(principal.getName());
@@ -64,12 +60,11 @@ public class RESTAPIController {
         } else {
             response.sendRedirect("/race");
         }
-
     }
+
     @GetMapping("/rest/logout")
     public void logout(HttpServletResponse response, Principal principal) throws IOException {
         PlayerDao.instance.removePlayerFromMap(principal.getName());
-
         response.sendRedirect("/logout");
     }
 
@@ -86,14 +81,14 @@ public class RESTAPIController {
     @GetMapping("/rest/timer")
     public boolean timer(Principal principal) {
         if (!ClientSocket.instance.isOngoingGame()) {
-            return false; // there is no race going on
+            return false;
         }
 
         String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         if (ClientSocket.instance.getCurrentRacer().equals(username)) {
             return ClientSocket.instance.isRaceStarted();
         } else {
-            return false; // you are not the one racing
+            return false;
         }
     }
 
@@ -169,7 +164,7 @@ public class RESTAPIController {
 
     @PostMapping("/rest/sendFriendRequest")
     public int sendFriendRequest(@RequestParam String friendToAdd, Principal principal) {
-        System.out.println("FRIEND = " + friendToAdd);
+        // System.out.println("FRIEND = " + friendToAdd);
         String sender = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
         return FriendDao.instance.sendFriendRequest(sender, friendToAdd);
     }

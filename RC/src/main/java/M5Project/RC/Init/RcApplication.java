@@ -55,5 +55,4 @@ public class RcApplication {
 		connector.setRedirectPort(8443);
 		return connector;
 	}
-
 }

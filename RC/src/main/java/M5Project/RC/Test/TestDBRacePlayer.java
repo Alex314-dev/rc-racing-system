@@ -83,7 +83,6 @@ public class TestDBRacePlayer {
         assertEquals(NUM_RACES + 1, races.size());
 
         deleteNewRace(); //remove the test race
-
     }
 
     /**
@@ -95,7 +94,6 @@ public class TestDBRacePlayer {
         String username = DBRacePlayer.getPlayerUsername(email);
 
         assertEquals(RACE_USER, username);
-
     }
 
     /**
@@ -202,6 +200,5 @@ public class TestDBRacePlayer {
         } catch(SQLException sqle){
             System.err.println("Error connecting: " + sqle);
         }
-
     }
 }

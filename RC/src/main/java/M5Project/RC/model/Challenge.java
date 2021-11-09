@@ -103,5 +103,4 @@ public class Challenge {
         String toString = "Challenge{" + "id=" + this.challengeID + ", player1:"  + this.challenger + ", raceID Challenger:" + this.raceIDChallenger + ", raceID Challengee:" + this.raceIDChallengee + '\'';
         return toString + "}";
     }
-
 }

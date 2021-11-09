@@ -61,6 +61,5 @@ public class AfterLogin {
         Map<String,Object> OauthAttributes =  oAuth2User.getAttributes();
         return (String) OauthAttributes.get("name");
     }
-
-
+    
 }

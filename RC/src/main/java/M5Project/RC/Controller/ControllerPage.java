@@ -13,7 +13,6 @@ public class ControllerPage {
 
     @GetMapping("/")
     public String loginPage() {
-
         return "login.html";
     }
 
@@ -39,12 +38,9 @@ public class ControllerPage {
 
     @GetMapping("/newuser")
     public String newuserPage(HttpServletResponse response, Principal principal) throws IOException {
-
         if (!PlayerDao.instance.getPlayer(principal.getName()).getUsername().equals("")) {
             response.sendRedirect("/race");
         }
         return "newuser.html";
     }
-
 }
-

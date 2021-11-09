@@ -80,7 +80,6 @@ public class DBRacePlayer {
             if (count > 1) throw new SQLException("This should't happen");
 
             return (count == 1);
-
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return false;
@@ -116,7 +115,6 @@ public class DBRacePlayer {
             connection.close();
 
             return username;
-
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return null;
@@ -227,7 +225,6 @@ public class DBRacePlayer {
             connection.close();
 
             return races;
-
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return null;
@@ -282,7 +279,6 @@ public class DBRacePlayer {
             statement.close();
             prStatement.close();
             connection.close();
-
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
         }
@@ -299,7 +295,7 @@ public class DBRacePlayer {
             Connection connection = getConnection();
 
             String usernameQuery = "SELECT p.username\n" +
-                    "FROM player p";
+                "FROM player p";
 
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(usernameQuery);
@@ -335,7 +331,7 @@ public class DBRacePlayer {
     /**
      * Helper function to load the driver
      */
-    private static void loadDriver(){
+    private static void loadDriver() {
         try {
             Class.forName(JDBC_DRIVER);
         } catch (ClassNotFoundException cnfe) {

@@ -13,12 +13,9 @@ import java.util.List;
 public enum RaceDao {
     instance;
 
-    // if null get all races
     public List<Race> getRaces(String username) {
         List<Race> races = new ArrayList<>();
-
         races = DBRacePlayer.getRacesByUser(username);
-
         return races;
     }
 

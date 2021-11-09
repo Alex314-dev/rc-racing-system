@@ -1,5 +1,3 @@
-
-
 package M5Project.RC.Resource;
 
 import M5Project.RC.model.Player;
@@ -28,7 +26,7 @@ public class DBFriendship {
      * @return  the requestSuccessFlag: -1 if SQL error, 0 if successful friend request,
      * 1 if already friends, 2 if already in request, 3 if that user does not exist
      */
-    public static int sendFriendRequest(String username, String friend){
+    public static int sendFriendRequest(String username, String friend) {
         if (username.equals(friend)) { return -1; }
 
         if (!DBRacePlayer.getAllUsernames().contains(friend)) { return 3; }
@@ -91,11 +89,9 @@ public class DBFriendship {
                 System.out.println("Request sent");
 
                 requestSuccessFlag =  0;
-
             } else if (isFriends == false){
                 System.out.println("Already in request");
                 requestSuccessFlag =  2;
-
             } else if (isOngoingRequest == false){
                 System.out.println("Already in friendship");
                 requestSuccessFlag = 1;
@@ -116,7 +112,7 @@ public class DBFriendship {
      * @param friend2
      * @return -1 if error, 0 if successful update
      */
-    public static int respondToRequest(String friend1, String friend2){
+    public static int respondToRequest(String friend1, String friend2) {
         loadDriver();
         try {
             Connection connection = getConnection();
@@ -141,7 +137,6 @@ public class DBFriendship {
                 return 0;
             }
             return -1;
-
         } catch (SQLException sqle) {
             System.err.println("Error connecting: " + sqle);
             return -1;
@@ -200,7 +195,7 @@ public class DBFriendship {
      * @param friend friend to unfriend
      * @return 0 in case of SQL error, 1 if delete was completed successfully
      */
-    public static int deleteFriend(String username, String friend){
+    public static int deleteFriend(String username, String friend) {
         loadDriver();
         try {
             Connection connection = getConnection();
@@ -325,7 +320,7 @@ public class DBFriendship {
     /**
      * Helper function to load the driver
      */
-    private static void loadDriver(){
+    private static void loadDriver() {
         try {
             Class.forName(JDBC_DRIVER);
         } catch (ClassNotFoundException cnfe) {

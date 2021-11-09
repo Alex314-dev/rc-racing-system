@@ -142,7 +142,6 @@ public class TestDBChallenge {
         //Should be 1, because there will be only 1 other
         assertEquals(1, DBChallenge.getAllChallengeRequests("LordDebel", true).size());
         assertEquals(0, DBChallenge.getAllDoneChallenges("kristian58").size());
-
     }
 
     /**
@@ -164,7 +163,6 @@ public class TestDBChallenge {
         assertEquals(1, DBChallenge.getAllDoneChallenges("KrisCross").size());
 
         DBChallenge.deleteALlChallengesUsers("AlexP", "KrisCross");
-
     }
 
     /**
@@ -289,7 +287,6 @@ public class TestDBChallenge {
         assertEquals(9.861000061035156, actualTime);
     }
 
-
     /**
      * Test if we get time 0 for race id 0;
      */
@@ -300,4 +297,3 @@ public class TestDBChallenge {
     }
 
 }
-
