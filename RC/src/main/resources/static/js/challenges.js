@@ -374,7 +374,6 @@ $(window).on('load', function() {
                        } );
                  }
                  endOfRace()
-                 getWaitingData();
                  timerFlag = true;
             }).catch((error) => {
                  Swal.fire({
@@ -513,7 +512,7 @@ $(window).on('load', function() {
                    'Your time: ' + body + 'seconds',
                    'success'
                  )
-                 showDone();
+               showDone();
               } else {
                 Swal.fire({
                   icon: 'error',
@@ -524,7 +523,6 @@ $(window).on('load', function() {
                     } );
               }
               endOfRace();
-              getChallengeData();
               timerFlag = true;
         }).catch((error) => {
              Swal.fire({
@@ -595,7 +593,7 @@ $(window).on('load', function() {
     function endOfRace() {
         resetTimer();
         stopTimer();
-        //$('#loading-window').css('display','none');
+        $('#loading-window').css('display','none');
     }
 
     async function checkTimer() {

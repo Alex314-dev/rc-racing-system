@@ -219,7 +219,7 @@ $(window).on('load', function() {
 
     function endOfRace() {
         resetTimer();
-        pauseTimer();
+        stopTimer();
         $('#table_races_wrapper').css('display','block');
         $('#loading-window').css('display','none');
         $('#race_text').text('Start Race');
@@ -254,55 +254,55 @@ $(window).on('load', function() {
             interval = setInterval(start, 10);
         }
 
-        function stopTimer() {
-            clearInterval(interval);
-            $("#display").html("00:00:00");
-        }
+    function stopTimer() {
+        clearInterval(interval);
+        $("#display").html("00:00:00");
+    }
 
-        function resetTimer() {
-            clearInterval(interval);
+    function resetTimer() {
+        clearInterval(interval);
+        mil = 0;
+        sec = 0;
+        min = 0;
+        $("#display").html("00:00:00");
+    }
+
+    function start() {
+
+        var milString;
+        var secString;
+        var minString;
+
+        mil++;
+
+        if (mil <= 9) {
+            milString = "0" + mil;
+        } else if (mil > 99) {
             mil = 0;
+            milString = "00";
+            sec++;
+        } else {
+            milString = "" + mil;
+        }
+
+        if (sec <= 9) {
+            secString = "0" + sec;
+        } else if (sec > 59) {
             sec = 0;
-            min = 0;
-            $("#display").html("00:00:00");
+            secString = "00";
+            min ++;
+        } else {
+            secString = "" + sec;
         }
 
-        function start() {
-
-            var milString;
-            var secString;
-            var minString;
-
-            mil++;
-
-            if (mil <= 9) {
-                milString = "0" + mil;
-            } else if (mil > 99) {
-                mil = 0;
-                milString = "00";
-                sec++;
-            } else {
-                milString = "" + mil;
-            }
-
-            if (sec <= 9) {
-                secString = "0" + sec;
-            } else if (sec > 59) {
-                sec = 0;
-                secString = "00";
-                min ++;
-            } else {
-                secString = "" + sec;
-            }
-
-            if (min <= 9) {
-                minString = "0" + min;
-            } else {
-                minString = min;
-            }
-
-            var timeString = minString + ":" + secString + ":" + milString;
-            $("#display").html(timeString);
-
+        if (min <= 9) {
+            minString = "0" + min;
+        } else {
+            minString = min;
         }
+
+        var timeString = minString + ":" + secString + ":" + milString;
+        $("#display").html(timeString);
+
+    }
 });
