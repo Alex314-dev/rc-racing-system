@@ -231,17 +231,15 @@ $(window).on('load', function() {
     }
 
     function sendTimerRequest() {
-        var xmlhtttimer = new XMLHttpRequest();
-        xmlhtttimer.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var response = xmlhtttimer.responseText;
-                if (response === true) {
+          fetch('/rest/timer', {method: 'GET', redirect: 'follow'}).then(function(response) {
+            return response.json();
+          }).then(function(data) {
+                if (data === true) {
                     start();
                     timerFlag = true;
                 }
-            }
+          }).catch(function(error) {
+            console.log(error);
+          });
         }
-        xmlhtttimer.open("GET", "/rest/timer", true);
-        xmlhtttimer.send();
-    }
 });
