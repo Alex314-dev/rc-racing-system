@@ -1,101 +1,13 @@
 $(window).on('load', function() {
 
-    var userInfo;
+    var userInfo = {"username": "username"};
     var doneData = [{"challenger": "No Data Available", "challengerTime": 0,  "challengee": "", "challengeeTime": ""}];
     var waitingData= [{"challenger": "No Data Available", "challengerTime": 0, "challengeID": ""}];
     var sentData = [{"challengee": "No Data Available", "challengerTime": 0}];
     var challengeData = [{"username": "No Data Available", "wins": 0,  "losses": 0}];
     getCredentials ();
-    getDoneData();
-
-    //Initialize done table
-    datatableDone = $("#table_done").DataTable( {
-        "pageLength": doneData.length,
-        "lengthChange": false,
-        "paging": false,
-        "responsive": true,
-        "orderCellsTop": true,
-        "scrollY": "calc(100vh - 425px)",
-        "scrollCollapse": true,
-        "searching": false,
-        "order": [[ 1, "asc" ]],
-        data: doneData,
-        columns: [
-            {"data": "challenger", "width": "30%"},
-            {"data": "challengerTime", "width": "20%"},
-            {"data": "challengee", "width": "30%"},
-            {"data": "challengeeTime", "width": "20%"}
-            ]
-        });
-
-        datatableWaiting = $("#table_waiting").DataTable( {
-            "pageLength": waitingData.length,
-            "lengthChange": false,
-            "paging": false,
-            "responsive": true,
-            "orderCellsTop": true,
-            "scrollY": "calc(100vh - 425px)",
-            "scrollCollapse": true,
-            "searching": false,
-            "order": [[ 1, "asc" ]],
-            data: waitingData,
-            columns: [
-                {"data": "challenger", "width": "35%"},
-                {"data": "challengerTime", "width": "15%"},
-                {"data": null, "orderable": false, "width": "25%",
-                render: function ( data, type, row ) {
-                    var challenger = row.challenger;
-                    var challengeID = row.challengeID;
-                    // challenger name and challengeID
-                    return '<div id="challengeAccept" data-value="'+challengeID+','+challenger+'">Accept</div>';} },
-                {"data": null, "orderable": false, "width": "25%",
-                render: function ( data, type, row ) {
-                    var challenger = row.challenger;
-                    var challengeID = row.challengeID;
-                    return '<div id="challengeReject" data-value="'+challengeID+','+challenger+'">Reject</div>';} }
-                ]
-            });
-
-        datatableSent = $("#table_sent").DataTable( {
-            "pageLength": sentData.length,
-            "lengthChange": false,
-            "paging": false,
-            "responsive": true,
-            "orderCellsTop": true,
-            "scrollY": "calc(100vh - 425px)",
-            "scrollCollapse": true,
-            "searching": false,
-            "order": [[ 1, "asc" ]],
-            data: sentData,
-            columns: [
-                {"data": "challengee", "width": "40%"},
-                {"data": "challengerTime", "width": "15%"},
-                ]
-            });
-
-        datatableChallenge = $("#table_challenge").DataTable( {
-        "pageLength": challengeData.length,
-        "lengthChange": false,
-        "paging": false,
-        "responsive": true,
-        "scrollY": "calc(100vh - 425px)",
-        "scrollCollapse": true,
-        "searching": false,
-        "order": [[ 1, "asc" ]],
-        data: challengeData,
-        columns: [
-            {"data": "username", "width": "40%"},
-			{"data": "losses", "width": "15%"},
-			{"data": "wins", "width": "15%"},
-			{"data": null, "orderable": false, "width": "15%",
-			render: function ( data, type, row ) {
-				var challengee = row.username;
-				if (challengee == "No Data Available") {
-				    return "";
-				}
-				return '<div id="challengeCreate" data-value="'+challengee+'">Challenge</div>';} }
-			]
-            });
+    var datatableDone;
+    showDone ();
 
 
     function getCredentials () {
@@ -114,7 +26,11 @@ $(window).on('load', function() {
     	};
 
     function getDoneData () {
-          fetch('/rest/getDoneChallenges').then(function(response) {
+          $('#table_loading').css('display','flex');
+          fetch('/rest/getDoneChallenges', {method: 'GET', redirect: 'follow'}).then(function(response) {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
             return response.json();
           }).then(function(data) {
             doneData = data;
@@ -122,14 +38,87 @@ $(window).on('load', function() {
                 datatableDone.clear().draw();
                 datatableDone.rows.add(doneData);
                 datatableDone.columns.adjust().draw();
-                }
-          }).catch(function() {
-            console.log("Something Went Wrong");
+            } else {
+                //Initialize done table
+                datatableDone = $("#table_done").DataTable( {
+                    "pageLength": doneData.length,
+                    "lengthChange": false,
+                    "paging": false,
+                    "responsive": true,
+                    "orderCellsTop": true,
+                    "scrollY": "calc(100vh - 425px)",
+                    "scrollCollapse": true,
+                    "searching": false,
+                    aaSorting: [],
+                    data: doneData,
+                    columns: [
+                        {"data": "challenger", "width": "30%"},
+                        {"data": "null", "width": "20%",
+                        "render": function ( data, type, row ) {
+                            if ( type === 'display' || type === 'filter' ) {
+                                var minutes = Math.floor( row.challengerTime / 60);
+                                var seconds = row.challengerTime - minutes * 60;
+
+                                return minutes+"m "+seconds+"s"
+                            }
+
+                            return row.challengerTime} },
+                        {"data": "challengee", "width": "30%"},
+                        {"data": "null", "width": "20%",
+                        "render": function ( data, type, row ) {
+                            if ( type === 'display' || type === 'filter' ) {
+                                if (row.challengeeTime == 0) {
+                                    return "DNF";
+                                }
+                                var minutes = Math.floor( row.challengeeTime / 60);
+                                var seconds = row.challengeeTime - minutes * 60;
+                                return minutes+"m "+seconds+"s"
+                            }
+                            return row.challengeeTime} }
+                        ],
+                        "createdRow": function( row, data, dataIndex) {
+                            if (userInfo.username == data.challenger) {
+                                if (data.challengeeTime == 0) {
+                                    $(row).addClass('win');
+                                    console.log('win');
+                                } else if (data.challengeeTime > data.challengerTime) {
+                                    $(row).addClass('win');
+                                    console.log('win');
+                                } else if (data.challengeeTime < data.challengerTime) {
+                                    $(row).addClass('lost');
+                                    console.log('lost');
+                                }
+                            } else if (userInfo.username == data.challengee) {
+                                if (data.challengeeTime == 0) {
+                                    $(row).addClass('lost');
+                                    console.log('lost');
+                                } else if (data.challengeeTime > data.challengerTime) {
+                                    $(row).addClass('lost');
+                                    console.log('lost');
+                              } else if (data.challengeeTime < data.challengerTime) {
+                                    $(row).addClass('win');
+                                    console.log('win');
+                              }
+                            }
+                        }
+                    });
+                    $('.done-wrapper').css('display','block');
+                    datatableDone.columns.adjust().draw();
+            }
+            $('#table_loading').css('display','none');
+          }).catch(function(error) {
+           console.log("Something Went Wrong");
+           console.log(error);
+           window.location.href = "/"
           });
     }
 
     function getWaitingData () {
-          fetch('/rest/getPendingChallengeRequests').then(function(response) {
+          $('#table_loading').css('display','flex');
+          fetch('/rest/getPendingChallengeRequests', {method: 'GET', redirect: 'follow'}).then(function(response) {
+                if (response.redirected) {
+                  window.location.href = response.url;
+                }
             return response.json();
           }).then(function(data) {
             waitingData = data;
@@ -137,14 +126,60 @@ $(window).on('load', function() {
                 datatableWaiting.clear().draw();
                 datatableWaiting.rows.add(waitingData);
                 datatableWaiting.columns.adjust().draw();
-                }
-          }).catch(function() {
+            } else {
+                //Initialize Waiting Table
+                datatableWaiting = $("#table_waiting").DataTable( {
+                    "pageLength": waitingData.length,
+                    "lengthChange": false,
+                    "paging": false,
+                    "responsive": true,
+                    "orderCellsTop": true,
+                    "scrollY": "calc(100vh - 475px)",
+                    "scrollCollapse": true,
+                    "searching": false,
+                    aaSorting: [],
+                    data: waitingData,
+                    columns: [
+                        {"data": "challenger", "width": "35%"},
+                        {"data": "null", "width": "15%",
+                        "render": function ( data, type, row ) {
+                            if ( type === 'display' || type === 'filter' ) {
+                                var minutes = Math.floor( row.challengerTime / 60);
+                                var seconds = row.challengerTime - minutes * 60;
+
+                                return minutes+"m "+seconds+"s"
+                            }
+
+                            return row.challengerTime} },
+                        {"data": null, "orderable": false, "width": "25%",
+                        render: function ( data, type, row ) {
+                            var challenger = row.challenger;
+                            var challengeID = row.challengeID;
+                            // challenger name and challengeID
+                            return '<div id="challengeAccept" data-value="'+challengeID+','+challenger+'">Accept</div>';} },
+                        {"data": null, "orderable": false, "width": "25%",
+                        render: function ( data, type, row ) {
+                            var challenger = row.challenger;
+                            var challengeID = row.challengeID;
+                            return '<div id="challengeReject" data-value="'+challengeID+','+challenger+'">Reject</div>';} }
+                        ]
+                    });
+                    $('.waiting-wrapper').css('display','block');
+                    datatableWaiting.columns.adjust().draw();
+            }
+            $('#table_loading').css('display','none');
+          }).catch(function(error) {
             console.log("Something Went Wrong");
+            window.location.href = "/"
           });
     }
 
     function getSentData() {
-          fetch('/rest/getSentChallengeRequests').then(function(response) {
+          $('#table_loading').css('display','flex');
+          fetch('/rest/getSentChallengeRequests', {method: 'GET', redirect: 'follow'}).then(function(response) {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
             return response.json();
           }).then(function(data) {
             sentData = data;
@@ -152,14 +187,49 @@ $(window).on('load', function() {
                 datatableSent.clear().draw();
                 datatableSent.rows.add(sentData);
                 datatableSent.columns.adjust().draw();
-                }
+            } else {
+                //Initialize Sent Table
+                datatableSent = $("#table_sent").DataTable( {
+                    "pageLength": sentData.length,
+                    "lengthChange": false,
+                    "paging": false,
+                    "responsive": true,
+                    "orderCellsTop": true,
+                    "scrollY": "calc(100vh - 460px)",
+                    "scrollCollapse": true,
+                    "searching": false,
+                    aaSorting: [],
+                    data: sentData,
+                    columns: [
+                        {"data": "challengee", "width": "40%"},
+                        {"data": "null", "width": "15%",
+                        "render": function ( data, type, row ) {
+                            if ( type === 'display' || type === 'filter' ) {
+                                var minutes = Math.floor( row.challengerTime / 60);
+                                var seconds = row.challengerTime - minutes * 60;
+
+                                return minutes+"m "+seconds+"s"
+                            }
+
+                            return row.challengerTime} },
+                        ]
+                    });
+                    $('.sent-wrapper').css('display','block');
+                    datatableSent.columns.adjust().draw();
+            }
+            $('#table_loading').css('display','none');
           }).catch(function() {
             console.log("Something Went Wrong");
+            window.location.href = "/"
           });
     }
 
     function getChallengeData() {
-          fetch('/rest/getFriendsWinsLosses').then(function(response) {
+          $('#table_loading').css('display','flex');
+          fetch('/rest/getFriendsWinsLosses', {method: 'GET', redirect: 'follow'}).then(function(response) {
+                if (response.redirected) {
+                  window.location.href = response.url;
+                }
             return response.json();
           }).then(function(data) {
             challengeData = data;
@@ -167,9 +237,38 @@ $(window).on('load', function() {
                 datatableChallenge.clear().draw();
                 datatableChallenge.rows.add(challengeData);
                 datatableChallenge.columns.adjust().draw();
-                }
+            } else {
+                //Initialize Challenge Table
+                datatableChallenge = $("#table_challenge").DataTable( {
+                "pageLength": challengeData.length,
+                "lengthChange": false,
+                "paging": false,
+                "responsive": true,
+                "scrollY": "calc(100vh - 425px)",
+                "scrollCollapse": true,
+                "searching": false,
+                aaSorting: [],
+                data: challengeData,
+                columns: [
+                    {"data": "username", "width": "40%"},
+                    {"data": "losses", "width": "15%"},
+                    {"data": "wins", "width": "15%"},
+                    {"data": null, "orderable": false, "width": "15%",
+                    render: function ( data, type, row ) {
+                        var challengee = row.username;
+                        if (challengee == "No Data Available") {
+                            return "";
+                        }
+                        return '<div id="challengeCreate" data-value="'+challengee+'">Challenge</div>';} }
+                    ]
+                    });
+                    $('.challenge-wrapper').css('display','block');
+                    datatableChallenge.columns.adjust().draw();
+            }
+            $('#table_loading').css('display','none');
           }).catch(function() {
             console.log("Something Went Wrong");
+            window.location.href = "/"
           });
     }
 
@@ -195,11 +294,7 @@ $(window).on('load', function() {
     })
 
     function createChallenge(challengee) {
-            Swal.fire(
-              'Challenge Created',
-              'GO GO GO',
-              'success'
-            )
+
             var acceptChallengeData = {'challengee': challengee};
                     var formBody = [];
                     for (var property in acceptChallengeData) {
@@ -211,11 +306,15 @@ $(window).on('load', function() {
 
                     fetch('/rest/challengeRequest', {
                       method: 'POST',
+                      redirect: 'follow',
                       headers: {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
                       },
                       body: formBody
                     }).then((resp) => {
+                            if (resp.redirected) {
+                                window.location.href = resp.url;
+                            }
                          return resp.json(); // or resp.text() or whatever the server sends
                     }).then((body) => {
                         console.log(body);
@@ -253,6 +352,7 @@ $(window).on('load', function() {
                               'Your time: ' + body + 'seconds',
                               'success'
                             )
+                            showWaiting();
                          } else {
                            Swal.fire({
                              icon: 'error',
@@ -269,6 +369,7 @@ $(window).on('load', function() {
                            title: 'Server error',
                            text: 'Something went wrong!',
                          })
+                         window.location.href = "/"
                  });
         }
 
@@ -291,11 +392,15 @@ $(window).on('load', function() {
 
         fetch('/rest/rejectChallenge', {
           method: 'POST',
+          redirect: 'follow',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
           },
           body: formBody
         }).then((resp) => {
+                if (resp.redirected) {
+                    window.location.href = resp.url;
+                }
              return resp.json(); // or resp.text() or whatever the server sends
         }).then((body) => {
              console.log(body);
@@ -319,6 +424,7 @@ $(window).on('load', function() {
                title: 'Server error',
                text: 'Something went wrong!',
              })
+             window.location.href = "/"
      });
     }
 
@@ -331,11 +437,6 @@ $(window).on('load', function() {
     })
 
     function acceptChallenge(id, challenger) {
-        Swal.fire(
-          'Challenge Started',
-          'GO GO GO',
-          'success'
-        )
         var acceptChallengeData = {'challenger': challenger, 'id': id};
                 var formBody = [];
                 for (var property in acceptChallengeData) {
@@ -347,11 +448,15 @@ $(window).on('load', function() {
 
                 fetch('/rest/acceptChallenge', {
                   method: 'POST',
+                  redirect: 'follow',
                   headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
                   },
                   body: formBody
                 }).then((resp) => {
+                        if (resp.redirected) {
+                            window.location.href = resp.url;
+                        }
                      return resp.json(); // or resp.text() or whatever the server sends
                 }).then((body) => {
                     console.log(body);
@@ -389,6 +494,7 @@ $(window).on('load', function() {
                            'Your time: ' + body + 'seconds',
                            'success'
                          )
+                         showDone();
                       } else {
                         Swal.fire({
                           icon: 'error',
@@ -405,6 +511,7 @@ $(window).on('load', function() {
                        title: 'Server error',
                        text: 'Something went wrong!',
                      })
+                     window.location.href = "/"
              });
     }
 
@@ -413,8 +520,9 @@ $(window).on('load', function() {
         $('.waiting-wrapper').css('display','none');
         $('.sent-wrapper').css('display','none');
         $('.challenge-wrapper').css('display','none');
-        $('.done-wrapper').css('display','block');
-        //datatable.columns.adjust().draw();
+        if ($.fn.dataTable.isDataTable("#table_done")) {
+            $('.done-wrapper').css('display','block');
+        }
         $('.waiting').removeClass('activechallenge');
         $('.sent').removeClass('activechallenge');
         $('.challenges').removeClass('activechallenge');
@@ -426,7 +534,9 @@ $(window).on('load', function() {
         $('.done-wrapper').css('display','none');
         $('.sent-wrapper').css('display','none');
         $('.challenge-wrapper').css('display','none');
-        $('.waiting-wrapper').css('display','block');
+        if ($.fn.dataTable.isDataTable("#table_waiting")) {
+            $('.waiting-wrapper').css('display','block');
+        }
         $('.done').removeClass('activechallenge');
         $('.sent').removeClass('activechallenge');
         $('.challenges').removeClass('activechallenge');
@@ -438,7 +548,9 @@ $(window).on('load', function() {
         $('.waiting-wrapper').css('display','none');
         $('.done-wrapper').css('display','none');
         $('.challenge-wrapper').css('display','none');
-        $('.sent-wrapper').css('display','block');
+        if ($.fn.dataTable.isDataTable("#table_sent")) {
+            $('.sent-wrapper').css('display','block');
+        }
         $('.waiting').removeClass('activechallenge');
         $('.done').removeClass('activechallenge');
         $('.challenges').removeClass('activechallenge');
@@ -450,12 +562,13 @@ $(window).on('load', function() {
         $('.waiting-wrapper').css('display','none');
         $('.sent-wrapper').css('display','none');
         $('.done-wrapper').css('display','none');
-        $('.challenge-wrapper').css('display','block');
+        if ($.fn.dataTable.isDataTable("#table_challenge")) {
+            $('.challenge-wrapper').css('display','block');
+        }
         $('.waiting').removeClass('activechallenge');
         $('.sent').removeClass('activechallenge');
         $('.done').removeClass('activechallenge');
         $('.challenges').addClass('activechallenge');
     }
-
 
 });

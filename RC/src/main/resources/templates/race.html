@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Your in</title>
+    <title>Race</title>
     <!-- CSS -->
     <link rel="stylesheet" href="css/race.css">
     <link rel="stylesheet" href="css/caranimation.css">
@@ -56,27 +56,28 @@
             </div>
         </div>
         <div class="nav">
-            <a class="race active" href="/race">
+            <a class="race active" title="Race Page" href="/race">
                 <img src="images/race.png">
                 <hr>
             </a>
-            <a class="leaderboard" href="/leaderboard">
+            <a class="leaderboard" title="Leaderboard Page" href="/leaderboard">
                 <img src="images/leaderboard.png">
                 <hr>
             </a>
-            <a class="challenge" href="/challenges">
+            <a class="challenge" title="Challenge Page" href="/challenges">
                 <img src="images/challenge.png">
                 <hr>
             </a>
-            <a class="friends" href="/friends">
+            <a class="friends" itle="Friends Page" href="/friends">
                 <img src="images/friends.png">
                 <hr>
             </a>
         </div>
         <div class="logout">
-            <a href="/logout">
-                <i class="fa fa-sign-out fa-3x" aria-hidden="true"></i>
+            <a href="rest/logout" title="Logout">
+                <i class="fa fa-sign-out fa-3x"></i>
             </a>
+            <i id="delete_account" title="Delete Account" class="fas fa-user-slash fa-2x"></i>
         </div>
     </div>
 

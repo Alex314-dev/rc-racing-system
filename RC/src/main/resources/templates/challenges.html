@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Your in</title>
+    <title>Challenges</title>
     <!-- CSS -->
     <link rel="stylesheet" href="css/challenges.css">
     <link rel="stylesheet" href="css/loadingpage.css">
+    <link rel="stylesheet" href="css/caranimation.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <!--DataTables BootStrap -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
@@ -55,36 +56,54 @@
         </div>
     </div>
     <div class="nav">
-        <a class="race" href="/race">
+        <a class="race" title="Race Page" href="/race">
             <img src="images/race.png">
             <hr>
         </a>
-        <a class="leaderboard" href="/leaderboard">
+        <a class="leaderboard" title="Leaderboard Page" href="/leaderboard">
             <img src="images/leaderboard.png">
             <hr>
         </a>
-        <a class="challenge active" href="/challenges">
+        <a class="challenge active" title="Challenge Page" href="/challenges">
             <img src="images/challenge.png">
             <hr>
         </a>
-        <a class="friends" href="/friends">
+        <a class="friends" itle="Friends Page" href="/friends">
             <img src="images/friends.png">
             <hr>
         </a>
     </div>
     <div class="logout">
-        <a href="/logout">
-            <i class="fa fa-sign-out fa-3x" aria-hidden="true"></i>
+        <a href="rest/logout" title="Logout">
+            <i class="fa fa-sign-out fa-3x"></i>
         </a>
     </div>
 </div>
-
+    <h1>Challenges</h1>
     <div class="challenges-buttons-wrapper">
-        <h1>Challenges</h1>
         <div class="done activechallenge"><span>Done</span></div>
         <div class="waiting"><span>Waiting</span></div>
         <div class="sent"><span>Sent</span></div>
         <div class="challenges"><span>Challenge</span></div>
+    </div>
+
+    <div id = "table_loading">
+        <div class="car">
+            <div class="strike"></div>
+            <div class="strike strike2"></div>
+            <div class="strike strike3"></div>
+            <div class="strike strike4"></div>
+            <div class="strike strike5"></div>
+            <div class="car-detail spoiler"></div>
+            <div class="car-detail back"></div>
+            <div class="car-detail center"></div>
+            <div class="car-detail center1"></div>
+            <div class="car-detail front"></div>
+            <div class="car-detail wheel"></div>
+            <div class="car-detail wheel wheel2"></div>
+        </div>
+        <br>
+        <div id="loading_text">Loading...</div>
     </div>
 
     <div class = "done-wrapper">

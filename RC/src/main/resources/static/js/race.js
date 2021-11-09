@@ -84,6 +84,52 @@ $(window).on('load', function() {
         checkTimer();
     });
 
+    $("#delete_account").on('click', async function() {
+
+        const { value: username } = await Swal.fire({
+          input: 'text',
+          inputPlaceholder: 'Enter your username here...',
+          inputAttributes: {
+            'aria-label': 'Enter your username here'
+          },
+          confirmButtonText: 'Yes, delete it!',
+          icon: 'warning',
+          title: 'Are you sure you want to delete your account?',
+          text: "You won't be able to revert this!",
+          showCancelButton: true
+        })
+
+        if (username) {
+            if (username === userInfo.username) {
+                fetch('/rest/removeAccount', {method: 'DELETE', redirect: 'follow'}).then(function(response) {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                return response.json();
+                }).then(function(data) {
+                    if (data == 1) {
+                        window.location.href = "rest/logout";
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Unsuccessful Account Removal',
+                            text: 'Something Went Wrong',
+                        });
+                    }
+                }).catch(function(error) {
+                    console.log("Something Went Wrong");
+                    console.log(error);
+                    window.location.href = "/"
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Unsuccessful Account Removal',
+                    text: 'The input did not match your username',
+                });
+            }
+        }
+    })
 
     function getCredentials() {
     	var xmlhttp = new XMLHttpRequest();

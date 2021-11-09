@@ -152,6 +152,7 @@
   }
 
   .done:hover, .waiting:hover, .sent:hover, .challenges:hover {
+        transition-duration: 0.2s;
         color: #e7e7e7;
         background-color: #af214a;
         box-shadow: 0px 4px 20px rgb(0 0 0 / 50%);
@@ -162,7 +163,7 @@
         background-color: #c41949;
   }
 
-  .waiting-wrapper, .sent-wrapper, .challenge-wrapper {
+  .done-wrapper, .waiting-wrapper, .sent-wrapper, .challenge-wrapper {
         display: none;
   }
 
@@ -195,8 +196,59 @@
 }
 
 #challengeAccept:hover, #challengeCreate:hover, #challengeReject:hover {
+    transition-duration: 0.2s;
     box-shadow: 1px 2px 8px rgb(0 0 0 / 45%);
     border-radius: 15px;
     background: #c41949;
+}
+
+.win {
+    background: #78fc7873 !important;
+}
+
+.lost {
+    background: #ff7b7b87 !important;
+}
+
+.lost:hover {
+    transition-duration: 0.2s;
+    filter: brightness(80%);
+    background:  #ff7b7b87 !important;
+    color: black !important;
+}
+
+.win:hover {
+    transition-duration: 0.2s;
+    filter: brightness(80%);
+    background:  #78fc7873 !important;
+    color: black !important;
+}
+
+.odd:hover, .even:hover {
+    transition-duration: 0.2s;
+    background: #c4194973;
+    color: white;
+}
+
+h1 {
+    text-align: center;
+}
+
+#table_loading {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    margin-top: 7.5vh;
+    z-index: 10;
+    filter: drop-shadow(3px 6px 8px black);
+    display: none;
+    flex-direction: column;
+    text-align: center;
+}
+
+#table_loading #loading_text {
+    font-weight: 600;
+    filter: drop-shadow(2px 4px 6px black);
+    color: white;
 }
 
