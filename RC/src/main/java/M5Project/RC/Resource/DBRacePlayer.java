@@ -1,5 +1,6 @@
 package M5Project.RC.Resource;
 
+import M5Project.RC.model.ErrorMessage;
 import M5Project.RC.model.Player;
 import M5Project.RC.model.Race;
 
@@ -17,6 +18,32 @@ public class DBRacePlayer {
 
     static final String USER = "dab_di20212b_100";
     static final String PASS = System.getenv("RC_DB_PASS");
+
+    /**
+     * Method to delete all data for the specified user.
+     * @param username The username of the account
+     * @return #affected rows if the deletion was executed correctly, ErrorMessage.SERVER_ERROR if not
+     */
+    public static int deleteAccount(String username) {
+        loadDriver();
+
+        try {
+            Connection connection = getConnection();
+            String deleteAccount = "DELETE FROM player\n" +
+                    "WHERE username = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteAccount);
+            preparedStatement.setString(1, username);
+
+            preparedStatement.close();
+            connection.close();
+            return preparedStatement.executeUpdate();
+
+        } catch (SQLException sqle) {
+            System.err.println("Error connecting: " + sqle);
+            return ErrorMessage.SERVER_ERROR;
+        }
+    }
 
     /**
      * Check if the player is present in the database
@@ -58,6 +85,11 @@ public class DBRacePlayer {
         }
     }
 
+    /**
+     * Method to get a player username from email
+     * @param email
+     * @return
+     */
     public static String getPlayerUsername(String email) {
         loadDriver();
 
@@ -89,6 +121,13 @@ public class DBRacePlayer {
         }
     }
 
+    /**
+     * Method to insert a new player
+     * @param player
+     * @return false if the insert was unsuccessful if that user already exists, true if successful
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static boolean insertNewPlayer(Player player) throws ClassNotFoundException, SQLException {
         loadDriver();
 
@@ -311,5 +350,4 @@ public class DBRacePlayer {
         Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
         return connection;
     }
-
 }

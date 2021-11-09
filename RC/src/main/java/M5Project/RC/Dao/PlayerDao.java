@@ -46,4 +46,8 @@ public enum PlayerDao {
         List<Player> friends = DBFriendship.getFriendsWinsLosses(username);
         return friends;
     }
+
+    public int removeAccount(String player) {
+        return DBRacePlayer.deleteAccount(player);
+    }
 }
