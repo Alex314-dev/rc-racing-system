@@ -234,17 +234,15 @@ $(window).on('load', function() {
     }
 
     function sendTimerRequest() {
-        var xmlhttptimer = new XMLHttpRequest();
-        xmlhttptimer.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var response = xmlhttptimer.responseText;
-                if (response === true) {
-                    start();
-                    timerFlag = true;
-                }
+        fetch('/rest/timer', {method: 'GET', redirect: 'follow'}).then(function(response) {
+            return response.json();
+        }).then(function(data) {
+            if (data === true) {
+                start();
+                timerFlag = true;
             }
-        }
-        xmlhttptimer.open("GET", "/rest/timer", true);
-        xmlhttptimer.send();
+        }).catch(function(error) {
+            console.log(error);
+        });
     }
 });
