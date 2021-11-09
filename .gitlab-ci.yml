@@ -31,6 +31,13 @@ variables:
   DAST_FULL_SCAN_ENABLED: "true"
   DAST_FULL_SCAN_DOMAIN_VALIDATION_REQUIRED: "false"
 
-
-
+build:
+    stage: build
+    script:
+        - echo "Building"
+        - mkdir build
+        - touch build/info.txt
+    artifacts:
+        paths:
+            - build/
 
