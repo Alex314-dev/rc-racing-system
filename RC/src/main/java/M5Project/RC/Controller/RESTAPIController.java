@@ -4,6 +4,7 @@ import M5Project.RC.Dao.ChallengeDao;
 import M5Project.RC.Dao.FriendDao;
 import M5Project.RC.Dao.PlayerDao;
 import M5Project.RC.Dao.RaceDao;
+import M5Project.RC.JavaClientSocket.ClientSocket;
 import M5Project.RC.model.Challenge;
 import M5Project.RC.model.ErrorMessage;
 import M5Project.RC.model.Player;
@@ -64,6 +65,12 @@ public class RESTAPIController {
             response.sendRedirect("/race");
         }
 
+    }
+    @GetMapping("/rest/logout")
+    public void logout(HttpServletResponse response, Principal principal) throws IOException {
+        PlayerDao.instance.removePlayerFromMap(principal.getName());
+
+        response.sendRedirect("/logout");
     }
 
     @GetMapping("/rest/allraces")

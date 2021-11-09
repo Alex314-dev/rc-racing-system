@@ -20,6 +20,10 @@ public enum PlayerDao {
         players.put(sub, player);
     }
 
+    public void removePlayerFromMap(String sub) {
+        players.remove(sub);
+    }
+
     public boolean addPlayerToDB(Player player) throws SQLException, ClassNotFoundException {
         return DBRacePlayer.insertNewPlayer(player);
     }
