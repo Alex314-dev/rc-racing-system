@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Leaderboard</title>
+    <title>Friends</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="css/leaderboard.css">
+    <link rel="stylesheet" href="css/friends.css">
     <link rel="stylesheet" href="css/loadingpage.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <!--DataTables BootStrap -->
@@ -20,10 +20,12 @@
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
     <!--Js-->
-    <script src="js/leaderboard.js"></script>
+    <script src="js/friends.js"></script>
     <script src="js/loadingpage.js"></script>
     <!--fontawosome-icons-->
     <script src="https://kit.fontawesome.com/59dce4be9c.js" crossorigin="anonymous"></script>
+    <!--SweetAlerts-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="loader-wrapper">
@@ -57,7 +59,7 @@
             <img src="images/race.png">
             <hr>
         </a>
-        <a class="leaderboard active" title="Leaderboard Page" href="/leaderboard">
+        <a class="leaderboard" title="Leaderboard Page" href="/leaderboard">
             <img src="images/leaderboard.png">
             <hr>
         </a>
@@ -65,7 +67,7 @@
             <img src="images/challenge.png">
             <hr>
         </a>
-        <a class="friends" itle="Friends Page" href="/friends">
+        <a class="friends active" itle="Friends Page" href="/friends">
             <img src="images/friends.png">
             <hr>
         </a>
@@ -77,23 +79,70 @@
     </div>
 </div>
 
-<h1>Leaderboard</h1>
+<h1>Friends</h1>
 
-<div class = "races"></div>
-    <table id = "table_races">
+<div class="friends-wrapper">
+    <div class="list freindsactive"><span>Friend's list</span></div>
+    <div class="requests"><span>Add Friend</span></div>
+</div>
+
+<div class="friends-list-wrapper">
+    <table id = "table_friends">
         <thead>
-        <tr>
-            <th><i class="fas fa-trophy"></i></th>
-            <th>Player</th>
-            <th>Time</th>
-            <th>Sector 1</th>
-            <th>Sector 2</th>
-            <th>Sector 3</th>
-            <th>Date</th>
-        </tr>
+            <tr>
+                <th>Friend</th>
+                <th>My Wins</th>
+                <th>MyLosses</th>
+                <th>Total</th>
+                <th>Unfriend</th>
+            </tr>
         </thead>
     </table>
 </div>
+
+<div class="add-friends-wrapper">
+    <div id = "search-wrapper">
+        <form id="add_friend_form" action="/rest/sendFriendRequest" method="post">
+            <input type="text" id="friend" name="friendToAdd" placeholder="Add Friend">
+            <button type="submit" id="friend_submit" class="btn-success">
+                <i class="fas fa-user-plus"></i>
+            </button>
+        </form>
+    </div>
+
+    <div id = "requests-wrapper">
+        <div class = "pending">
+            <b>Pending Requests (From)</b>
+            <hr>
+            <div style="height: 85%; overflow-y: scroll">
+                <table id = "pending_table" style="width: 100%">
+                    <colgroup>
+                        <col span="1" style="width: 60%;">
+                        <col span="1" style="width: 20%;">
+                        <col span="1" style="width: 20%;">
+                    </colgroup>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class = "outgoing">
+            <b>Outgoing Requests (To)</b>
+            <hr>
+            <div style="height: 85%; overflow-y: scroll">
+                <table id = "outgoing_table" style="width: 100%">
+                    <colgroup>
+                        <col span="1" style="width: 75%;">
+                        <col span="1" style="width: 35%;">
+                    </colgroup>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 
 </body>
 </html>

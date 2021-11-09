@@ -1,7 +1,6 @@
 package M5Project.RC.Security;
 
 import M5Project.RC.Dao.PlayerDao;
-import M5Project.RC.Resource.Database;
 import M5Project.RC.model.Player;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -25,7 +24,7 @@ public class AfterLogin {
         String name = nameFromLoggedUser(principal);
 
         Player newLoggedPlayer = new Player("", email, name);
-        PlayerDao.instance.addPlayer(sub, newLoggedPlayer);
+        PlayerDao.instance.addPlayerToMap(sub, newLoggedPlayer);
 
         //if the player is not present in the database its info needs to be inserted into the db
         if (!PlayerDao.instance.isPlayerRegistered(email)) {
@@ -34,7 +33,7 @@ public class AfterLogin {
 
         String username = PlayerDao.instance.getUsernameByEmail(email);
         newLoggedPlayer.setUsername(username);
-        PlayerDao.instance.addPlayer(sub, newLoggedPlayer);
+        PlayerDao.instance.addPlayerToMap(sub, newLoggedPlayer);
 
         return new ModelAndView("redirect:" + "/race");
     }
@@ -62,6 +61,5 @@ public class AfterLogin {
         Map<String,Object> OauthAttributes =  oAuth2User.getAttributes();
         return (String) OauthAttributes.get("name");
     }
-
-
+    
 }

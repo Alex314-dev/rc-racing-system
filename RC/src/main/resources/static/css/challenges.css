@@ -1,0 +1,254 @@
+@font-face {
+    font-family: 'Product Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/productsans/v5/HYvgU2fE2nRJvZ5JFAumwegdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+  }
+  
+  :root {
+      --blue : #4285F4;
+      --red : #EA4335;
+      --yellow : #FBBC05;
+      --green : #34A853;
+      --fbblue: #4267B2;
+  }
+  
+  html {
+      height: 100vh;
+      width: 100vw;
+      background: linear-gradient(180deg, #FFFFFF 0%, #c41949 100%);
+      background-repeat: no-repeat;
+      background-size: cover;
+      overflow: hidden;
+  }
+  
+  body {
+      height: 100vh;
+      width: 100vw;
+      background: linear-gradient(180deg, #FFFFFF 0%, #c41949 100%);
+      background-repeat: no-repeat;
+      background-size: cover;
+      overflow: hidden;
+  }
+  
+  .header {
+      display: flex;
+      padding: 15px;
+      padding-top: 5px;
+      padding-bottom: 0px;
+  }
+  
+  .logo {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      font-size: 22px;
+  }
+  
+  .logo .user-info {
+      padding: 5px;
+      margin: 5px;
+      box-shadow: 1px 2px 4px;
+      border-radius: 15px;
+  }
+  
+  .logo .user-info i {
+      border: 1px solid black;
+      border-radius: 50%;
+      padding: 4px;
+      box-shadow: 1px 1px 1px;
+  }
+  
+  .nav {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      margin-right: calc(8vh + 7vw);
+  }
+  
+  .logout a i {
+      color: black;
+  }
+  
+  .logout a i:hover {
+      color: grey;
+  }
+  
+  .logo {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      font-size: 22px;
+  }
+  
+  @media (max-width: 575px) {
+      .nav {
+      margin-right: 0px;
+      }
+  
+  }
+  
+  .race, .leaderboard, .challenge, .friends {
+      padding: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+  }
+  
+  .race:hover img, .leaderboard:hover img, .challenge:hover img, .friends:hover img {
+      filter: invert(50%);
+      animation: pulse 0.5s infinite;
+  }
+  
+  .race:hover hr, .leaderboard:hover hr, .challenge:hover hr, .friends:hover hr {
+      text-align: center;
+      width: 60%;
+      height: 1px;
+      color: grey;
+      background-color: grey;
+      border-color: grey;
+      animation: pulse 0.5s infinite;
+  }
+  
+  
+  .race img, .leaderboard img, .friends img, .challenge img {
+      height: calc(4vh + 3vw);
+      max-height: 100px;
+      min-height: 50px;
+  }
+  
+  .logo img {
+      width: calc(8vh + 8vw);
+      max-width: 220px;
+      min-width: 120px;
+  }
+  
+  .active hr {
+          text-align: center;
+          width: 60%;
+          height: 1px;
+          color: black;
+          background-color: black;
+          border-color: black;
+  }
+
+  .challenges-buttons-wrapper {
+        display: flex;
+        justify-content: center;
+        font-size: calc(12px + 0.5vw);
+  }
+
+  .done, .waiting, .sent, .challenges {
+        margin: 10px 15px 15px 15px;
+        padding: 5px 15px 5px 15px;
+        border-radius: 25px;
+        box-shadow: 0px 4px 20px rgb(0 0 0 / 15%);
+        color: #c41949;
+        background-color: #d3d3d3;
+        font-weight: 500;
+        cursor: pointer;
+        animation: linear 1s;
+  }
+
+  .done:hover, .waiting:hover, .sent:hover, .challenges:hover {
+        transition-duration: 0.2s;
+        color: #e7e7e7;
+        background-color: #af214a;
+        box-shadow: 0px 4px 20px rgb(0 0 0 / 50%);
+  }
+
+  .activechallenge {
+        color: #d3d3d3;
+        background-color: #c41949;
+  }
+
+  .done-wrapper, .waiting-wrapper, .sent-wrapper, .challenge-wrapper {
+        display: none;
+  }
+
+#table_done_wrapper, #table_waiting_wrapper, #table_sent_wrapper, #table_challenge_wrapper  {
+    font-size: calc(12pt + 0.25vw);
+    text-align: center;
+    background: white;
+    width: 65%;
+    min-width: 500px;
+    border-radius: 25px;
+    padding: 10px 25px 0px 25px;
+    filter: drop-shadow(0px 3px 6px rgb(0 0 0 / 0.75));
+    margin: auto;
+}
+
+.dataTables_info {
+    padding: 15px;
+}
+
+#challengeAccept, #challengeCreate, #challengeReject {
+    box-shadow: 1px 2px 8px rgb(0 0 0 / 15%);
+    border-radius: 15px;
+    background: #e55e85;
+    font-weight: 600;
+    cursor: POINTER;
+    color: white;
+    display: inline-block;
+    padding: 5px 15px 5px 15px;
+    animation: pulse 0.5s infinite;
+}
+
+#challengeAccept:hover, #challengeCreate:hover, #challengeReject:hover {
+    transition-duration: 0.2s;
+    box-shadow: 1px 2px 8px rgb(0 0 0 / 45%);
+    border-radius: 15px;
+    background: #c41949;
+}
+
+.win {
+    background: #78fc7873 !important;
+}
+
+.lost {
+    background: #ff7b7b87 !important;
+}
+
+.lost:hover {
+    transition-duration: 0.2s;
+    filter: brightness(80%);
+    background:  #ff7b7b87 !important;
+    color: black !important;
+}
+
+.win:hover {
+    transition-duration: 0.2s;
+    filter: brightness(80%);
+    background:  #78fc7873 !important;
+    color: black !important;
+}
+
+.odd:hover, .even:hover {
+    transition-duration: 0.2s;
+    background: #c4194973;
+    color: white;
+}
+
+h1 {
+    text-align: center;
+}
+
+#table_loading {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    margin-top: 7.5vh;
+    z-index: 10;
+    filter: drop-shadow(3px 6px 8px black);
+    display: none;
+    flex-direction: column;
+    text-align: center;
+}
+
+#table_loading #loading_text {
+    font-weight: 600;
+    filter: drop-shadow(2px 4px 6px black);
+    color: white;
+}
+

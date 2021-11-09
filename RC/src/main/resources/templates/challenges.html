@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Leaderboard</title>
+    <title>Challenges</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="css/leaderboard.css">
+    <link rel="stylesheet" href="css/challenges.css">
     <link rel="stylesheet" href="css/loadingpage.css">
+    <link rel="stylesheet" href="css/caranimation.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <!--DataTables BootStrap -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
@@ -13,17 +14,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--anime.js - animation library-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"
-        integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
+            integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q=="
+            crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
     <!--DataTables Script-->
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
     <!--Js-->
-    <script src="js/leaderboard.js"></script>
+    <script src="js/challenges.js"></script>
     <script src="js/loadingpage.js"></script>
     <!--fontawosome-icons-->
     <script src="https://kit.fontawesome.com/59dce4be9c.js" crossorigin="anonymous"></script>
+    <!--SweetAlerts-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--EasyTimer-->
+    <script src="lib/easytimer/dist/easytimer.min.js"></script>
 </head>
 <body>
 <div class="loader-wrapper">
@@ -57,11 +62,11 @@
             <img src="images/race.png">
             <hr>
         </a>
-        <a class="leaderboard active" title="Leaderboard Page" href="/leaderboard">
+        <a class="leaderboard" title="Leaderboard Page" href="/leaderboard">
             <img src="images/leaderboard.png">
             <hr>
         </a>
-        <a class="challenge" title="Challenge Page" href="/challenges">
+        <a class="challenge active" title="Challenge Page" href="/challenges">
             <img src="images/challenge.png">
             <hr>
         </a>
@@ -76,24 +81,103 @@
         </a>
     </div>
 </div>
+    <h1>Challenges</h1>
+    <div class="challenges-buttons-wrapper">
+        <div class="done activechallenge"><span>Done</span></div>
+        <div class="waiting"><span>Waiting</span></div>
+        <div class="sent"><span>Sent</span></div>
+        <div class="challenges"><span>Challenge</span></div>
+    </div>
 
-<h1>Leaderboard</h1>
+    <div id = "table_loading">
+        <div class="car">
+            <div class="strike"></div>
+            <div class="strike strike2"></div>
+            <div class="strike strike3"></div>
+            <div class="strike strike4"></div>
+            <div class="strike strike5"></div>
+            <div class="car-detail spoiler"></div>
+            <div class="car-detail back"></div>
+            <div class="car-detail center"></div>
+            <div class="car-detail center1"></div>
+            <div class="car-detail front"></div>
+            <div class="car-detail wheel"></div>
+            <div class="car-detail wheel wheel2"></div>
+        </div>
+        <br>
+        <div id="loading_text">Loading...</div>
+    </div>
 
-<div class = "races"></div>
-    <table id = "table_races">
-        <thead>
-        <tr>
-            <th><i class="fas fa-trophy"></i></th>
-            <th>Player</th>
-            <th>Time</th>
-            <th>Sector 1</th>
-            <th>Sector 2</th>
-            <th>Sector 3</th>
-            <th>Date</th>
-        </tr>
-        </thead>
-    </table>
-</div>
+    <div class = "done-wrapper">
+        <table id = "table_done">
+            <thead>
+            <tr>
+                <th>Challenger</th>
+                <th>Time</th>
+                <th>Challengee</th>
+                <th>Time</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class = "waiting-wrapper">
+        <table id = "table_waiting">
+            <thead>
+            <tr>
+                <th>Challenger</th>
+                <th>Time</th>
+                <th></th> <!--Accept -->
+                <th></th> <!--Decline -->
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class = "sent-wrapper">
+        <table id = "table_sent">
+            <thead>
+            <tr>
+                <th>Challengee</th>
+                <th>My Lap Time</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class = "challenge-wrapper">
+        <table id = "table_challenge">
+            <thead>
+            <tr>
+                <th>Friend</th>
+                <th>My Wins</th>
+                <th>My Losses</th>
+                <th></th> <!--Challenge -->
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class="loading-window" id = "loading-window">
+        <div class="car">
+            <div class="strike"></div>
+            <div class="strike strike2"></div>
+            <div class="strike strike3"></div>
+            <div class="strike strike4"></div>
+            <div class="strike strike5"></div>
+            <div class="car-detail spoiler"></div>
+            <div class="car-detail back"></div>
+            <div class="car-detail center"></div>
+            <div class="car-detail center1"></div>
+            <div class="car-detail front"></div>
+            <div class="car-detail wheel"></div>
+            <div class="car-detail wheel wheel2"></div>
+        </div>
+        <div class="stopwatch">
+            <span class="time" id="display">00:00:00</span>
+        </div>
+    </div>
+
 
 </body>
 </html>
