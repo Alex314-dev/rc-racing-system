@@ -76,6 +76,20 @@ public class RESTAPIController {
         return RaceDao.instance.getRaces(PlayerDao.instance.getPlayer(principal.getName()).getUsername());
     }
 
+    @GetMapping("/rest/timer")
+    public boolean timer(Principal principal) {
+        if (!ClientSocket.instance.isOngoingGame()) {
+            return false; // there is no race going on
+        }
+
+        String username = PlayerDao.instance.getPlayer(principal.getName()).getUsername();
+        if (ClientSocket.instance.getCurrentRacer().equals(username)) {
+            return ClientSocket.instance.isRaceStarted();
+        } else {
+            return false; // you are not the one racing
+        }
+    }
+
     @GetMapping("/rest/race")
     public float normalRace(Principal principal) {
         return RaceDao.instance.initiateARace(principal);
