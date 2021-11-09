@@ -3,8 +3,8 @@ $(window).on('load', function() {
     var dataRaces;
     var datatable;
     var userInfo;
-    getCredentials ();
     var timerFlag = false;
+    getCredentials();
     getMyRaces();
 
     datatable = $("#table_races").DataTable( {
@@ -30,7 +30,9 @@ $(window).on('load', function() {
                     return time+" "+day+"/"+month+"/"+year;
                 }
 
-                return row.date;} },
+                return row.date;
+                }
+            },
             {"data": "null", "render": function ( data, type, row ) {
                 if ( type === 'display' || type === 'filter' ) {
                     var minutes = Math.floor( row.sectorTime[0] / 60);
@@ -39,7 +41,9 @@ $(window).on('load', function() {
                     return minutes+"m "+seconds+"s"
                 }
 
-                return row.sectorTime[0]} },
+                return row.sectorTime[0]
+                }
+            },
             {"data": "null", "render": function ( data, type, row ) {
                 if ( type === 'display' || type === 'filter' ) {
                     var minutes = Math.floor( row.sectorTime[1] / 60);
@@ -48,7 +52,9 @@ $(window).on('load', function() {
                     return minutes+"m "+seconds+"s"
                 }
 
-                return row.sectorTime[1]} },
+                return row.sectorTime[1]
+                }
+            },
             {"data": "null", "render": function ( data, type, row ) {
                 if ( type === 'display' || type === 'filter' ) {
                     var minutes = Math.floor( row.sectorTime[2] / 60);
@@ -57,7 +63,9 @@ $(window).on('load', function() {
                     return minutes+"m "+seconds+"s"
                 }
 
-                return row.sectorTime[2]} },
+                return row.sectorTime[2]
+                }
+            },
             {"data": "null", "render": function ( data, type, row ) {
                 if ( type === 'display' || type === 'filter' ) {
                     var minutes = Math.floor( row.overallTime / 60);
@@ -66,186 +74,174 @@ $(window).on('load', function() {
                     return minutes+"m "+seconds+"s"
                 }
 
-                return row.overallTime; } }
+                return row.overallTime;
+                }
+            }
         ]
     });
 
     $("#start-race").on('click', function() {
-
         $('#table_races_wrapper').css('display','none');
         $('#loading-window').css('display','flex');
         $('#race_text').text('Ongoing');
         timerFlag = false;
         startRaceRequest();
         checkTimer();
-
     });
 
 
-    function getCredentials () {
+    function getCredentials() {
     	var xmlhttp = new XMLHttpRequest();
     	xmlhttp.onreadystatechange = function() {
     		if(this.readyState == 4 && this.status == 200) {
-
     			var response = xmlhttp.responseText;
 
     			userInfo = JSON.parse(response);
     			$("#username").text(userInfo.username);
-    			}
     		}
-    		xmlhttp.open("GET", "/rest/player", true);
-            xmlhttp.send();
-    	};
+    	}
+    	xmlhttp.open("GET", "/rest/player", true);
+    	xmlhttp.send();
+    };
 
-        function getMyRaces () {
-            var xmlhttpraces = new XMLHttpRequest();
-            xmlhttpraces.onreadystatechange = function() {
-                if(this.readyState == 4 && this.status == 200) {
-
-                    var response = xmlhttpraces.responseText;
-
-                    dataRaces = JSON.parse(response);
-                    }
-                }
-                xmlhttpraces.open("GET", "/rest/myraces", false);
-                xmlhttpraces.send();
-            };
+    function getMyRaces() {
+        var xmlhttpraces = new XMLHttpRequest();
+        xmlhttpraces.onreadystatechange = function() {
+            if(this.readyState == 4 && this.status == 200) {
+                var response = xmlhttpraces.responseText;
+                dataRaces = JSON.parse(response);
+            }
+        }
+        xmlhttpraces.open("GET", "/rest/myraces", false);
+        xmlhttpraces.send();
+    };
 
 
-        function startRaceRequest () {
-            var xmlhttpraces = new XMLHttpRequest();
-            xmlhttpraces.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
+    function startRaceRequest () {
+        var xmlhttpraces = new XMLHttpRequest();
+        xmlhttpraces.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = xmlhttpraces.responseText;
 
-                    var response = xmlhttpraces.responseText;
-
-                    if (response == -1.0) {
-                        Swal.fire({
+                if (response == -1.0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Race',
+                        text: 'You were too slow or something went wrong!',
+                    });
+                } else if (response == -2.0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'There is an outgoing race',
+                        text: 'Please wait for it to finish!',
+                    });
+                } else if (response > 0.0) {
+                    Swal.fire({
+                          title: "Race Finished. Good job!",
+                          text: "Your time:" + response,
+                          type: "success"
+                    }).then(function() { location.reload(); });
+                } else {
+                    Swal.fire({
                           icon: 'error',
                           title: 'Invalid Race',
-                          text: 'You were too slow or something went wrong!',
-                        });
-                    } else if (response == -2.0) {
-                        Swal.fire({
-                          icon: 'error',
-                          title: 'There is an outgoing race',
-                          text: 'Please wait for it to finish!',
-                        });
-                    } else if (response > 0.0) {
-                        Swal.fire({
-                              title: "Race Finished. Good job!",
-                              text: "Your time:" + response,
-                              type: "success"
-                              }).then(function() {
-                                    location.reload();
-                                } );
-                    } else {
-                        Swal.fire({
-                              icon: 'error',
-                              title: 'Invalid Race',
-                              text: 'Something went wrong!',
-                              }).then(function() {
-                                    location.reload();
-                                } );
-                    }
-                    endOfRace();
-                    timerFlag = true;
-                } else if (this.readyState == 4 && this.status != 200) {
-                    Swal.fire({
-                      icon: 'error',
-                      title: 'Error',
-                      text: 'Cannot establish connection to the server',
-                    });
-                    endOfRace();
+                          text: 'Something went wrong!',
+                    }).then(function() { location.reload(); });
+                }
+                endOfRace();
+                timerFlag = true;
+            } else if (this.readyState == 4 && this.status != 200) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Cannot establish connection to the server',
+                });
+                endOfRace();
+                timerFlag = true;
+            }
+        }
+        xmlhttpraces.open("GET", "/rest/race", true);
+        xmlhttpraces.send();
+    }
+
+    function endOfRace () {
+        reset();
+        pause();
+        $('#table_races_wrapper').css('display','block');
+        $('#loading-window').css('display','none');
+        $('#race_text').text('Start Race');
+    }
+
+    // Convert time to a format of hours, minutes, seconds, and milliseconds
+    function timeToString(time) {
+        let diffInHrs = time / 3600000;
+        let hh = Math.floor(diffInHrs);
+
+        let diffInMin = (diffInHrs - hh) * 60;
+        let mm = Math.floor(diffInMin);
+
+        let diffInSec = (diffInMin - mm) * 60;
+        let ss = Math.floor(diffInSec);
+
+        let diffInMs = (diffInSec - ss) * 100;
+        let ms = Math.floor(diffInMs);
+
+        let formattedMM = mm.toString().padStart(2, "0");
+        let formattedSS = ss.toString().padStart(2, "0");
+        let formattedMS = ms.toString().padStart(2, "0");
+
+        return `${formattedMM}:${formattedSS}:${formattedMS}`;
+    }
+
+    let startTime;
+    let elapsedTime = 0;
+    let timerInterval;
+
+    function print(txt) {
+      document.getElementById("display").innerHTML = txt;
+    }
+
+    function start() {
+      startTime = Date.now() - elapsedTime;
+      timerInterval = setInterval(function printTime() {
+        elapsedTime = Date.now() - startTime;
+        print(timeToString(elapsedTime));
+      }, 10);
+    }
+
+    function pause() {
+      clearInterval(timerInterval);
+    }
+
+    function reset() {
+      clearInterval(timerInterval);
+      print("00:00:00");
+      elapsedTime = 0;
+    }
+
+    function delay(time) {
+      return new Promise(resolve => setTimeout(resolve, time));
+    }
+
+    async function checkTimer() {
+        while (!timerFlag) {
+            await delay(500);
+            sendTimerRequest();
+        }
+    }
+
+    function sendTimerRequest() {
+        var xmlhtttimer = new XMLHttpRequest();
+        xmlhtttimer.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = xmlhtttimer.responseText;
+                if (response === true) {
+                    start();
                     timerFlag = true;
                 }
             }
-                xmlhttpraces.open("GET", "/rest/race", true);
-                xmlhttpraces.send();
-        };
-
-        function endOfRace () {
-            reset();
-            pause();
-            $('#table_races_wrapper').css('display','block');
-            $('#loading-window').css('display','none');
-            $('#race_text').text('Start Race');
         }
-
-    	// Convert time to a format of hours, minutes, seconds, and milliseconds
-
-        function timeToString(time) {
-          let diffInHrs = time / 3600000;
-          let hh = Math.floor(diffInHrs);
-
-          let diffInMin = (diffInHrs - hh) * 60;
-          let mm = Math.floor(diffInMin);
-
-          let diffInSec = (diffInMin - mm) * 60;
-          let ss = Math.floor(diffInSec);
-
-          let diffInMs = (diffInSec - ss) * 100;
-          let ms = Math.floor(diffInMs);
-
-          let formattedMM = mm.toString().padStart(2, "0");
-          let formattedSS = ss.toString().padStart(2, "0");
-          let formattedMS = ms.toString().padStart(2, "0");
-
-          return `${formattedMM}:${formattedSS}:${formattedMS}`;
-        }
-
-        let startTime;
-        let elapsedTime = 0;
-        let timerInterval;
-
-        function print(txt) {
-          document.getElementById("display").innerHTML = txt;
-        }
-
-        function start() {
-          startTime = Date.now() - elapsedTime;
-          timerInterval = setInterval(function printTime() {
-            elapsedTime = Date.now() - startTime;
-            print(timeToString(elapsedTime));
-          }, 10);
-        }
-
-        function pause() {
-          clearInterval(timerInterval);
-        }
-
-        function reset() {
-          clearInterval(timerInterval);
-          print("00:00:00");
-          elapsedTime = 0;
-        }
-
-        function delay(time) {
-          return new Promise(resolve => setTimeout(resolve, time));
-        }
-
-        async function checkTimer() {
-            while (!timerFlag) {
-                console.log(timerFlag);
-                console.log("In Loop");
-                await delay(500);
-                sendTimerRequest();
-            }
-        }
-
-        function sendTimerRequest() {
-            var xmlhtttimer = new XMLHttpRequest();
-                xmlhtttimer.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        var response = xmlhtttimer.responseText;
-                        if (response === true) {
-                            start();
-                            timerFlag = true;
-                        }
-                    }
-                }
-            xmlhtttimer.open("GET", "/rest/timer", true);
-            xmlhtttimer.send();
-        }
-
+        xmlhtttimer.open("GET", "/rest/timer", true);
+        xmlhtttimer.send();
+    }
 });
