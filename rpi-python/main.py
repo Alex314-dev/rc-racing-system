@@ -57,11 +57,15 @@ def timer(conn):
 def race(conn):
     time1 = read_sensor(23) # 23
     if time1 == -1: return { "status": False } # add || timeX < 5(or another value) to the if statement for the real racing scenerios
+    
     timer(conn);
-    time2 = read_sensor(23) # 24
+    
+    time2 = read_sensor(24) # 24
     if time2 == -1: return { "status": False }
-    time3 = read_sensor(23) # 25
+    
+    time3 = read_sensor(25) # 25
     if time3 == -1: return { "status": False }
+    
     time4 = read_sensor(23) # 23
     if time4 == -1: return { "status": False }
     
@@ -73,7 +77,7 @@ def race(conn):
     return { "status": True, "sector1": sector1, "sector2": sector2, "sector3": sector3, "overall": overall }
 
 def timeout_sensor():
-    time.sleep(20) # 20 seconds timeout
+    time.sleep(180)
     bridge.set()
 
 def read_sensor(pin): # the value of pin shall be either 23, 24, or 25 as they are the ones which were configured
@@ -86,7 +90,7 @@ def read_sensor(pin): # the value of pin shall be either 23, 24, or 25 as they a
             timeout_thread.terminate()
 
             ftime = time.time()
-            time.sleep(0.1) # -- for testing purposes -- delete after connecting 3 IR sensors
+            # time.sleep(0.1) # -- for testing purposes -- delete after connecting 3 IR sensors
             return ftime
         elif bridge.is_set(): # check the timeout event
             print("Timeout")
