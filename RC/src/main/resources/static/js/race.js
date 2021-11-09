@@ -4,13 +4,8 @@ $(window).on('load', function() {
     var datatable;
     var userInfo;
     getCredentials ();
-    let startTime;
-    let elapsedTime = 0;
-    let timerInterval;
-
+    var timerFlag = false;
     getMyRaces();
-
-    console.log(dataRaces);
 
     datatable = $("#table_races").DataTable( {
         "pageLength": 20,
@@ -75,13 +70,14 @@ $(window).on('load', function() {
         ]
     });
 
-
     $("#start-race").on('click', function() {
+
         $('#table_races_wrapper').css('display','none');
         $('#loading-window').css('display','flex');
         $('#race_text').text('Ongoing');
-        delay(1500).then(() => startTimer());
+        timerFlag = false;
         startRaceRequest();
+        checkTimer();
 
     });
 
@@ -153,7 +149,7 @@ $(window).on('load', function() {
                                 } );
                     }
                     endOfRace();
-
+                    timerFlag = true;
                 } else if (this.readyState == 4 && this.status != 200) {
                     Swal.fire({
                       icon: 'error',
@@ -161,6 +157,7 @@ $(window).on('load', function() {
                       text: 'Cannot establish connection to the server',
                     });
                     endOfRace();
+                    timerFlag = true;
                 }
             }
                 xmlhttpraces.open("GET", "/rest/race", true);
@@ -168,11 +165,11 @@ $(window).on('load', function() {
         };
 
         function endOfRace () {
+            reset();
+            pause();
             $('#table_races_wrapper').css('display','block');
             $('#loading-window').css('display','none');
             $('#race_text').text('Start Race');
-            reset();
-            pause();
         }
 
     	// Convert time to a format of hours, minutes, seconds, and milliseconds
@@ -197,11 +194,15 @@ $(window).on('load', function() {
           return `${formattedMM}:${formattedSS}:${formattedMS}`;
         }
 
+        let startTime;
+        let elapsedTime = 0;
+        let timerInterval;
+
         function print(txt) {
           document.getElementById("display").innerHTML = txt;
         }
 
-        function startTimer() {
+        function start() {
           startTime = Date.now() - elapsedTime;
           timerInterval = setInterval(function printTime() {
             elapsedTime = Date.now() - startTime;
@@ -223,5 +224,28 @@ $(window).on('load', function() {
           return new Promise(resolve => setTimeout(resolve, time));
         }
 
+        async function checkTimer() {
+            while (!timerFlag) {
+                console.log(timerFlag);
+                console.log("In Loop");
+                await delay(500);
+                sendTimerRequest();
+            }
+        }
+
+        function sendTimerRequest() {
+            var xmlhtttimer = new XMLHttpRequest();
+                xmlhtttimer.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response = xmlhtttimer.responseText;
+                        if (response === true) {
+                            start();
+                            timerFlag = true;
+                        }
+                    }
+                }
+            xmlhtttimer.open("GET", "/rest/timer", true);
+            xmlhtttimer.send();
+        }
 
 });
