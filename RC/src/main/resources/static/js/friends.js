@@ -106,7 +106,7 @@ $(window).on('load', function() {
                 Swal.fire({
                   icon: 'error',
                   title: 'Invalid Request',
-                  text: 'There is already an outgoing friend request to that user!',
+                  text: 'There is already an ongoing friend request with that user!',
                 })
             } else if (body == 3) {
                  Swal.fire({
