@@ -208,35 +208,6 @@ public class DBChallenge {
     }
 
     /**
-     * Mathod to delete a challenge, after a rejected challenge request
-     * @param challengee This user,as the challengee
-     * @param id The challenge id
-     */
-    public static boolean deleteChallenge(String challengee, int id) {
-        loadDriver();
-        try {
-            Connection connection = getConnection();
-            String deleteRequest = "DELETE FROM challenge\n" +
-                    "WHERE challengeid = ? \n" +
-                    "AND isfinished = false \n" +
-                    "AND challengee = ?";
-
-            PreparedStatement statement = connection.prepareStatement(deleteRequest);
-            statement.setInt(1, id);
-            statement.setString(2, challengee);
-            int result = statement.executeUpdate();
-
-            statement.close();
-            connection.close();
-
-            return result != 0;
-        } catch(SQLException sqle) {
-            System.err.println("Error connecting: " + sqle);
-            return false;
-        }
-    }
-
-    /**
      * Method to respond to a challenge.
      * @param username This user's name
      * @param id The challenge id
