@@ -121,6 +121,12 @@ $(window).on('load', function() {
                   'success'
                 )
                 getOutgoingRequests();
+            } else if (body == -1) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Something went wrong!',
+                })
             }
         }).catch((error) => {
             Swal.fire({
@@ -165,7 +171,7 @@ $(window).on('load', function() {
              if (body == 0) {
                 Swal.fire(
                   'Success',
-                  'Friend Request Has Been Deleted!',
+                  'This Friend has been deleted!',
                   'success'
                 )
                 getOutgoingRequests();
