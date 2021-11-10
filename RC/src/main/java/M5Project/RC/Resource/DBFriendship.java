@@ -86,14 +86,10 @@ public class DBFriendship {
                 prStatement.setString(2, friend);
                 prStatement.executeUpdate();
 
-                System.out.println("Request sent");
-
                 requestSuccessFlag =  0;
             } else if (isFriends == false){
-                System.out.println("Already in request");
                 requestSuccessFlag =  2;
             } else if (isOngoingRequest == false){
-                System.out.println("Already in friendship");
                 requestSuccessFlag = 1;
             }
 
@@ -275,8 +271,6 @@ public class DBFriendship {
                 statement.setString(1, username);
                 statement.setString(2, friend.getUsername());
                 ResultSet resultSet1 = statement.executeQuery();
-
-                System.out.println(friend.getUsername());
 
                 int wins = 0;
                 int losses = 0;
