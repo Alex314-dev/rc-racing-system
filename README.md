@@ -156,7 +156,7 @@ We are open to suggestions and accept corrections to the system. If you wish you
 ## Contact
 
 Kağan Gülsüm&emsp;&emsp;&emsp;k.gulsum@student.utwente.nl <br>
-Alex Petrov&emsp;&emsp;&emsp;   . <br>
+Alex Petrov&emsp;&emsp;&emsp;petrov.k.alexander@gmail.com <br>
 Liran Neta&emsp;&emsp;&emsp;     . <br>
 Kristiyan Velikov&emsp;&emsp;. <br>
 Laurens Neinders&emsp;. <br>
