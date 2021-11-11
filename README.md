@@ -139,7 +139,7 @@ With the steps below you can execute all unit tests properly:
 
 ## Usage
 
-__TODO: Add the link to the demo video__
+To learn more about the usage, check out [this](https://drive.google.com/file/d/1Wcv2JGWV_s_t0EQA8s8FnAQ5fHM6pajW/view?usp=sharing) demonstration video.
 
 
 
@@ -160,5 +160,6 @@ Alex Petrov&emsp;&emsp;&emsp;   . <br>
 Liran Neta&emsp;&emsp;&emsp;     . <br>
 Kristiyan Velikov&emsp;&emsp;. <br>
 Laurens Neinders&emsp;. <br>
+Rick Pluimers&emsp;. <br>
 
 Project Link: [https://gitlab.utwente.nl/cs21-22/m5-project](https://gitlab.utwente.nl/cs21-22/m5-project)
